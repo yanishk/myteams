@@ -16,14 +16,13 @@
 static int check_clients_sockets(server_t *server)
 {
     int client_fd = 0;
-    int client_index = 0;
 
     for (int i = 0; i != server->size; i += 1) {
         client_fd = server->fd_array[i];
         if (FD_ISSET(client_fd, &server->readfds) != 0) {
-            client_index = insert_client_in_struct(server, client_fd);
-            // là
-            close_client_socket(server, server->clients[client_index]);
+            server->user_index = insert_client_in_struct(server, client_fd);
+            get_user_input(server, client_fd);
+            close_client_socket(server);
         }
     }
     return 0;

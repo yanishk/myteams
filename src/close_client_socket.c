@@ -23,8 +23,10 @@ static void remove_client_socket(server_t *server, int client_fd)
     }
 }
 
-void close_client_socket(server_t *server, clients_t *client)
+void close_client_socket(server_t *server)
 {
+    clients_t *client = server->clients[server->user_index];
+
     if (client->has_been_closed) {
         close(client->client_fd);
         FD_CLR(client->client_fd, &server->readfds);

@@ -71,7 +71,7 @@ void init_client_struct(server_t *server)
         server->clients[i] = malloc(sizeof(clients_t));
         server->clients[i]->client_fd = 0;
         server->clients[i]->username_entered = false;
-        server->clients[i]->user_logged_in = false;
+        server->clients[i]->is_connected = false;
         server->clients[i]->has_been_closed = false;
         server->clients[i]->username = NULL;
     }
