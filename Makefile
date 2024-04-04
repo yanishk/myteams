@@ -11,14 +11,14 @@ SRC = \
     ./src/close_client_socket.c \
     ./src/run_server.c \
     ./src/server.c \
-    ./src/commande/not_implemented_command.c \
-    ./src/commande/cd_command.c \
-    ./src/commande/cwd_command.c \
-    ./src/commande/call_cmd_function.c \
-    ./src/commande/user_command.c \
-    ./src/commande/help/help_cmd.c \
-    ./src/commande/delete_command.c \
-    ./src/commande/client_command.c	\
+    ./src/commands/not_implemented_command.c \
+    ./src/commands/cd_command.c \
+    ./src/commands/cwd_command.c \
+    ./src/commands/call_cmd_function.c \
+    ./src/commands/user_command.c \
+    ./src/commands/help/help_cmd.c \
+    ./src/commands/delete_command.c \
+    ./src/commands/client_command.c	\
 	./main.c
 
 LIB = \
