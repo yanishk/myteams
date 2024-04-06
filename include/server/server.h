@@ -20,9 +20,9 @@
 
     #define MAX_USER 1024
     #define BUFFER_MAX_SIZE 1024
-    #define NB_CMD 14 //14 commande dmd dans le pdf (enfin je croie)
+    #define NB_CMD 13 //14 commande dmd dans le pdf (enfin je croie)
 
-    #define SUC_MSG_LOGIN "331 User name okay, need password.\n"
+    #define SUC_MSG_LOGIN "331 Usersname okay.\n"
     #define SUC_MSG_PASS "230 User logged in, proceed.\n"
     #define FAIL_MSG_LOGIN "530 Not logged in.\n"
     #define QUIT_MSG "221 Service closing control connection.\n"
@@ -42,16 +42,15 @@
     #define CODE_NOT_IMPLEMENTED "NOT YET IMPLEMENTED"
 
 static char *const cmd_lst[NB_CMD] = {
-    "USER",
-    "PASS",
-    "CWD",
+    "/login",
+    "/users",
     "CDUP",
-    "QUIT",
+    "/logout",
     "DELE",
     "PWD",
     "PASV",
     "PORT",
-    "HELP",
+    "/help",
     "NOOP",
     "RETR",
     "STOR",
@@ -60,7 +59,6 @@ static char *const cmd_lst[NB_CMD] = {
 
 static char *const help_msg[NB_CMD] = {
     "USER <SP> <username> <CRLF>   : Specify user for authentication\n",
-    "PASS <SP> <password> <CRLF>   : Specify password for authentication\n",
     "CWD  <SP> <pathname> <CRLF>   : Change working directory\n",
     "CDUP <CRLF>                   : "
     "Change working directory to parent directory\n",
@@ -88,7 +86,6 @@ enum cmd_status {
 typedef struct clients_s {
     struct sockaddr_in sock_addr;
     int client_fd;
-    bool username_entered;
     bool is_connected;
     bool has_been_closed;
     char *username;

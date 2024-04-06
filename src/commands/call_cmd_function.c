@@ -9,8 +9,7 @@
 
 int (*cmd_func[NB_CMD])(server_t *server, int client_fd) = {
     &user_login,
-    &user_password,
-    &cwd_cmd,
+    &user_cmd,
     &cdup_cmd,
     &quit_cmd,
     &dele_cmd,
@@ -26,6 +25,7 @@ int (*cmd_func[NB_CMD])(server_t *server, int client_fd) = {
 
 int error_not_login(server_t *server, int client_fd)
 {
+    printf("ERORRRRRRRR\n");
     if (server->clients[server->user_index]->is_connected == false) {
         write(client_fd, FAIL_MSG_LOGIN, strlen(FAIL_MSG_LOGIN));
         return 1;

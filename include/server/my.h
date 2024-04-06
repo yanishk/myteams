@@ -32,12 +32,11 @@ void get_user_input(server_t *server, int client_fd);
 int error_not_login(server_t *server, int client_fd);
 
 int user_login(server_t *server, int client_fd);
-int user_password(server_t *server, int client_fd);
 int quit_cmd(server_t *server, int client_fd);
 int noop_cmd(server_t *server, int client_fd);
 int list_cmd(server_t *server, int client_fd);
 int pwd_cmd(server_t *server, int client_fd);
-int cwd_cmd(server_t *server, int client_fd);
+int user_cmd(server_t *server, int client_fd);
 int cdup_cmd(server_t *server, int client_fd);
 int dele_cmd(server_t *server, int client_fd);
 int help_cmd(server_t *server, int client_fd);

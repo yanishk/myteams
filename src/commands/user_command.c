@@ -23,18 +23,5 @@ int user_login(server_t *server, int client_fd)
     }
     write(client_fd, SUC_MSG_LOGIN, strlen(SUC_MSG_LOGIN));
     add_user(server, server->cmd_arg.tab[1]);
-    server->clients[server->user_index]->username_entered = true;
     return WIN_CMD;
-}
-
-int user_password(server_t *server, int client_fd)
-{
-    if (strcmp(server->clients[server->user_index]->username,
-    ANONYMOUS_USER) == 0 && server->cmd_arg.len == 1) {
-        write(client_fd, SUC_MSG_PASS, strlen(SUC_MSG_PASS));
-        return WIN_CMD;
-    } else {
-        write(client_fd, FAIL_MSG_LOGIN, strlen(FAIL_MSG_LOGIN));
-        return ERR_CMD;
-    }
 }

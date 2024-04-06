@@ -70,7 +70,6 @@ void init_client_struct(server_t *server)
     for (int i = 0; i != MAX_USER; i += 1) {
         server->clients[i] = malloc(sizeof(clients_t));
         server->clients[i]->client_fd = 0;
-        server->clients[i]->username_entered = false;
         server->clients[i]->is_connected = false;
         server->clients[i]->has_been_closed = false;
         server->clients[i]->username = NULL;
