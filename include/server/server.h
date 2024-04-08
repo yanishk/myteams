@@ -22,9 +22,10 @@
     #define BUFFER_MAX_SIZE 1024
     #define NB_CMD 13 //14 commande dmd dans le pdf (enfin je croie)
 
-    #define SUC_MSG_LOGIN "331 Usersname okay.\n"
+    #define SUC_MSG_LOGIN "331 Username okay.\n"
     #define SUC_MSG_PASS "230 User logged in, proceed.\n"
     #define FAIL_MSG_LOGIN "530 Not logged in.\n"
+    #define ALRD_LOGIN "531 Already logged in.\n"
     #define QUIT_MSG "221 Service closing control connection.\n"
     #define CODE_200 "200 Command okay.\n"
     #define CODE_150 "150 File status okay, about to open data connection.\n"
@@ -89,6 +90,7 @@ typedef struct clients_s {
     bool is_connected;
     bool has_been_closed;
     char *username;
+    char *my_uuid;
 } clients_t;
 
 typedef struct cmd_s {

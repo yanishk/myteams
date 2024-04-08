@@ -13,19 +13,15 @@
 #include <unistd.h>
 #include "my.h"
 
-static int check_clients_sockets(server_t *server)
+static int check_clients_sockets(server_t *server, my_teams_t *teams)
 {
     int client_fd = 0;
-    my_teams_t teams;
 
-    TAILQ_INIT(&teams.user_head);
-    fill_user_tailq(&teams);
-    print_user_tailq(teams);
     for (int i = 0; i != server->size; i += 1) {
         client_fd = server->fd_array[i];
         if (FD_ISSET(client_fd, &server->readfds) != 0) {
             server->user_index = insert_client_in_struct(server, client_fd);
-            get_user_input(server, client_fd, &teams);
+            get_user_input(server, client_fd, teams);
             close_client_socket(server);
         }
     }
@@ -103,6 +99,10 @@ static int set_sockets(server_t *server)
 
 int run_server(server_t *server)
 {
+    my_teams_t teams;
+
+    TAILQ_INIT(&teams.user_head);
+    fill_user_tailq(&teams);
     while (1) {
         FD_ZERO(&server->readfds);
         FD_SET(server->server_fd, &server->readfds);
@@ -111,7 +111,7 @@ int run_server(server_t *server)
             return 84;
         if (check_server_socket(server) == 84)
             return 84;
-        if (check_clients_sockets(server) == 84)
+        if (check_clients_sockets(server, &teams) == 84)
             return 84;
     }
     return 0;

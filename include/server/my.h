@@ -10,6 +10,8 @@
 
     #include "server.h"
     #include "teams.h"
+    #include <uuid/uuid.h>
+    #include <stddef.h>
 
 // lib
 int array_size(char **array);

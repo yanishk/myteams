@@ -73,6 +73,7 @@ void init_client_struct(server_t *server)
         server->clients[i]->is_connected = false;
         server->clients[i]->has_been_closed = false;
         server->clients[i]->username = NULL;
+        server->clients[i]->my_uuid = NULL;
     }
 }
 

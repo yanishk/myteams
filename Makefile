@@ -34,7 +34,7 @@ LIB =                                        \
 OBJ = $(SRC:.c=.o)                           \
 	$(LIB:.c=.o)
 
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -luuid
 
 CPPFLAGS = -iquote include/server
 
