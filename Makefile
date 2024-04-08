@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-SRC = \
+SRC =                                        \
     ./src/initialize_server.c                \
     ./src/insert_client_in_struct.c          \
     ./src/close_client_socket.c              \
@@ -24,17 +24,17 @@ SRC = \
     ./src/database/save_database.c           \
 	./main.c
 
-LIB = \
-    ./lib/is_number.c \
-    ./lib/does_it_exists.c \
-    ./lib/concat_strings.c \
-    ./lib/array_functions.c	\
+LIB =                                        \
+    ./lib/is_number.c                        \
+    ./lib/does_it_exists.c                   \
+    ./lib/concat_strings.c                   \
+    ./lib/array_functions.c	                 \
 	./lib/word_array.c
 
-OBJ = $(SRC:.c=.o)   \
+OBJ = $(SRC:.c=.o)                           \
 	$(LIB:.c=.o)
 
-CFLAGS = -Wall -Wextra -iquote include/server
+CFLAGS = -Wall -Wextra
 
 CPPFLAGS = -iquote include/server
 

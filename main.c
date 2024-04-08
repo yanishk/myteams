@@ -8,7 +8,7 @@
 #include "my.h"
 #include <stdio.h>
 #include <string.h>
-#include "include/server/teams.h"
+#include "teams.h"
 
 void print_usage(void)
 {

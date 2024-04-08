@@ -21,6 +21,24 @@ static void fill_user_team_belong(user_t *new_user, char **array)
     }
 }
 
+static void fill_user_private_message(user_t *new_user, char **array)
+{
+    private_msg_t *new_private_msg;
+
+    TAILQ_INIT(&new_user->private_msg_head);
+    for (int i = 1; array[i] != NULL; i += 2) {
+        if (strcmp(array[i], "user_id") == 0) {
+            new_private_msg = malloc(sizeof(private_msg_t));
+            TAILQ_INSERT_TAIL(&new_user->private_msg_head, new_private_msg,
+                private_msg_entries);
+            new_private_msg->uuid_other = array[i + 1];
+        }
+        if (strcmp(array[i], "body") == 0) {
+            new_private_msg->body = array[i + 1];
+        }
+    }
+}
+
 static void parse_users(my_teams_t *teams, char *line)
 {
     static user_t *new_user;
@@ -40,6 +58,8 @@ static void parse_users(my_teams_t *teams, char *line)
         new_user->name = strdup(array[1]);
     if (strncmp(line, "\tteams_uuid=", strlen("\tteams_uuid=")) == 0)
         fill_user_team_belong(new_user, array);
+    if (strncmp(line, "\tprivate_message=", strlen("\tprivate_message=")) == 0)
+        fill_user_private_message(new_user, array);
     free(array);
 }
 

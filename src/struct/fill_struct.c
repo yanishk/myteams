@@ -11,6 +11,7 @@ void fill_user_tailq(my_teams_t *teams)
 {
     user_t *user;
     team_belong_t *team_belong;
+    private_msg_t *private_msg;
 
     user = malloc(sizeof(user_t));
     TAILQ_INSERT_TAIL(&teams->user_head, user, user_entries);
@@ -25,6 +26,17 @@ void fill_user_tailq(my_teams_t *teams)
     team_belong = malloc(sizeof(team_belong_t));
     TAILQ_INSERT_TAIL(&user->team_belong_head, team_belong, belong_entries);
     team_belong->uuid = "excellentissime";
+
+    TAILQ_INIT(&user->private_msg_head);
+    private_msg = malloc(sizeof(private_msg_t));
+    TAILQ_INSERT_TAIL(&user->private_msg_head, private_msg, private_msg_entries);
+    private_msg->body = "message 1";
+    private_msg->uuid_other = "uuid de l'autre frero";
+
+    private_msg = malloc(sizeof(private_msg_t));
+    TAILQ_INSERT_TAIL(&user->private_msg_head, private_msg, private_msg_entries);
+    private_msg->body = "message 2";
+    private_msg->uuid_other = "uuid de l'autre frero";
 
     user = malloc(sizeof(user_t));
     TAILQ_INSERT_TAIL(&teams->user_head, user, user_entries);
@@ -82,6 +94,7 @@ void print_user_tailq(my_teams_t teams)
 {
     user_t *user;
     team_belong_t *team_belong;
+    private_msg_t *private_msg;
 
     TAILQ_FOREACH(user, &teams.user_head, user_entries) {
         printf("user_uuid: %s\n", user->uuid);
@@ -89,6 +102,10 @@ void print_user_tailq(my_teams_t teams)
         TAILQ_FOREACH(team_belong, &user->team_belong_head,
             belong_entries) {
             printf("user team_uuid: %s\n", team_belong->uuid);
+        }
+        TAILQ_FOREACH(private_msg, &user->private_msg_head, private_msg_entries) {
+            printf("user private message: %s\n", private_msg->body);
+            printf("frero à qui il parle: %s\n", private_msg->uuid_other);
         }
     }
 }
