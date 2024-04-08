@@ -15,7 +15,7 @@ static void add_user(server_t *server, const char *username)
     server->clients[server->user_index]->is_connected = true;
 }
 
-int user_login(server_t *server, int client_fd)
+int user_login(server_t *server, int client_fd, my_teams_t *)
 {
     if (server->cmd_arg.len == 1) {
         write(client_fd, FAIL_MSG_LOGIN, strlen(FAIL_MSG_LOGIN));

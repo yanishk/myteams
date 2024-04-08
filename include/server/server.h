@@ -39,12 +39,12 @@
     #define ERR_NOT_ARG "503 Not enough arguments\n"
     #define ERR_BAD_ARG "504 Bad arguments\n"
     #define ANONYMOUS_USER "Anonymous"
-    #define CODE_NOT_IMPLEMENTED "NOT YET IMPLEMENTED"
+    #define CODE_NOT_IMPLEMENTED "NOT YET IMPLEMENTED\n"
 
 static char *const cmd_lst[NB_CMD] = {
     "/login",
     "/users",
-    "CDUP",
+    "/user",
     "/logout",
     "DELE",
     "PWD",

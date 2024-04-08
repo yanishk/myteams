@@ -19,6 +19,7 @@ SRC = \
     ./src/commands/delete_command.c          \
     ./src/commands/client_command.c	         \
     ./src/commands/user_list_command.c       \
+    ./src/struct/fill_struct.c               \
 	./main.c
 
 LIB = \

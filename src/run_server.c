@@ -16,12 +16,17 @@
 static int check_clients_sockets(server_t *server)
 {
     int client_fd = 0;
+    my_teams_t teams;
+
+    TAILQ_INIT(&teams.head_user);
+    fill_user_tailq(&teams);
+    print_tailq(teams);
 
     for (int i = 0; i != server->size; i += 1) {
         client_fd = server->fd_array[i];
         if (FD_ISSET(client_fd, &server->readfds) != 0) {
             server->user_index = insert_client_in_struct(server, client_fd);
-            get_user_input(server, client_fd);
+            get_user_input(server, client_fd, &teams);
             close_client_socket(server);
         }
     }

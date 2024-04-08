@@ -8,7 +8,7 @@
 #include <dirent.h>
 #include "my.h"
 
-int dele_cmd(server_t *server, int client_fd)
+int dele_cmd(server_t *server, int client_fd, my_teams_t *)
 {
     if (error_not_login(server, client_fd) != 0) {
         return ERR_CMD;

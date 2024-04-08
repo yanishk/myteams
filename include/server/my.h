@@ -9,6 +9,7 @@
     #define MY_H_
 
     #include "server.h"
+    #include "teams.h"
 
 // lib
 int array_size(char **array);
@@ -28,21 +29,28 @@ int run_server(server_t *server);
 int insert_client_in_struct(server_t *server, int client_fd);
 void close_client_socket(server_t *server);
 
-void get_user_input(server_t *server, int client_fd);
+void get_user_input(server_t *server, int client_fd, my_teams_t *team);
 int error_not_login(server_t *server, int client_fd);
 
-int user_login(server_t *server, int client_fd);
-int quit_cmd(server_t *server, int client_fd);
-int noop_cmd(server_t *server, int client_fd);
-int list_cmd(server_t *server, int client_fd);
-int pwd_cmd(server_t *server, int client_fd);
-int user_cmd(server_t *server, int client_fd);
-int cdup_cmd(server_t *server, int client_fd);
-int dele_cmd(server_t *server, int client_fd);
-int help_cmd(server_t *server, int client_fd);
-int pasv_cmd(server_t *server, int client_fd);
-int port_cmd(server_t *server, int client_fd);
-int retr_cmd(server_t *server, int client_fd);
-int stor_cmd(server_t *server, int client_fd);
+int user_login(server_t *server, int client_fd, my_teams_t *team);
+int quit_cmd(server_t *server, int client_fd, my_teams_t *team);
+int noop_cmd(server_t *server, int client_fd, my_teams_t *team);
+int list_cmd(server_t *server, int client_fd, my_teams_t *team);
+int pwd_cmd(server_t *server, int client_fd, my_teams_t *team);
+int user_cmd(server_t *server, int client_fd, my_teams_t *team);
+int user_spe_uuid(server_t *server, int client_fd, my_teams_t *team);
+int cdup_cmd(server_t *server, int client_fd, my_teams_t *team);
+int dele_cmd(server_t *server, int client_fd, my_teams_t *team);
+int help_cmd(server_t *server, int client_fd, my_teams_t *team);
+int pasv_cmd(server_t *server, int client_fd, my_teams_t *team);
+int port_cmd(server_t *server, int client_fd, my_teams_t *team);
+int retr_cmd(server_t *server, int client_fd, my_teams_t *team);
+int stor_cmd(server_t *server, int client_fd, my_teams_t *team);
+
+
+//fil struct
+
+void fill_user_tailq(my_teams_t *teams);
+void print_tailq(my_teams_t teams);
 
 #endif /* !MY_H_ */

@@ -7,7 +7,7 @@
 
 #include "my.h"
 
-int quit_cmd(server_t *server, int client_fd)
+int quit_cmd(server_t *server, int client_fd, my_teams_t *)
 {
     write(client_fd, QUIT_MSG, strlen(QUIT_MSG));
     printf("Client disconnected :\n");
@@ -21,7 +21,7 @@ int quit_cmd(server_t *server, int client_fd)
     return WIN_CMD;
 }
 
-int noop_cmd(server_t *server, int client_fd)
+int noop_cmd(server_t *server, int client_fd, my_teams_t *)
 {
     if (error_not_login(server, client_fd) != 0) {
         return ERR_CMD;

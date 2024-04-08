@@ -30,7 +30,7 @@ static int cmd_help_msg(char *cmd, int client_fd)
     return ERR_CMD;
 }
 
-int help_cmd(server_t *server, int client_fd)
+int help_cmd(server_t *server, int client_fd, my_teams_t *)
 {
     if (server->cmd_arg.len == 1) {
         print_all_help(client_fd);

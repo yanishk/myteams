@@ -7,7 +7,7 @@
 
 #include "my.h"
 
-int pasv_cmd(server_t *server, int client_fd)
+int pasv_cmd(server_t *server, int client_fd, my_teams_t *)
 {
     if (error_not_login(server, client_fd) != 0) {
         return ERR_CMD;
@@ -19,7 +19,7 @@ int pasv_cmd(server_t *server, int client_fd)
     return WIN_CMD;
 }
 
-int port_cmd(server_t *server, int client_fd)
+int port_cmd(server_t *server, int client_fd, my_teams_t *)
 {
     if (error_not_login(server, client_fd) != 0) {
         return ERR_CMD;
@@ -31,7 +31,7 @@ int port_cmd(server_t *server, int client_fd)
     return WIN_CMD;
 }
 
-int retr_cmd(server_t *server, int client_fd)
+int retr_cmd(server_t *server, int client_fd, my_teams_t *)
 {
     if (error_not_login(server, client_fd) != 0) {
         return ERR_CMD;
@@ -43,7 +43,7 @@ int retr_cmd(server_t *server, int client_fd)
     return WIN_CMD;
 }
 
-int stor_cmd(server_t *server, int client_fd)
+int stor_cmd(server_t *server, int client_fd, my_teams_t *)
 {
     if (error_not_login(server, client_fd) != 0) {
         return ERR_CMD;
