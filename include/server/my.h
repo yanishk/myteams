@@ -19,7 +19,7 @@ char *concat_strings(char *str1, char *str2, char *delim);
 char *does_path_exists(char *str);
 bool does_file_exists(char *str);
 bool array_is_number(char **array);
-char **my_str_to_word_array(char const *str, char *delim);
+char **word_array(char const *str, char *delim);
 
 // server
 int server(const char *port_number);
@@ -48,9 +48,13 @@ int retr_cmd(server_t *server, int client_fd, my_teams_t *team);
 int stor_cmd(server_t *server, int client_fd, my_teams_t *team);
 
 
-//fil struct
+//fill struct
 
 void fill_user_tailq(my_teams_t *teams);
-void print_tailq(my_teams_t teams);
+void print_user_tailq(my_teams_t teams);
+
+// database
+void parse_database(my_teams_t *teams);
+void save_database(const my_teams_t teams);
 
 #endif /* !MY_H_ */

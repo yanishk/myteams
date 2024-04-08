@@ -128,7 +128,7 @@ char **start_word_array(char const *str, char *delim, int cut_here)
     return tab;
 }
 
-char **my_str_to_word_array(char const *str, char *delim)
+char **word_array(char const *str, char *delim)
 {
     int cut_here = strlen(str);
     int check = is_delimiter(str[strlen(str) - 1], delim);

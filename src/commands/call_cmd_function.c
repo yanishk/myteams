@@ -39,7 +39,7 @@ void get_user_input(server_t *server, int client_fd, my_teams_t *team)
 
     if (read(client_fd, buffer, BUFFER_MAX_SIZE) == 0)
         return;
-    server->cmd_arg.tab = my_str_to_word_array(buffer, " \n\r");
+    server->cmd_arg.tab = word_array(buffer, " \n\r");
     server->cmd_arg.len = 0;
     server->cmd_arg.len = array_size(server->cmd_arg.tab);
     for (int i = 0; i < NB_CMD; i++) {

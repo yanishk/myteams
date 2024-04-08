@@ -17,7 +17,7 @@ int user_cmd(server_t *server, int client_fd, my_teams_t *teams)
 
     if (error_not_login(server, client_fd) != 0)
         return ERR_CMD;
-    TAILQ_FOREACH(np_user, &teams->head_user, user_entries)
+    TAILQ_FOREACH(np_user, &teams->user_head, user_entries)
         dprintf(client_fd, "%s\n", np_user->name);
     dprintf(client_fd, "%s", CODE_200);
     return WIN_CMD;
@@ -33,7 +33,7 @@ int user_spe_uuid(server_t *server, int client_fd, my_teams_t *teams)
     }
     if (error_not_login(server, client_fd) != 0)
         return ERR_CMD;
-    TAILQ_FOREACH(np_user, &teams->head_user, user_entries) {
+    TAILQ_FOREACH(np_user, &teams->user_head, user_entries) {
         if (strcmp(np_user->uuid, server->cmd_arg.tab[1]) == 0) {
             dprintf(client_fd, "%s\n", np_user->name);
             dprintf(client_fd, "%s\n", np_user->uuid);

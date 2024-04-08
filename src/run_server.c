@@ -18,10 +18,9 @@ static int check_clients_sockets(server_t *server)
     int client_fd = 0;
     my_teams_t teams;
 
-    TAILQ_INIT(&teams.head_user);
+    TAILQ_INIT(&teams.user_head);
     fill_user_tailq(&teams);
-    print_tailq(teams);
-
+    print_user_tailq(teams);
     for (int i = 0; i != server->size; i += 1) {
         client_fd = server->fd_array[i];
         if (FD_ISSET(client_fd, &server->readfds) != 0) {

@@ -20,6 +20,8 @@ SRC = \
     ./src/commands/client_command.c	         \
     ./src/commands/user_list_command.c       \
     ./src/struct/fill_struct.c               \
+    ./src/database/parse_database.c          \
+    ./src/database/save_database.c           \
 	./main.c
 
 LIB = \
