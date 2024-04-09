@@ -27,6 +27,7 @@
     #define FAIL_MSG_LOGIN "530 Not logged in.\n"
     #define ALRD_LOGIN "531 Already logged in.\n"
     #define QUIT_MSG "221 Service closing control connection.\n"
+    #define USER_CMD_OK "201 User command work\n"
     #define CODE_200 "200 Command okay.\n"
     #define CODE_150 "150 File status okay, about to open data connection.\n"
     #define CODE_226 "226 Closing data connection.\n"
