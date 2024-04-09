@@ -32,16 +32,16 @@ typedef struct user {
     TAILQ_ENTRY(user) user_entries;
 } user_t;
 
-typedef struct message_thread {
+typedef struct thread_msg {
     char *body;
-    TAILQ_ENTRY(message_thread) msg_thread_entries;
-} message_thread_t;
+    TAILQ_ENTRY(thread_msg) thread_msg_entries;
+} thread_msg_t;
 
 typedef struct thread {
     char *uuid;
     char *name;
     char *description;
-    TAILQ_HEAD(, message_thread) message_thread_head;
+    TAILQ_HEAD(, thread_msg) thread_msg_head;
     TAILQ_ENTRY(thread) thread_entries;
 } thread_t;
 

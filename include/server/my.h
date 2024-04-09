@@ -51,12 +51,15 @@ int stor_cmd(server_t *server, int client_fd, my_teams_t *team);
 
 
 //fill struct
-
 void fill_user_tailq(my_teams_t *teams);
 void print_user_tailq(my_teams_t teams);
+void fill_team_tailq(my_teams_t *teams);
+void print_team_tailq(my_teams_t teams);
 
 // database
 void parse_database(my_teams_t *teams);
 void save_database(const my_teams_t teams);
+void parse_teams(my_teams_t *teams, char *line, bool *isUser);
+void parse_users(my_teams_t *teams, char *line, bool *isUser);
 
 #endif /* !MY_H_ */

@@ -54,7 +54,7 @@ void fill_team_tailq(my_teams_t *teams)
     team_t *team;
     channel_t *channel;
     thread_t *thread;
-    message_thread_t *thread_message;
+    thread_msg_t *thread_message;
 
     team = malloc(sizeof(team_t));
     TAILQ_INSERT_TAIL(&teams->team_head, team, team_entries);
@@ -76,17 +76,17 @@ void fill_team_tailq(my_teams_t *teams)
     thread->name = "thread_name1";
     thread->description = "ceci est une description du thread 1";
 
-    TAILQ_INIT(&thread->message_thread_head);
-    thread_message = malloc(sizeof(message_thread_t));
-    TAILQ_INSERT_TAIL(&thread->message_thread_head, thread_message, msg_thread_entries);
+    TAILQ_INIT(&thread->thread_msg_head);
+    thread_message = malloc(sizeof(thread_msg_t));
+    TAILQ_INSERT_TAIL(&thread->thread_msg_head, thread_message, thread_msg_entries);
     thread_message->body = "thread message body1";
 
-    thread_message = malloc(sizeof(message_thread_t));
-    TAILQ_INSERT_TAIL(&thread->message_thread_head, thread_message, msg_thread_entries);
+    thread_message = malloc(sizeof(thread_msg_t));
+    TAILQ_INSERT_TAIL(&thread->thread_msg_head, thread_message, thread_msg_entries);
     thread_message->body = "thread message body2";
 
-    thread_message = malloc(sizeof(message_thread_t));
-    TAILQ_INSERT_TAIL(&thread->message_thread_head, thread_message, msg_thread_entries);
+    thread_message = malloc(sizeof(thread_msg_t));
+    TAILQ_INSERT_TAIL(&thread->thread_msg_head, thread_message, thread_msg_entries);
     thread_message->body = "thread message body3";
 }
 
@@ -115,7 +115,7 @@ void print_team_tailq(my_teams_t teams)
     team_t *team;
     channel_t *channel;
     thread_t *thread;
-    message_thread_t *thread_message;
+    thread_msg_t *thread_message;
 
     TAILQ_FOREACH(team, &teams.team_head, team_entries) {
         printf("team_uuid: %s\n", team->uuid);
@@ -129,7 +129,7 @@ void print_team_tailq(my_teams_t teams)
                 printf("thread_uuid: %s\n", thread->uuid);
                 printf("thread_name: %s\n", thread->name);
                 printf("thread_description: %s\n", thread->description);
-                TAILQ_FOREACH(thread_message, &thread->message_thread_head, msg_thread_entries) {
+                TAILQ_FOREACH(thread_message, &thread->thread_msg_head, thread_msg_entries) {
                     printf("thread_message: %s\n", thread_message->body);
                 }
             }

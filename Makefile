@@ -22,6 +22,8 @@ SRC =                                        \
     ./src/struct/fill_struct.c               \
     ./src/database/parse_database.c          \
     ./src/database/save_database.c           \
+    ./src/database/parse_teams.c             \
+    ./src/database/parse_users.c             \
 	./main.c
 
 LIB =                                        \
