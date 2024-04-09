@@ -1,11 +1,10 @@
 /*
 ** EPITECH PROJECT, 2024
-** B-NWP-400-PAR-4-1-myftp-mathis.brehm
+** my_teams
 ** File description:
-** server_command
+** private_msg
 */
 
-#include <dirent.h>
 #include "my.h"
 
 static int error_send_msg(server_t *server, int client_fd, my_teams_t *teams)
@@ -75,5 +74,49 @@ int send_msg(server_t *server, int client_fd, my_teams_t *teams)
     TAILQ_FOREACH(new_user, &teams->user_head, user_entries) {
         fill_struct_privmsg(server, new_user);
     }
+    dprintf(client_fd, "%s", CODE_200);
+    return WIN_CMD;
+}
+
+static int error_disp_msg(server_t *server, int client_fd, my_teams_t *teams)
+{
+    user_t *new_user;
+    bool mate_exist = false;
+
+    if (error_not_login(server, client_fd) != 0)
+        return ERR_CMD;
+    if (server->cmd_arg.tab[1] == NULL) {
+        dprintf(client_fd, "%s", FAIL_CMD_EXIST);
+        return ERR_CMD;
+    }
+    TAILQ_FOREACH(new_user, &teams->user_head, user_entries) {
+        if (strcmp(server->cmd_arg.tab[1], new_user->uuid) == 0)
+            mate_exist = true;
+    }
+    if (mate_exist == false) {
+        dprintf(client_fd, "%s", UKWN_USER);
+        return ERR_CMD;
+    }
+    return WIN_CMD;
+}
+
+int display_priv_msg(server_t *server, int client_fd, my_teams_t *teams)
+{
+    user_t *new_user;
+    private_msg_t *prv_msg;
+
+    if (error_disp_msg(server, client_fd, teams) == ERR_CMD)
+        return ERR_CMD;
+    TAILQ_FOREACH(new_user, &teams->user_head, user_entries) {
+        if (strcmp(new_user->uuid,
+            server->clients[server->user_index]->my_uuid) == 0) {
+            TAILQ_FOREACH(prv_msg, &teams->new_user->private_msg_head,
+                private_msg_entries) {
+                if (strcmp(prv_msg->uuid_other, server->cmd_arg.tab[1]) == 0)
+                    dprintf(client_fd, "%s\n", prv_msg->body);
+            }
+        }
+    }
+    dprintf(client_fd, "%s", CODE_200);
     return WIN_CMD;
 }

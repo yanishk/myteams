@@ -38,7 +38,7 @@ int user_login(server_t *server, int client_fd, my_teams_t *team);
 int quit_cmd(server_t *server, int client_fd, my_teams_t *team);
 int noop_cmd(server_t *server, int client_fd, my_teams_t *team);
 int list_cmd(server_t *server, int client_fd, my_teams_t *team);
-int pwd_cmd(server_t *server, int client_fd, my_teams_t *team);
+int display_priv_msg(server_t *server, int client_fd, my_teams_t *team);
 int user_cmd(server_t *server, int client_fd, my_teams_t *team);
 int user_spe_uuid(server_t *server, int client_fd, my_teams_t *team);
 int cdup_cmd(server_t *server, int client_fd, my_teams_t *team);

@@ -13,12 +13,12 @@ SRC =                                        \
     ./src/server.c                           \
     ./src/commands/not_implemented_command.c \
     ./src/commands/cd_command.c              \
-    ./src/commands/user_command.c            \
+    ./src/commands/login_command.c           \
     ./src/commands/call_cmd_function.c       \
     ./src/commands/help/help_cmd.c           \
-    ./src/commands/delete_command.c          \
     ./src/commands/client_command.c	         \
     ./src/commands/user_list_command.c       \
+    ./src/commands/private_msg.c             \
     ./src/struct/fill_struct.c               \
     ./src/database/parse_database.c          \
     ./src/database/save_database.c           \

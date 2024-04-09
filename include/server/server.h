@@ -50,7 +50,7 @@ static char *const cmd_lst[NB_CMD] = {
     "/user",
     "/logout",
     "/send",
-    "PWD",
+    "/messages",
     "PASV",
     "PORT",
     "/help",

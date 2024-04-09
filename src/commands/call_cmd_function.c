@@ -13,7 +13,7 @@ int (*cmd_func[NB_CMD])(server_t *server, int client_fd, my_teams_t *team) = {
     &user_spe_uuid,
     &quit_cmd,
     &send_msg,
-    &pwd_cmd,
+    &display_priv_msg,
     &pasv_cmd,
     &port_cmd,
     &help_cmd,
