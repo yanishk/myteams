@@ -99,7 +99,7 @@ static int set_sockets(server_t *server)
 
 int run_server(server_t *server)
 {
-    my_teams_t teams;
+    my_teams_t teams = {0};
 
     TAILQ_INIT(&teams.user_head);
     fill_user_tailq(&teams);

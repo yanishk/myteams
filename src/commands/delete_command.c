@@ -8,14 +8,72 @@
 #include <dirent.h>
 #include "my.h"
 
-int dele_cmd(server_t *server, int client_fd, my_teams_t *)
+static int error_send_msg(server_t *server, int client_fd, my_teams_t *teams)
 {
-    if (error_not_login(server, client_fd) != 0) {
+    user_t *new_user;
+    bool mate_exist = false;
+
+    if (error_not_login(server, client_fd) != 0)
+        return ERR_CMD;
+    if (server->cmd_arg.tab[1] == NULL || server->cmd_arg.tab[2] == NULL) {
+        dprintf(client_fd, "%s", FAIL_CMD_EXIST);
         return ERR_CMD;
     }
-    dprintf(client_fd, "%s", CODE_NOT_IMPLEMENTED);
-    if (server->clients[server->user_index]->is_connected == true) {
-        return WIN_CMD;
+    TAILQ_FOREACH(new_user, &teams->user_head, user_entries) {
+        if (strcmp(server->cmd_arg.tab[1], new_user->uuid) == 0)
+            mate_exist = true;
+    }
+    if (mate_exist == false) {
+        dprintf(client_fd, "%s", UKWN_USER);
+        return ERR_CMD;
+    }
+    return WIN_CMD;
+}
+
+static void fill_my_message(server_t *server, user_t *new_user)
+{
+    private_msg_t *prv_msg_me;
+
+    if (strcmp(server->clients[server->user_index]->my_uuid,
+        new_user->uuid) == 0) {
+        prv_msg_me = malloc(sizeof(private_msg_t));
+        if (TAILQ_EMPTY(&new_user->private_msg_head))
+            TAILQ_INIT(&new_user->private_msg_head);
+        TAILQ_INSERT_TAIL(&new_user->private_msg_head,
+            prv_msg_me, private_msg_entries);
+        prv_msg_me->body = server->cmd_arg.tab[2];
+        prv_msg_me->uuid_other = server->cmd_arg.tab[1];
+    }
+}
+
+static void fill_struct_privmsg(server_t *server, user_t *new_user)
+{
+    private_msg_t *prv_msg_other;
+
+    fill_my_message(server, new_user);
+    if (strcmp(server->clients[server->user_index]->my_uuid,
+        new_user->uuid) == 0)
+        return;
+    if (strcmp(server->cmd_arg.tab[1], new_user->uuid) == 0) {
+        prv_msg_other = malloc(sizeof(private_msg_t));
+        if (TAILQ_EMPTY(&new_user->private_msg_head))
+            TAILQ_INIT(&new_user->private_msg_head);
+        TAILQ_INSERT_TAIL(&new_user->private_msg_head,
+            prv_msg_other, private_msg_entries);
+        prv_msg_other->body = server->cmd_arg.tab[2];
+        prv_msg_other->uuid_other =
+            server->clients[server->user_index]->my_uuid;
+    }
+}
+
+int send_msg(server_t *server, int client_fd, my_teams_t *teams)
+{
+    user_t *new_user;
+
+    if (error_send_msg(server, client_fd, teams) == ERR_CMD)
+        return ERR_CMD;
+    TAILQ_FOREACH(new_user, &teams->user_head, user_entries) {
+        fill_struct_privmsg(server, new_user);
     }
     return WIN_CMD;
 }

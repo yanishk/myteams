@@ -42,13 +42,14 @@
     #define ERR_BAD_ARG "504 Bad arguments\n"
     #define ANONYMOUS_USER "Anonymous"
     #define CODE_NOT_IMPLEMENTED "NOT YET IMPLEMENTED\n"
+    #define UKWN_USER "505 Unknown user\n"
 
 static char *const cmd_lst[NB_CMD] = {
     "/login",
     "/users",
     "/user",
     "/logout",
-    "DELE",
+    "/send",
     "PWD",
     "PASV",
     "PORT",

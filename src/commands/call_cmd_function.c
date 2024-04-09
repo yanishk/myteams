@@ -12,7 +12,7 @@ int (*cmd_func[NB_CMD])(server_t *server, int client_fd, my_teams_t *team) = {
     &user_cmd,
     &user_spe_uuid,
     &quit_cmd,
-    &dele_cmd,
+    &send_msg,
     &pwd_cmd,
     &pasv_cmd,
     &port_cmd,
@@ -32,7 +32,7 @@ int error_not_login(server_t *server, int client_fd)
     return 0;
 }
 
-void get_user_input(server_t *server, int client_fd, my_teams_t *team)
+void get_user_input(server_t *server, int client_fd, my_teams_t *teams)
 {
     int status = 0;
     char buffer[BUFFER_MAX_SIZE] = {0};
@@ -45,8 +45,8 @@ void get_user_input(server_t *server, int client_fd, my_teams_t *team)
     for (int i = 0; i < NB_CMD; i++) {
         if (server->cmd_arg.len >= 1 &&
         strcmp(server->cmd_arg.tab[0], cmd_lst[i]) == 0) {
-            status = cmd_func[i](server, client_fd, team);
-            print_user_tailq(*team);
+            status = cmd_func[i](server, client_fd, teams);
+            print_user_tailq(*teams);
         }
     }
     if (status == 0) {

@@ -42,7 +42,7 @@ int pwd_cmd(server_t *server, int client_fd, my_teams_t *team);
 int user_cmd(server_t *server, int client_fd, my_teams_t *team);
 int user_spe_uuid(server_t *server, int client_fd, my_teams_t *team);
 int cdup_cmd(server_t *server, int client_fd, my_teams_t *team);
-int dele_cmd(server_t *server, int client_fd, my_teams_t *team);
+int send_msg(server_t *server, int client_fd, my_teams_t *team);
 int help_cmd(server_t *server, int client_fd, my_teams_t *team);
 int pasv_cmd(server_t *server, int client_fd, my_teams_t *team);
 int port_cmd(server_t *server, int client_fd, my_teams_t *team);
@@ -59,7 +59,7 @@ void print_team_tailq(my_teams_t teams);
 // database
 void parse_database(my_teams_t *teams);
 void save_database(const my_teams_t teams);
-void parse_teams(my_teams_t *teams, char *line, bool *isUser);
-void parse_users(my_teams_t *teams, char *line, bool *isUser);
+void parse_teams(my_teams_t *teams, char *line, bool *is_user);
+void parse_users(my_teams_t *teams, char *line, bool *is_user);
 
 #endif /* !MY_H_ */

@@ -52,7 +52,7 @@ static void fill_user(char *line, user_t *user, char **array)
         fill_private_message(user, array);
 }
 
-void parse_users(my_teams_t *teams, char *line, bool *isUser)
+void parse_users(my_teams_t *teams, char *line, bool *is_user)
 {
     static user_t *user;
     char **array = word_array(line, "\t\n=,:");
@@ -60,9 +60,9 @@ void parse_users(my_teams_t *teams, char *line, bool *isUser)
     if (strcmp(line, "user:\n") == 0) {
         user = malloc(sizeof(user_t));
         TAILQ_INSERT_TAIL(&teams->user_head, user, user_entries);
-        *isUser = true;
+        *is_user = true;
     }
-    if (array_size(array) < 2 || !*isUser) {
+    if (array_size(array) < 2 || !*is_user) {
         free(array);
         return;
     }

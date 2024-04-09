@@ -14,13 +14,13 @@ void parse_database(my_teams_t *teams)
     FILE *stream = fopen("database", "r");
     char *line = NULL;
     size_t len = 0;
-    bool isUser = false;
+    bool is_user = false;
 
     if (!stream)
         return;
     while (getline(&line, &len, stream) != -1) {
-        parse_users(teams, line, &isUser);
-        parse_teams(teams, line, &isUser);
+        parse_users(teams, line, &is_user);
+        parse_teams(teams, line, &is_user);
     }
     fclose(stream);
     if (line != NULL)

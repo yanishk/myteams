@@ -64,6 +64,7 @@ typedef struct team {
 typedef struct my_teams {
     TAILQ_HEAD(, user) user_head;
     TAILQ_HEAD(, team) team_head;
+    user_t *new_user;
 } my_teams_t;
 
 #endif /* !TEAMS_H_ */
