@@ -46,7 +46,6 @@ void get_user_input(server_t *server, int client_fd, my_teams_t *teams)
         if (server->cmd_arg.len >= 1 &&
         strcmp(server->cmd_arg.tab[0], cmd_lst[i]) == 0) {
             status = cmd_func[i](server, client_fd, teams);
-            print_user_tailq(*teams);
         }
     }
     if (status == 0) {

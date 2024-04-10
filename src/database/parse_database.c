@@ -11,7 +11,7 @@
 
 void parse_database(my_teams_t *teams)
 {
-    FILE *stream = fopen("database", "r");
+    FILE *stream = fopen(".database", "r");
     char *line = NULL;
     size_t len = 0;
     bool is_user = false;

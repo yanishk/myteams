@@ -102,7 +102,7 @@ int run_server(server_t *server)
     my_teams_t teams = {0};
 
     TAILQ_INIT(&teams.user_head);
-    fill_user_tailq(&teams);
+    parse_database(&teams);
     while (1) {
         FD_ZERO(&server->readfds);
         FD_SET(server->server_fd, &server->readfds);
@@ -113,6 +113,7 @@ int run_server(server_t *server)
             return 84;
         if (check_clients_sockets(server, &teams) == 84)
             return 84;
+        save_database(teams);
     }
     return 0;
 }

@@ -13,21 +13,22 @@ static void save_team_belong(const int fd, user_t *user)
 {
     team_belong_t *team_belong;
 
+    TAILQ_INIT(&user->team_belong_head);
     dprintf(fd, "\tteams_uuid=");
     TAILQ_FOREACH(team_belong, &user->team_belong_head,
         belong_entries) {
         dprintf(fd, "%s", team_belong->uuid);
         if (TAILQ_NEXT(team_belong, belong_entries) != NULL)
             dprintf(fd, ",");
-        if (TAILQ_NEXT(team_belong, belong_entries) == NULL)
-            dprintf(fd, "\n");
     }
+    dprintf(fd, "\n");
 }
 
 static void save_private_msg(const int fd, user_t *user)
 {
     private_msg_t *private_msg;
 
+    TAILQ_INIT(&user->private_msg_head);
     dprintf(fd, "\tprivate_message=");
     TAILQ_FOREACH(private_msg, &user->private_msg_head,
         private_msg_entries) {
@@ -35,9 +36,8 @@ static void save_private_msg(const int fd, user_t *user)
         dprintf(fd, "body:%s", private_msg->body);
         if (TAILQ_NEXT(private_msg, private_msg_entries) != NULL)
             dprintf(fd, ",");
-        if (TAILQ_NEXT(private_msg, private_msg_entries) == NULL)
-            dprintf(fd, "\n");
     }
+    dprintf(fd, "\n");
 }
 
 static void save_users(const int fd, const my_teams_t teams)
@@ -62,8 +62,6 @@ static void save_threads_msg(const int fd, thread_t *thread)
         dprintf(fd, "body:%s", thread_msg->body);
         if (TAILQ_NEXT(thread_msg, thread_msg_entries) != NULL)
             dprintf(fd, ",");
-        if (TAILQ_NEXT(thread_msg, thread_msg_entries) == NULL)
-            dprintf(fd, "\n");
     }
     dprintf(fd, "\n");
 }
@@ -109,7 +107,7 @@ static void save_teams(const int fd, const my_teams_t teams)
 
 void save_database(const my_teams_t teams)
 {
-    int fd = open("database", O_WRONLY | O_TRUNC | O_CREAT, 422);
+    int fd = open(".database", O_WRONLY | O_TRUNC | O_CREAT, 422);
 
     save_users(fd, teams);
     dprintf(fd, "\n");
