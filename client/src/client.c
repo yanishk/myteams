@@ -33,40 +33,6 @@ static int connect_to_server(const char **av, struct sockaddr_in *sock_addr,
     return 0;
 }
 
-static void display_msg(char *msg, int nb)
-{
-    char **tab = word_array(msg, "\n");
-
-    if (nb == 1) {
-        client_event_logged_in("[uuid client]", "[nom client]");
-    }
-    if (nb == 2) {
-        client_print_user(tab[2], tab[1], 1);
-    }
-    if (nb == 3 || nb == 4) {
-        client_error_unauthorized();
-    }
-    if (nb == 0) {
-        printf("200 tt est ok\n");
-    }
-    if (nb == 5) {
-        client_error_already_exist();
-    }
-}
-
-static void select_display_methode(char *msg)
-{
-    char *new_msg = strdup(msg);
-    char *first_ligne = word_array(new_msg, "\n")[0];
-    char *first_word = word_array(first_ligne, " ")[0];
-
-    for (int i = 0; i < NB_CODE; i++) {
-        if (strcmp(code_lst[i], first_word) == 0) {
-            display_msg(strdup(msg), i);
-        }
-    }
-}
-
 static void read_server(int sock_fd)
 {
     char *line = NULL;

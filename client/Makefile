@@ -6,7 +6,8 @@
 ##
 
 SRC =                                        \
-    ./src/client.c
+    ./src/client.c							 \
+	./src/redirect_print.c
 
 LIB =                                        \
     ../lib/is_number.c                       \
@@ -20,14 +21,14 @@ OBJ = $(SRC:.c=.o)                           \
 
 CFLAGS = -Wall -Wextra -luuid
 
-CPPFLAGS = -iquote ../include/client
+CPPFLAGS = -iquote ../include/client -iquote ../libs/myteams/
 
 FLAGS_DEBUG = -g3
 
 BIN_NAME = myteams_cli
 
 all: $(OBJ)
-	@$(CC) -o $(BIN_NAME) $(OBJ) $(CFLAGS) ./libmyteams.so && \
+	@$(CC) -o $(BIN_NAME) $(OBJ) $(CFLAGS) ../libs/myteams/libmyteams.so && \
     	echo -e '\e[1m\e[32m\n[✔] COMPILED:\e[0m' || \
     	echo -e '\e[1m\e[31m\n[✘] \e[4mBUILD FAILED:\e[0m'
 

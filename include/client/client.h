@@ -12,21 +12,10 @@
     #include <arpa/inet.h>
     #include <string.h>
     #include <unistd.h>
-    #include "./logging_client.h"
     #include <stdio.h>
     #include <stdlib.h>
     #include <stdbool.h>
-
-    #define NB_CODE 6
-
-static char *const code_lst[NB_CODE] = {
-    "200",
-    "331",
-    "201",
-    "500",
-    "530",
-    "531"
-};
+    #include "struct_client.h"
 
 int array_size(char **array);
 void print_array(char **array);
@@ -36,5 +25,7 @@ char *does_path_exists(char *str);
 bool does_file_exists(char *str);
 bool array_is_number(char **array);
 char **word_array(char const *str, char *delim);
+
+void select_display_methode(char *msg);
 
 #endif /* !CLIENT_H_ */
