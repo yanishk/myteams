@@ -5,57 +5,68 @@
 ## Makefile
 ##
 
-SRC =                                        \
-    ./src/initialize_server.c                \
-    ./src/insert_client_in_struct.c          \
-    ./src/close_client_socket.c              \
-    ./src/run_server.c                       \
-    ./src/server.c                           \
-    ./src/commands/not_implemented_command.c \
-    ./src/commands/cd_command.c              \
-    ./src/commands/login_command.c           \
-    ./src/commands/call_cmd_function.c       \
-    ./src/commands/help/help_cmd.c           \
-    ./src/commands/client_command.c	         \
-    ./src/commands/user_list_command.c       \
-    ./src/commands/private_msg.c             \
-    ./src/database/parse_database.c          \
-    ./src/database/save_database.c           \
-    ./src/database/parse_teams.c             \
-    ./src/database/parse_users.c             \
-	./main.c
+SERVER_SRC =                                        \
+    ./server/src/initialize_server.c                \
+    ./server/src/insert_client_in_struct.c          \
+    ./server/src/close_client_socket.c              \
+    ./server/src/run_server.c                       \
+    ./server/src/server.c                           \
+    ./server/src/commands/not_implemented_command.c \
+    ./server/src/commands/cd_command.c              \
+    ./server/src/commands/login_command.c           \
+    ./server/src/commands/call_cmd_function.c       \
+    ./server/src/commands/help/help_cmd.c           \
+    ./server/src/commands/client_command.c	        \
+    ./server/src/commands/user_list_command.c       \
+    ./server/src/commands/private_msg.c             \
+    ./server/src/database/parse_database.c          \
+    ./server/src/database/save_database.c           \
+    ./server/src/database/parse_teams.c             \
+    ./server/src/database/parse_users.c             \
+	./server/main.c
 
-LIB =                                        \
-    ./lib/is_number.c                        \
-    ./lib/does_it_exists.c                   \
-    ./lib/concat_strings.c                   \
-    ./lib/array_functions.c	                 \
-	./lib/word_array.c
+CLIENT_SRC =                                 \
+    ./client/src/client.c					 \
+	./client/src/redirect_print.c
 
-OBJ = $(SRC:.c=.o)                           \
+LIB =                                       \
+    lib/is_number.c                         \
+    lib/does_it_exists.c                    \
+    lib/concat_strings.c                    \
+    lib/array_functions.c	                \
+	lib/word_array.c
+
+SERVER_OBJ = $(SERVER_SRC:.c=.o)                           \
+	$(LIB:.c=.o)
+
+CLIENT_OBJ = $(CLIENT_SRC:.c=.o)                           \
 	$(LIB:.c=.o)
 
 CFLAGS = -Wall -Wextra -luuid
 
-CPPFLAGS = -iquote include/server
+CPPFLAGS = -iquote server/include -iquote client/include -iquote libs/myteams
 
 FLAGS_DEBUG = -g3
 
-BIN_NAME = myteams_server
+SERVER_BIN_NAME = myteams_server
 
-all: $(OBJ)
-	@$(CC) -o $(BIN_NAME) $(OBJ) $(CFLAGS) && \
-    	echo -e '\e[1m\e[32m\n[✔] COMPILED:\e[0m' || \
-    	echo -e '\e[1m\e[31m\n[✘] \e[4mBUILD FAILED:\e[0m'
+CLIENT_BIN_NAME = myteams_cli
+
+all: $(SERVER_OBJ) $(CLIENT_OBJ)
+	$(CC) -o $(SERVER_BIN_NAME) $(SERVER_OBJ) $(CFLAGS) && \
+    $(CC) -o $(CLIENT_BIN_NAME) $(CLIENT_OBJ) $(CFLAGS) \
+    libs/myteams/libmyteams.so
 
 debug: CFLAGS += $(FLAGS_DEBUG)
 debug: all
 
 clean:
-	rm -f $(OBJ)
+	$(RM) $(SERVER_OBJ)     \
+    $(RM) $(CLIENT_OBJ)
 
 fclean: clean
-	rm -f $(BIN_NAME)
+	$(RM) $(SERVER_BIN_NAME)    \
+    $(RM) $(CLIENT_BIN_NAME)
 
 re: fclean all
 
