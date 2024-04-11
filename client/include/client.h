@@ -15,6 +15,7 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <stdbool.h>
+    #include <sys/select.h>
     #include "struct_client.h"
 
 int array_size(char **array);

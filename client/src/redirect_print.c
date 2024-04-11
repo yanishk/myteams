@@ -86,6 +86,7 @@ void select_display_methode(char *msg)
     char **tab = word_array(new_msg, "\n");
     char *first_word = word_array(tab[0], " ")[0];
 
+    write(1, "Enter the command : ", strlen("Enter the command : "));
     display_error(strdup(msg));
     display_team_user(strdup(msg));
     display_thread_reply(strdup(msg));

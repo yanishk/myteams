@@ -33,29 +33,50 @@ static int connect_to_server(const char **av, struct sockaddr_in *sock_addr,
     return 0;
 }
 
-static void read_server(int sock_fd)
+static int read_server(int sock_fd, fd_set readfds)
 {
-    char *line = NULL;
     size_t len = 0;
+    char *line = NULL;
+    char *reponse = malloc(sizeof(char) * 1024);
 
-    while (getline(&line, &len, stdin) > 0) {
-        line[strlen(line) - 1] = '\0';
-        write(sock_fd, line, strlen(line));
-        line = malloc(sizeof(char) * 1024);
-        read(sock_fd, line, 1024 - 1);
-        select_display_methode(line);
-        line = NULL;
-        printf("Enter the string : ");
+    if (select(sock_fd + 1, &readfds, NULL, NULL, NULL) == -1) {
+        fprintf(stderr, "select failed\n");
+        return 1;
     }
+    if (FD_ISSET(0, &readfds)) {
+        if (getline(&line, &len, stdin) > 0) {
+            line[strlen(line) - 1] = '\0';
+            write(sock_fd, line, strlen(line));
+        }
+    }
+    if (FD_ISSET(sock_fd, &readfds)) {
+        if (read(sock_fd, reponse, 1024) <= 0)
+            return 18;
+        select_display_methode(reponse);
+    }
+    return 0;
 }
 
-void send_initial_command(int sock_fd)
+static void send_initial_command(int sock_fd)
 {
     const char *initial_cmd = "";
     char buffer[1024];
 
     write(sock_fd, initial_cmd, strlen(initial_cmd));
     read(sock_fd, buffer, 1024 - 1);
+}
+
+static void client_loop(int sock_fd)
+{
+    fd_set readfds;
+
+    while (1) {
+        FD_ZERO(&readfds);
+        FD_SET(sock_fd, &readfds);
+        FD_SET(0, &readfds);
+        if (read_server(sock_fd, readfds) == 18)
+            break;
+    }
 }
 
 int client(const char **av)
@@ -65,6 +86,7 @@ int client(const char **av)
     struct sockaddr_in sock_addr;
     struct in_addr in_addr;
 
+    write(1, "Enter the command : ", strlen("Enter the command : "));
     if (check_socket_creation(port, sock_fd) == 84)
         return 84;
     if (connect_to_server(av, &sock_addr, &in_addr, port) == 84)
@@ -73,9 +95,8 @@ int client(const char **av)
         fprintf(stderr, "connection to server failed");
         return 84;
     }
-    printf("Enter the string : ");
     send_initial_command(sock_fd);
-    read_server(sock_fd);
+    client_loop(sock_fd);
     close(sock_fd);
     return 0;
 }
@@ -102,6 +123,5 @@ int main(int ac, const char **av)
         fprintf(stderr, "bad number of arguments");
         return 84;
     }
-    client_print_user("be41cd7e-37ea-4a54-a8fb-be87222903ab", "mathis", 1);
     return client(av);
 }
