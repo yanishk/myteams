@@ -102,6 +102,7 @@ int run_server(server_t *server)
     my_teams_t teams = {0};
 
     TAILQ_INIT(&teams.user_head);
+    TAILQ_INIT(&teams.team_head);
     parse_database(&teams);
     while (1) {
         FD_ZERO(&server->readfds);

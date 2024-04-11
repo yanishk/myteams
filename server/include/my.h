@@ -47,9 +47,9 @@ int cdup_cmd(server_t *server, const int client_fd, my_teams_t *team);
 int send_msg(server_t *server, const int client_fd, my_teams_t *team);
 int help_cmd(server_t *server, const int client_fd, my_teams_t *team);
 int sub_team(server_t *server, const int client_fd, my_teams_t *team);
-int port_cmd(server_t *server, const int client_fd, my_teams_t *team);
 int retr_cmd(server_t *server, const int client_fd, my_teams_t *team);
 int stor_cmd(server_t *server, const int client_fd, my_teams_t *team);
+int create(server_t *server, const int client_fd, my_teams_t *teams);
 
 // database
 void parse_database(my_teams_t *teams);
