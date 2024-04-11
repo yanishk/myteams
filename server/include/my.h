@@ -22,6 +22,7 @@ char *does_path_exists(char *str);
 bool does_file_exists(char *str);
 bool array_is_number(char **array);
 char **word_array(char const *str, char *delim);
+void my_swap_str(char **a, char **b);
 
 // server
 int server(const char *port_number);
@@ -48,13 +49,6 @@ int sub_team(server_t *server, const int client_fd, my_teams_t *team);
 int port_cmd(server_t *server, const int client_fd, my_teams_t *team);
 int retr_cmd(server_t *server, const int client_fd, my_teams_t *team);
 int stor_cmd(server_t *server, const int client_fd, my_teams_t *team);
-
-
-//fill struct
-void fill_user_tailq(my_teams_t *teams);
-void print_user_tailq(my_teams_t teams);
-void fill_team_tailq(my_teams_t *teams);
-void print_team_tailq(my_teams_t teams);
 
 // database
 void parse_database(my_teams_t *teams);

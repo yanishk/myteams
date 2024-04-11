@@ -26,7 +26,8 @@ static void fill_private_message(user_t *user, char **array)
 {
     private_msg_t *private_msg;
 
-    TAILQ_INIT(&user->private_msg_head);
+    if (TAILQ_EMPTY(&user->private_msg_head))
+        TAILQ_INIT(&user->private_msg_head);
     for (size_t i = 1; array[i] != NULL; i += 2) {
         if (strcmp(array[i], "user_id") == 0) {
             private_msg = malloc(sizeof(private_msg_t));

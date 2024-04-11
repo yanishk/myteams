@@ -5,10 +5,10 @@
 ** main
 */
 
-#include "my.h"
 #include <stdio.h>
 #include <string.h>
 #include "teams.h"
+#include "my.h"
 
 void print_usage(void)
 {

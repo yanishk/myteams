@@ -35,7 +35,8 @@ LIB =                                       \
     lib/does_it_exists.c                    \
     lib/concat_strings.c                    \
     lib/array_functions.c	                \
-	lib/word_array.c
+	lib/word_array.c                        \
+    lib/my_swap_str.c                       \
 
 SERVER_OBJ = $(SERVER_SRC:.c=.o)                           \
 	$(LIB:.c=.o)

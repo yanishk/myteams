@@ -41,24 +41,33 @@ static void check_additional_space(server_t *server,
         server->cmd_arg.tab[x][y] = '\0';
 }
 
-static int realloc_arg(server_t *server)
+static void swap_empty_strings(server_t *server, bool *has_swapped)
 {
-    size_t size_array = 0;
+    for (size_t x = 0; server->cmd_arg.tab[x + 1] != NULL; x++) {
+        if (strcmp(server->cmd_arg.tab[x], "\0") == 0) {
+            my_swap_str(&server->cmd_arg.tab[x], &server->cmd_arg.tab[x + 1]);
+            *has_swapped = true;
+        }
+        if (strcmp(server->cmd_arg.tab[server->cmd_arg.len - 1], "\0") == 0) {
+            server->cmd_arg.tab[server->cmd_arg.len - 1] = NULL;
+            server->cmd_arg.len -= 1;
+        }
+    }
+}
+
+static void realloc_arg(server_t *server)
+{
+    bool has_swapped = true;
 
     for (size_t x = 0; server->cmd_arg.tab[x] != NULL; x++) {
-        size_array += 1;
         for (size_t y = 0; server->cmd_arg.tab[x][y] != '\0'; y += 1) {
             check_additional_space(server, x, y);
         }
     }
-    for (size_t x = 0; server->cmd_arg.tab[x + 1] != NULL; x += 1) {
-        if (strcmp(server->cmd_arg.tab[x], "\0") == 0) {
-            server->cmd_arg.tab[x] = server->cmd_arg.tab[x + 1];
-            size_array -= 1;
-        }
+    while (has_swapped) {
+        has_swapped = false;
+        swap_empty_strings(server, &has_swapped);
     }
-    server->cmd_arg.tab[size_array] = NULL;
-    return size_array;
 }
 
 void get_user_input(server_t *server, const int client_fd, my_teams_t *teams)
@@ -69,17 +78,15 @@ void get_user_input(server_t *server, const int client_fd, my_teams_t *teams)
     if (read(client_fd, buffer, BUFFER_MAX_SIZE) == 0)
         return;
     server->cmd_arg.tab = word_array(buffer, "\"\n\r");
-    server->cmd_arg.len = 0;
-    server->cmd_arg.len = realloc_arg(server);
+    server->cmd_arg.len = array_size(server->cmd_arg.tab);
+    realloc_arg(server);
     for (size_t i = 0; i < NB_CMD; i++) {
         if (server->cmd_arg.len >= 1 &&
         strcmp(server->cmd_arg.tab[0], cmd_lst[i]) == 0) {
             status = cmd_func[i](server, client_fd, teams);
         }
     }
-    if (status == 0) {
+    if (status == 0)
         write(client_fd, FAIL_CMD_EXIST, strlen(FAIL_CMD_EXIST));
-    }
     free(server->cmd_arg.tab);
-    server->cmd_arg.len = 0;
 }
