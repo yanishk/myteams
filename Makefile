@@ -19,6 +19,7 @@ SERVER_SRC =                                        \
     ./server/src/commands/client_command.c	        \
     ./server/src/commands/user_list_command.c       \
     ./server/src/commands/private_msg.c             \
+    ./server/src/commands/sub_unsub.c               \
     ./server/src/database/parse_database.c          \
     ./server/src/database/save_database.c           \
     ./server/src/database/parse_teams.c             \

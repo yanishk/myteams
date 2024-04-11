@@ -7,18 +7,18 @@
 
 #include "my.h"
 
-static void print_all_help(int client_fd)
+static void print_all_help(const int client_fd)
 {
     dprintf(client_fd, "%s", CODE_214);
-    for (int i = 0; i < NB_CMD; i++) {
+    for (size_t i = 0; i < NB_CMD; i++) {
         dprintf(client_fd, "%s", help_msg[i]);
     }
     dprintf(client_fd, "%s", CODE_214);
 }
 
-static int cmd_help_msg(char *cmd, int client_fd)
+static int cmd_help_msg(char *cmd, const int client_fd)
 {
-    for (int i = 0; i < NB_CMD; i++) {
+    for (size_t i = 0; i < NB_CMD; i++) {
         if (strcmp(cmd, cmd_lst[i]) == 0) {
             dprintf(client_fd, "%s", CODE_214);
             dprintf(client_fd, "%s", help_msg[i]);
@@ -30,7 +30,7 @@ static int cmd_help_msg(char *cmd, int client_fd)
     return ERR_CMD;
 }
 
-int help_cmd(server_t *server, int client_fd, my_teams_t *)
+int help_cmd(server_t *server, const int client_fd, my_teams_t *)
 {
     if (server->cmd_arg.len == 1) {
         print_all_help(client_fd);

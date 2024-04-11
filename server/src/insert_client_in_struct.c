@@ -10,14 +10,14 @@
 #include <stdio.h>
 #include "my.h"
 
-int insert_client_in_struct(server_t *server, int client_fd)
+int insert_client_in_struct(server_t *server, const int client_fd)
 {
-    for (int i = 0; i != MAX_USER; i += 1) {
+    for (size_t i = 0; i != MAX_USER; i += 1) {
         if (server->clients[i]->client_fd == client_fd) {
             return i;
         }
     }
-    for (int i = 0; i != MAX_USER; i += 1) {
+    for (size_t i = 0; i != MAX_USER; i += 1) {
         if (server->clients[i]->client_fd == 0) {
             server->clients[i]->client_fd = client_fd;
             return i;

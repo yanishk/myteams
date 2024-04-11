@@ -7,21 +7,16 @@
 
 #include "my.h"
 
-int quit_cmd(server_t *server, int client_fd, my_teams_t *)
+int quit_cmd(server_t *server, const int client_fd, my_teams_t *)
 {
-    write(client_fd, QUIT_MSG, strlen(QUIT_MSG));
-    printf("Client disconnected :\n");
-    printf("IP : %s\n", inet_ntoa(server->sock_addr.sin_addr));
-    printf("Port : %d\n", ntohs(server->sock_addr.sin_port));
-    printf("User : %s\n\n", server->clients[server->user_index]->username);
-    server->clients[server->user_index]->username = malloc(sizeof(char) * 1);
+    if (error_not_login(server, client_fd) != 0)
+        return ERR_CMD;
     server->clients[server->user_index]->is_connected = false;
-    server->fd_array[server->user_index] = 0;
-    close(client_fd);
+    dprintf(client_fd, "%s", SUC_MSG_LOGOUT);
     return WIN_CMD;
 }
 
-int noop_cmd(server_t *server, int client_fd, my_teams_t *)
+int noop_cmd(server_t *server, const int client_fd, my_teams_t *)
 {
     if (error_not_login(server, client_fd) != 0) {
         return ERR_CMD;

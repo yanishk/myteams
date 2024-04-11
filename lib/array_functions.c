@@ -9,9 +9,9 @@
 #include <string.h>
 #include <stdio.h>
 
-int array_size(char **array)
+size_t array_size(char **array)
 {
-    int size = 0;
+    size_t size = 0;
 
     while (array[size] != NULL)
         size += 1;
@@ -20,13 +20,13 @@ int array_size(char **array)
 
 void print_array(char **array)
 {
-    for (int i = 0; array[i] != NULL; i += 1)
+    for (size_t i = 0; array[i] != NULL; i += 1)
         printf("word:[%s]\n", array[i]);
 }
 
 void free_array(char **array)
 {
-    for (int i = 0; array[i] != NULL; i += 1)
+    for (size_t i = 0; array[i] != NULL; i += 1)
         free(array[i]);
     free(array);
 }

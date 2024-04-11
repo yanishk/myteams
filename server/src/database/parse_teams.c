@@ -40,7 +40,7 @@ static void fill_thread_message(thread_t *thread, char **array)
     thread_msg_t *thread_msg;
 
     TAILQ_INIT(&thread->thread_msg_head);
-    for (int i = 1; array[i] != NULL; i += 2) {
+    for (size_t i = 1; array[i] != NULL; i += 2) {
         if (strcmp(array[i], "body") == 0) {
             thread_msg = malloc(sizeof(private_msg_t));
             TAILQ_INSERT_TAIL(&thread->thread_msg_head, thread_msg,

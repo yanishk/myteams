@@ -14,7 +14,7 @@ static void fill_team_belong(user_t *user, char **array)
     team_belong_t *team_belong;
 
     TAILQ_INIT(&user->team_belong_head);
-    for (int i = 1; array[i] != NULL; i += 1) {
+    for (size_t i = 1; array[i] != NULL; i += 1) {
         team_belong = malloc(sizeof(team_belong_t));
         TAILQ_INSERT_TAIL(&user->team_belong_head, team_belong,
             belong_entries);
@@ -27,7 +27,7 @@ static void fill_private_message(user_t *user, char **array)
     private_msg_t *private_msg;
 
     TAILQ_INIT(&user->private_msg_head);
-    for (int i = 1; array[i] != NULL; i += 2) {
+    for (size_t i = 1; array[i] != NULL; i += 2) {
         if (strcmp(array[i], "user_id") == 0) {
             private_msg = malloc(sizeof(private_msg_t));
             TAILQ_INSERT_TAIL(&user->private_msg_head, private_msg,

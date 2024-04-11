@@ -13,9 +13,9 @@
 #include <unistd.h>
 #include "my.h"
 
-static void remove_client_socket(server_t *server, int client_fd)
+static void remove_client_socket(server_t *server, const int client_fd)
 {
-    for (int i = 0; i != server->size; i += 1) {
+    for (size_t i = 0; i != server->size; i += 1) {
         if (server->fd_array[i] == client_fd) {
             server->fd_array[i] = 0;
             break;

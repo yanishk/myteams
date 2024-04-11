@@ -7,7 +7,7 @@
 
 #include "client.h"
 
-static int check_socket_creation(int port, int sock_fd)
+static int check_socket_creation(const int port, const int sock_fd)
 {
     if (port == 0) {
         fprintf(stderr, "argument isn't a port");
@@ -33,7 +33,7 @@ static int connect_to_server(const char **av, struct sockaddr_in *sock_addr,
     return 0;
 }
 
-static int read_server(int sock_fd, fd_set readfds)
+static int read_server(const int sock_fd, fd_set readfds)
 {
     size_t len = 0;
     char *line = NULL;
@@ -57,7 +57,7 @@ static int read_server(int sock_fd, fd_set readfds)
     return 0;
 }
 
-static void send_initial_command(int sock_fd)
+static void send_initial_command(const int sock_fd)
 {
     const char *initial_cmd = "";
     char buffer[1024];
@@ -120,7 +120,7 @@ int main(int ac, const char **av)
         return 0;
     }
     if (ac != 3) {
-        fprintf(stderr, "bad number of arguments");
+        fprintf(stderr, "Bad number of arguments\n");
         return 84;
     }
     return client(av);

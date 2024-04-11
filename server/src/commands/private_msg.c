@@ -7,10 +7,10 @@
 
 #include "my.h"
 
-static int error_send_msg(server_t *server, int client_fd, my_teams_t *teams)
+static int error_send_msg(server_t *server,
+    const int client_fd, my_teams_t *teams)
 {
     user_t *new_user;
-    bool mate_exist = false;
 
     if (error_not_login(server, client_fd) != 0)
         return ERR_CMD;
@@ -20,13 +20,10 @@ static int error_send_msg(server_t *server, int client_fd, my_teams_t *teams)
     }
     TAILQ_FOREACH(new_user, &teams->user_head, user_entries) {
         if (strcmp(server->cmd_arg.tab[1], new_user->uuid) == 0)
-            mate_exist = true;
+            return WIN_CMD;
     }
-    if (mate_exist == false) {
-        dprintf(client_fd, "%s", UKWN_USER);
-        return ERR_CMD;
-    }
-    return WIN_CMD;
+    dprintf(client_fd, "%s", UKWN_USER);
+    return ERR_CMD;
 }
 
 static void fill_my_message(server_t *server, user_t *new_user)
@@ -65,7 +62,7 @@ static void fill_struct_privmsg(server_t *server, user_t *new_user)
     }
 }
 
-int send_msg(server_t *server, int client_fd, my_teams_t *teams)
+int send_msg(server_t *server, const int client_fd, my_teams_t *teams)
 {
     user_t *new_user;
 
@@ -78,10 +75,10 @@ int send_msg(server_t *server, int client_fd, my_teams_t *teams)
     return WIN_CMD;
 }
 
-static int error_disp_msg(server_t *server, int client_fd, my_teams_t *teams)
+static int error_disp_msg(server_t *server,
+    const int client_fd, my_teams_t *teams)
 {
     user_t *new_user;
-    bool mate_exist = false;
 
     if (error_not_login(server, client_fd) != 0)
         return ERR_CMD;
@@ -91,16 +88,13 @@ static int error_disp_msg(server_t *server, int client_fd, my_teams_t *teams)
     }
     TAILQ_FOREACH(new_user, &teams->user_head, user_entries) {
         if (strcmp(server->cmd_arg.tab[1], new_user->uuid) == 0)
-            mate_exist = true;
+            return WIN_CMD;
     }
-    if (mate_exist == false) {
-        dprintf(client_fd, "%s", UKWN_USER);
-        return ERR_CMD;
-    }
-    return WIN_CMD;
+    dprintf(client_fd, "%s", UKWN_USER);
+    return ERR_CMD;
 }
 
-int display_priv_msg(server_t *server, int client_fd, my_teams_t *teams)
+int display_priv_msg(server_t *server, const int client_fd, my_teams_t *teams)
 {
     user_t *new_user;
     private_msg_t *prv_msg;

@@ -8,7 +8,7 @@
 #include <dirent.h>
 #include "my.h"
 
-int list_cmd(server_t *server, int client_fd, my_teams_t *)
+int list_cmd(server_t *server, const int client_fd, my_teams_t *)
 {
     if (error_not_login(server, client_fd) != 0) {
         return ERR_CMD;
@@ -20,7 +20,7 @@ int list_cmd(server_t *server, int client_fd, my_teams_t *)
     return WIN_CMD;
 }
 
-int cdup_cmd(server_t *server, int client_fd, my_teams_t *)
+int cdup_cmd(server_t *server, const int client_fd, my_teams_t *)
 {
     if (error_not_login(server, client_fd) != 0) {
         return ERR_CMD;

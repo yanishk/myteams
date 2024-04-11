@@ -17,7 +17,7 @@ static int check_clients_sockets(server_t *server, my_teams_t *teams)
 {
     int client_fd = 0;
 
-    for (int i = 0; i != server->size; i += 1) {
+    for (size_t i = 0; i != server->size; i += 1) {
         client_fd = server->fd_array[i];
         if (FD_ISSET(client_fd, &server->readfds) != 0) {
             server->user_index = insert_client_in_struct(server, client_fd);
@@ -32,7 +32,7 @@ static int add_client_socket(server_t *server, int new_client_fd)
 {
     bool has_been_set = false;
 
-    for (int i = 0; i != server->size; i += 1) {
+    for (size_t i = 0; i != server->size; i += 1) {
         if (server->fd_array[i] == 0) {
             server->fd_array[i] = new_client_fd;
             has_been_set = true;
@@ -82,7 +82,7 @@ static int set_sockets(server_t *server)
 {
     int client_fd = 0;
 
-    for (int i = 0; i != server->size; i += 1) {
+    for (size_t i = 0; i != server->size; i += 1) {
         client_fd = server->fd_array[i];
         if (client_fd > 0)
             FD_SET(client_fd, &server->readfds);

@@ -23,6 +23,7 @@
     #define NB_CMD 13 //14 commande dmd dans le pdf (enfin je croie)
 
     #define SUC_MSG_LOGIN "331 Username okay.\n"
+    #define SUC_MSG_LOGOUT "332 Logged out successfully.\n"
     #define SUC_MSG_PASS "230 User logged in, proceed.\n"
     #define FAIL_MSG_LOGIN "530 Not logged in.\n"
     #define ALRD_LOGIN "531 Already logged in.\n"
@@ -51,7 +52,7 @@ static char *const cmd_lst[NB_CMD] = {
     "/logout",
     "/send",
     "/messages",
-    "PASV",
+    "/subscribe",
     "PORT",
     "/help",
     "NOOP",
@@ -97,7 +98,7 @@ typedef struct clients_s {
 
 typedef struct cmd_s {
     char **tab;
-    int len;
+    size_t len;
 } cmd_t;
 
 typedef struct server_s {
@@ -105,7 +106,7 @@ typedef struct server_s {
     int port;
     int server_fd;
     int *fd_array;
-    int size;
+    size_t size;
     int max_fd_set;
     int user_index;
     fd_set readfds;

@@ -8,7 +8,7 @@
 #include "my.h"
 
 static void add_user(server_t *server, const char *username,
-    user_t *new_user, int client_fd)
+    user_t *new_user, const int client_fd)
 {
     server->clients[server->user_index]->username =
     malloc(sizeof(char) * strlen(username));
@@ -18,7 +18,7 @@ static void add_user(server_t *server, const char *username,
     write(client_fd, SUC_MSG_LOGIN, strlen(SUC_MSG_LOGIN));
 }
 
-static int error_login(server_t *server, int client_fd)
+static int error_login(server_t *server, const int client_fd)
 {
     if (server->clients[server->user_index]->is_connected == true) {
         dprintf(client_fd, "%s", ALRD_LOGIN);
@@ -31,7 +31,7 @@ static int error_login(server_t *server, int client_fd)
     return WIN_CMD;
 }
 
-int user_login(server_t *server, int client_fd, my_teams_t *teams)
+int user_login(server_t *server, const int client_fd, my_teams_t *teams)
 {
     uuid_t tmp_uuid;
 

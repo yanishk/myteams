@@ -28,7 +28,8 @@ static void save_private_msg(const int fd, user_t *user)
 {
     private_msg_t *private_msg;
 
-    TAILQ_INIT(&user->private_msg_head);
+    if (TAILQ_EMPTY(&user->private_msg_head))
+        TAILQ_INIT(&user->private_msg_head);
     dprintf(fd, "\tprivate_message=");
     TAILQ_FOREACH(private_msg, &user->private_msg_head,
         private_msg_entries) {

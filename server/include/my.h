@@ -28,26 +28,26 @@ int server(const char *port_number);
 server_t *init_server_struct(const char *port_number);
 int initialize_server(server_t *server);
 int run_server(server_t *server);
-int insert_client_in_struct(server_t *server, int client_fd);
+int insert_client_in_struct(server_t *server, const int client_fd);
 void close_client_socket(server_t *server);
 
-void get_user_input(server_t *server, int client_fd, my_teams_t *team);
-int error_not_login(server_t *server, int client_fd);
+void get_user_input(server_t *server, const int client_fd, my_teams_t *team);
+int error_not_login(server_t *server, const int client_fd);
 
-int user_login(server_t *server, int client_fd, my_teams_t *team);
-int quit_cmd(server_t *server, int client_fd, my_teams_t *team);
-int noop_cmd(server_t *server, int client_fd, my_teams_t *team);
-int list_cmd(server_t *server, int client_fd, my_teams_t *team);
-int display_priv_msg(server_t *server, int client_fd, my_teams_t *team);
-int user_cmd(server_t *server, int client_fd, my_teams_t *team);
-int user_spe_uuid(server_t *server, int client_fd, my_teams_t *team);
-int cdup_cmd(server_t *server, int client_fd, my_teams_t *team);
-int send_msg(server_t *server, int client_fd, my_teams_t *team);
-int help_cmd(server_t *server, int client_fd, my_teams_t *team);
-int pasv_cmd(server_t *server, int client_fd, my_teams_t *team);
-int port_cmd(server_t *server, int client_fd, my_teams_t *team);
-int retr_cmd(server_t *server, int client_fd, my_teams_t *team);
-int stor_cmd(server_t *server, int client_fd, my_teams_t *team);
+int user_login(server_t *server, const int client_fd, my_teams_t *team);
+int quit_cmd(server_t *server, const int client_fd, my_teams_t *team);
+int noop_cmd(server_t *server, const int client_fd, my_teams_t *team);
+int list_cmd(server_t *server, const int client_fd, my_teams_t *team);
+int display_priv_msg(server_t *server, const int client_fd, my_teams_t *team);
+int user_cmd(server_t *server, const int client_fd, my_teams_t *team);
+int user_spe_uuid(server_t *server, const int client_fd, my_teams_t *team);
+int cdup_cmd(server_t *server, const int client_fd, my_teams_t *team);
+int send_msg(server_t *server, const int client_fd, my_teams_t *team);
+int help_cmd(server_t *server, const int client_fd, my_teams_t *team);
+int sub_team(server_t *server, const int client_fd, my_teams_t *team);
+int port_cmd(server_t *server, const int client_fd, my_teams_t *team);
+int retr_cmd(server_t *server, const int client_fd, my_teams_t *team);
+int stor_cmd(server_t *server, const int client_fd, my_teams_t *team);
 
 
 //fill struct
