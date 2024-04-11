@@ -15,7 +15,7 @@ static void add_user(server_t *server, const char *username,
     server->clients[server->user_index]->username = strdup(username);
     server->clients[server->user_index]->is_connected = true;
     server->clients[server->user_index]->my_uuid = new_user->uuid;
-    write(client_fd, SUC_MSG_LOGIN, strlen(SUC_MSG_LOGIN));
+    dprintf(client_fd, "%s%s\n%s\n", CODE_201, new_user->uuid, username);
 }
 
 static int error_login(server_t *server, const int client_fd)

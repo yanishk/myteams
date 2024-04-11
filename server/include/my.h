@@ -23,6 +23,7 @@ bool does_file_exists(char *str);
 bool array_is_number(char **array);
 char **word_array(char const *str, char *delim);
 void my_swap_str(char **a, char **b);
+void my_fd_putstr(char *str, const int client_fd);
 
 // server
 int server(const char *port_number);

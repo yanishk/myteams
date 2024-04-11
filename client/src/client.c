@@ -37,10 +37,9 @@ static int read_server(const int sock_fd, fd_set readfds)
 {
     size_t len = 0;
     char *line = NULL;
-    char *reponse = malloc(sizeof(char) * 1024);
+    char reponse[1024] = {0};
 
     if (select(sock_fd + 1, &readfds, NULL, NULL, NULL) == -1) {
-        fprintf(stderr, "select failed\n");
         return 1;
     }
     if (FD_ISSET(0, &readfds)) {
@@ -50,9 +49,10 @@ static int read_server(const int sock_fd, fd_set readfds)
         }
     }
     if (FD_ISSET(sock_fd, &readfds)) {
-        if (read(sock_fd, reponse, 1024) <= 0)
+        if (read(sock_fd, reponse, 1023) <= 0)
             return 18;
         select_display_methode(reponse);
+        write(1, "Enter the command : ", strlen("Enter the command : "));
     }
     return 0;
 }

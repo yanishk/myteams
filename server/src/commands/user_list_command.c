@@ -17,7 +17,6 @@ static int error_handling_user(server_t *server,
     user_t *np_user;
 
     if (server->cmd_arg.tab[1] == NULL) {
-        dprintf(client_fd, "%s", FAIL_CMD_EXIST);
         return ERR_CMD;
     }
     if (error_not_login(server, client_fd) != 0)
@@ -27,7 +26,8 @@ static int error_handling_user(server_t *server,
             return WIN_CMD;
         }
     }
-    dprintf(client_fd, "%s", UKWN_USER);
+    dprintf(client_fd, "%s%s\n", CODE_401,
+    server->clients[server->user_index]->my_uuid);
     return ERR_CMD;
 }
 
@@ -37,9 +37,10 @@ int user_cmd(server_t *server, const int client_fd, my_teams_t *teams)
 
     if (error_not_login(server, client_fd) != 0)
         return ERR_CMD;
-    TAILQ_FOREACH(np_user, &teams->user_head, user_entries)
-        dprintf(client_fd, "%s\n", np_user->name);
-    dprintf(client_fd, "%s", CODE_200);
+    dprintf(client_fd, "%s", CODE_203);
+    TAILQ_FOREACH(np_user, &teams->user_head, user_entries) {
+        dprintf(client_fd, "%s\n%s\n%d\n", np_user->uuid, np_user->name, 5);
+    }
     return WIN_CMD;
 }
 
@@ -51,10 +52,12 @@ int user_spe_uuid(server_t *server, const int client_fd, my_teams_t *teams)
         return ERR_CMD;
     TAILQ_FOREACH(np_user, &teams->user_head, user_entries) {
         if (strcmp(np_user->uuid, server->cmd_arg.tab[1]) == 0) {
-            dprintf(client_fd, "%s\n", np_user->name);
-            dprintf(client_fd, "%s\n", np_user->uuid);
+            dprintf(client_fd, "%s%s\n%s\n%d\n", CODE_204, np_user->uuid,
+            np_user->name, 5);
+            return WIN_CMD;
         }
     }
-    dprintf(client_fd, "%s", CODE_200);
-    return WIN_CMD;
+    dprintf(client_fd, "%s%s\n", CODE_401,
+    server->clients[server->user_index]->my_uuid);
+    return ERR_CMD;
 }

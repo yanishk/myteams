@@ -72,8 +72,8 @@ static void realloc_arg(server_t *server)
 
 void get_user_input(server_t *server, const int client_fd, my_teams_t *teams)
 {
-    int status = 0;
     char buffer[BUFFER_MAX_SIZE] = {0};
+    int status;
 
     if (read(client_fd, buffer, BUFFER_MAX_SIZE) == 0)
         return;
@@ -87,6 +87,6 @@ void get_user_input(server_t *server, const int client_fd, my_teams_t *teams)
         }
     }
     if (status == 0)
-        write(client_fd, FAIL_CMD_EXIST, strlen(FAIL_CMD_EXIST));
+        write(client_fd, CODE_301, strlen(CODE_301));
     free(server->cmd_arg.tab);
 }

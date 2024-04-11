@@ -22,8 +22,7 @@ static void display_msg(char *msg, int nb)
 
 static void display_error(char *msg)
 {
-    char *new_msg = strdup(msg);
-    char **tab = word_array(new_msg, "\n");
+    char **tab = word_array(msg, "\n");
     char *first_word = word_array(tab[0], " ")[0];
 
     for (size_t y = 0; display_err_exist[y].str != NULL; y++) {
@@ -40,10 +39,16 @@ static void display_error(char *msg)
     }
 }
 
+void loop_display_users(char **tab, int y)
+{
+    for (int i = 1; tab[i] != NULL; i += 3) {
+        display_users[y].ptr(tab[i], tab[i + 1], atoi(tab[i + 2]));
+    }
+}
+
 static void display_team_user(char *msg)
 {
-    char *new_msg = strdup(msg);
-    char **tab = word_array(new_msg, "\n");
+    char **tab = word_array(msg, "\n");
     char *first_word = word_array(tab[0], " ")[0];
 
     for (size_t y = 0; display_team_channel[y].str != NULL; y++) {
@@ -54,7 +59,7 @@ static void display_team_user(char *msg)
     }
     for (size_t y = 0; display_users[y].str != NULL; y++) {
         if (strcmp(display_users[y].str, first_word) == 0) {
-            display_users[y].ptr(tab[2], tab[1], 1);
+            loop_display_users(tab, y);
             return;
         }
     }
@@ -62,8 +67,7 @@ static void display_team_user(char *msg)
 
 static void display_thread_reply(char *msg)
 {
-    char *new_msg = strdup(msg);
-    char **tab = word_array(new_msg, "\n");
+    char **tab = word_array(msg, "\n");
     char *first_word = word_array(tab[0], " ")[0];
 
     for (size_t y = 0; display_thread[y].str != NULL; y++) {
@@ -82,17 +86,15 @@ static void display_thread_reply(char *msg)
 
 void select_display_methode(char *msg)
 {
-    char *new_msg = strdup(msg);
-    char **tab = word_array(new_msg, "\n");
+    char **tab = word_array(msg, "\n");
     char *first_word = word_array(tab[0], " ")[0];
 
-    write(1, "Enter the command : ", strlen("Enter the command : "));
     display_error(strdup(msg));
     display_team_user(strdup(msg));
     display_thread_reply(strdup(msg));
     for (size_t y = 0; display_two_char_func[y].str != NULL; y++) {
         if (strcmp(display_two_char_func[y].str, first_word) == 0) {
-            display_two_char_func[y].ptr("[uuid client]", "[nom client]");
+            display_two_char_func[y].ptr(tab[1], tab[2]);
             return;
         }
     }

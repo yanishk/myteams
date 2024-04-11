@@ -37,6 +37,7 @@ LIB =                                       \
     lib/array_functions.c	                \
 	lib/word_array.c                        \
     lib/my_swap_str.c                       \
+    lib/fd_putstr.c
 
 SERVER_OBJ = $(SERVER_SRC:.c=.o)                           \
 	$(LIB:.c=.o)

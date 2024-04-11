@@ -3,3 +3,4 @@ myteams_cli
 *.o
 */*.o
 */*/*.o
+.database
