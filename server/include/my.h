@@ -53,6 +53,7 @@ int create(server_t *server, const int client_fd, my_teams_t *teams);
 int disp_subscribed(server_t *server, const int client_fd, my_teams_t *teams);
 int use_cmd(server_t *server, const int client_fd, my_teams_t *teams);
 int unsub_team(server_t *server, const int client_fd, my_teams_t *teams);
+void reset_command_context(my_teams_t *teams);
 
 // database
 void parse_database(my_teams_t *teams);

@@ -25,6 +25,7 @@ SERVER_SRC =                						\
     ./server/src/commands/unsub.c                   \
     ./server/src/commands/create.c                  \
     ./server/src/commands/use.c                     \
+    ./server/src/commands/reset_command_context.c   \
     ./server/src/database/parse_database.c          \
     ./server/src/database/save_database.c           \
     ./server/src/database/parse_teams.c             \

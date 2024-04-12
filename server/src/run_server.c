@@ -104,6 +104,9 @@ static void init_my_teams(my_teams_t *teams)
     TAILQ_INIT(&teams->priv_msg_head);
     teams->command_context = malloc(sizeof(command_context_t));
     teams->command_context->team_context = NOTHING;
+    teams->command_context->team_uuid = NULL;
+    teams->command_context->channel_uuid = NULL;
+    teams->command_context->thread_uuid = NULL;
 }
 
 int run_server(server_t *server)

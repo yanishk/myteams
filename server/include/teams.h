@@ -22,7 +22,9 @@ enum TEAM_CONTEXT {
 
 typedef struct command_context {
     enum TEAM_CONTEXT team_context;
-    char *entity_uuid;
+    char *team_uuid;
+    char *channel_uuid;
+    char *thread_uuid;
 } command_context_t;
 
 typedef struct private_msg {
