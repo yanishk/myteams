@@ -66,11 +66,11 @@ static void fill_thread(enum TEAM_DATA data, char *line,
         fill_thread_message(thread, array);
 }
 
-static bool is_team_line(bool *is_user, char *line,
+static bool is_team_line(int *is_user, char *line,
     my_teams_t *teams, team_t **team)
 {
     if (strcmp(line, "team:\n") == 0) {
-        *is_user = false;
+        *is_user = 1;
         *team = malloc(sizeof(team_t));
         TAILQ_INSERT_TAIL(&teams->team_head, *team, team_entries);
         return true;
@@ -100,7 +100,7 @@ static bool is_thread_line(char *line, channel_t *channel, thread_t **thread)
     return false;
 }
 
-void parse_teams(my_teams_t *teams, char *line, bool *is_user)
+void parse_teams(my_teams_t *teams, char *line, int *is_user)
 {
     static team_t *team;
     static channel_t *channel;
@@ -116,7 +116,7 @@ void parse_teams(my_teams_t *teams, char *line, bool *is_user)
         data = CHANNEL;
     if (is_thread_line(line, channel, &thread))
         data = THREAD;
-    if (array_size(array) < 2 || *is_user) {
+    if (array_size(array) < 2 || *is_user != 1) {
         free(array);
         return;
     }

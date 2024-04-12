@@ -55,7 +55,7 @@ int disp_subscribed(server_t *server, const int client_fd, my_teams_t *teams);
 // database
 void parse_database(my_teams_t *teams);
 void save_database(const my_teams_t teams);
-void parse_teams(my_teams_t *teams, char *line, bool *is_user);
-void parse_users(my_teams_t *teams, char *line, bool *is_user);
+void parse_teams(my_teams_t *teams, char *line, int *is_user);
+void parse_users(my_teams_t *teams, char *line, int *is_user);
 
 #endif /* !MY_H_ */

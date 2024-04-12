@@ -14,6 +14,7 @@
     #include <stdio.h>
 
 typedef struct private_msg {
+    char *uuid_sender;
     char *uuid_other;
     char *body;
     TAILQ_ENTRY(private_msg) private_msg_entries;
@@ -28,7 +29,6 @@ typedef struct user {
     char *uuid;
     char *name;
     TAILQ_HEAD(, team_belong) team_belong_head;
-    TAILQ_HEAD(, private_msg) private_msg_head;
     TAILQ_ENTRY(user) user_entries;
 } user_t;
 
@@ -64,6 +64,7 @@ typedef struct team {
 typedef struct my_teams {
     TAILQ_HEAD(, user) user_head;
     TAILQ_HEAD(, team) team_head;
+    TAILQ_HEAD(, private_msg) priv_msg_head;
     user_t *new_user;
 } my_teams_t;
 
