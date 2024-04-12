@@ -23,12 +23,3 @@ int quit_cmd(server_t *server, const int client_fd, my_teams_t *)
     close(client_fd);
     return WIN_CMD;
 }
-
-int noop_cmd(server_t *server, const int client_fd, my_teams_t *)
-{
-    if (error_not_login(server, client_fd) != 0) {
-        return ERR_CMD;
-    }
-    write(client_fd, CODE_200, strlen(CODE_200));
-    return WIN_CMD;
-}

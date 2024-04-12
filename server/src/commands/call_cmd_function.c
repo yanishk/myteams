@@ -18,7 +18,7 @@ int (*cmd_func[NB_CMD])(server_t *server,
     &sub_team,
     &create,
     &help_cmd,
-    &noop_cmd,
+    &disp_subscribed,
     &retr_cmd,
     &stor_cmd,
     &list_cmd

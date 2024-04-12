@@ -89,8 +89,6 @@ void select_display_methode(char *msg)
     char **tab = word_array(msg, "\n");
     char *first_word = word_array(tab[0], " ")[0];
 
-//    printf("\nData from the server :\n\n%s\nend of transmission.\n\n", msg);
-//    printf("%s\n", tab[0]);
     display_error(strdup(msg));
     display_team_user(strdup(msg));
     display_thread_reply(strdup(msg));
