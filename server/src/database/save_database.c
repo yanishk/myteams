@@ -13,7 +13,8 @@ static void save_team_belong(const int fd, user_t *user)
 {
     team_belong_t *team_belong;
 
-    TAILQ_INIT(&user->team_belong_head);
+    if (TAILQ_EMPTY(&user->team_belong_head))
+        TAILQ_INIT(&user->team_belong_head);
     dprintf(fd, "\tteams_uuid=");
     TAILQ_FOREACH(team_belong, &user->team_belong_head,
         belong_entries) {
