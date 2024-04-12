@@ -29,10 +29,10 @@
     #define ERR_BAD_ARG "504 Bad arguments\n"
     #define CODE_NOT_IMPLEMENTED "NOT YET IMPLEMENTED\n"
 
-    #define CODE_201 "201 Client logged in.\n"
-    #define CODE_202 "202 Client logged out.\n"
-    #define CODE_203 "203 Print users.\n"
-    #define CODE_204 "204 Print user.\n"
+    #define CODE_201 "201 Client logged in.\n" // Done
+    #define CODE_202 "202 Client logged out.\n" // Done
+    #define CODE_203 "203 Print users.\n" // 1/2
+    #define CODE_204 "204 Print user.\n" // 1/2
     #define CODE_205 "205 Private message received.\n"
     #define CODE_206 "206 Print private message.\n"
     #define CODE_207 "207 Print subscribed.\n"

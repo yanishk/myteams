@@ -9,20 +9,19 @@
 
 static void print_all_help(const int client_fd)
 {
-    dprintf(client_fd, "%s", CODE_214);
+    dprintf(client_fd, "%s", CODE_302);
     for (size_t i = 0; i < NB_CMD; i++) {
         dprintf(client_fd, "%s", help_msg[i]);
     }
-    dprintf(client_fd, "%s", CODE_214);
 }
 
 static int cmd_help_msg(char *cmd, const int client_fd)
 {
     for (size_t i = 0; i < NB_CMD; i++) {
         if (strcmp(cmd, cmd_lst[i]) == 0) {
-            dprintf(client_fd, "%s", CODE_214);
+            dprintf(client_fd, "%s", CODE_302);
             dprintf(client_fd, "%s", help_msg[i]);
-            dprintf(client_fd, "%s", CODE_214);
+            dprintf(client_fd, "%s", CODE_302);
             return WIN_CMD;
         }
     }

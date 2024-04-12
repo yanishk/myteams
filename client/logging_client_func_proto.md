@@ -191,7 +191,6 @@ int client_print_channel_created(char const *channel_uuid, char const *channel_n
 int client_print_users(char const *user_uuid, char const *user_name, int user_status);
 int client_print_user(char const *user_uuid, char const *user_name, int user_status);
 
-
 int client_print_thread(char const *thread_uuid, char const *user_uuid, time_t thread_timestamp, char const *thread_title, char const *thread_body);
 int client_print_thread_created(char const *thread_uuid, char const *user_uuid, time_t thread_timestamp, char const *thread_title, char const *thread_body);
 int client_channel_print_threads(char const *thread_uuid, char const *user_uuid, time_t thread_timestamp, char const *thread_title, char const *thread_body);

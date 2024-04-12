@@ -26,8 +26,7 @@ static int error_handling_user(server_t *server,
             return WIN_CMD;
         }
     }
-    dprintf(client_fd, "%s%s\n", CODE_401,
-    server->clients[server->user_index]->my_uuid);
+    dprintf(client_fd, "%s%s\n", CODE_401, server->cmd_arg.tab[1]);
     return ERR_CMD;
 }
 
@@ -57,7 +56,6 @@ int user_spe_uuid(server_t *server, const int client_fd, my_teams_t *teams)
             return WIN_CMD;
         }
     }
-    dprintf(client_fd, "%s%s\n", CODE_401,
-    server->clients[server->user_index]->my_uuid);
+    dprintf(client_fd, "%s%s\n", CODE_401, server->cmd_arg.tab[1]);
     return ERR_CMD;
 }

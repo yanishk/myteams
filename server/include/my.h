@@ -10,6 +10,7 @@
 
     #include "server.h"
     #include "teams.h"
+    #include "logging_server.h"
     #include <uuid/uuid.h>
     #include <stddef.h>
 

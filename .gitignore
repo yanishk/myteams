@@ -4,3 +4,4 @@ myteams_cli
 */*.o
 */*/*.o
 .database
+help_msg.h

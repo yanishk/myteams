@@ -1,12 +1,14 @@
 ##
-## EPITECH PROJECT, 2023
-## myteams_server
+## EPITECH PROJECT, 2022
+## Makefile
 ## File description:
 ## Makefile
 ##
 
-SERVER_SRC =                                        \
-    ./server/src/initialize_server.c                \
+CC = gcc
+
+SERVER_SRC =                						\
+	./server/src/initialize_server.c                \
     ./server/src/insert_client_in_struct.c          \
     ./server/src/close_client_socket.c              \
     ./server/src/run_server.c                       \
@@ -27,8 +29,8 @@ SERVER_SRC =                                        \
     ./server/src/database/parse_users.c             \
 	./server/main.c
 
-CLIENT_SRC =                                 \
-    ./client/src/client.c					 \
+CLIENT_SRC =                				\
+	./client/src/client.c					\
 	./client/src/redirect_print.c
 
 LIB =                                       \
@@ -40,15 +42,15 @@ LIB =                                       \
     lib/my_swap_str.c                       \
     lib/fd_putstr.c
 
-SERVER_OBJ = $(SERVER_SRC:.c=.o)                           \
+SERVER_OBJ = $(SERVER_SRC:.c=.o)			\
 	$(LIB:.c=.o)
 
-CLIENT_OBJ = $(CLIENT_SRC:.c=.o)                           \
+CLIENT_OBJ = $(CLIENT_SRC:.c=.o)			\
 	$(LIB:.c=.o)
 
-CFLAGS = -Wall -Wextra -luuid
+CFLAGS = -W -Wall -Wextra -I server/include -I client/include -I libs/myteams
 
-CPPFLAGS = -iquote server/include -iquote client/include -iquote libs/myteams
+LDFLAGS = -Llibs/myteams -lmyteams -luuid
 
 FLAGS_DEBUG = -g3
 
@@ -56,22 +58,25 @@ SERVER_BIN_NAME = myteams_server
 
 CLIENT_BIN_NAME = myteams_cli
 
-all: $(SERVER_OBJ) $(CLIENT_OBJ)
-	$(CC) -o $(SERVER_BIN_NAME) $(SERVER_OBJ) $(CFLAGS) && \
-    $(CC) -o $(CLIENT_BIN_NAME) $(CLIENT_OBJ) $(CFLAGS) \
-    libs/myteams/libmyteams.so
+all: compil_server compil_client
+
+compil_server: $(SERVER_OBJ)
+	$(CC) -o  $(SERVER_BIN_NAME) $(SERVER_OBJ) $(LDFLAGS)
+
+compil_client: $(CLIENT_OBJ)
+	$(CC) -o $(CLIENT_BIN_NAME) $(CLIENT_OBJ) $(LDFLAGS)
 
 debug: CFLAGS += $(FLAGS_DEBUG)
 debug: all
 
 clean:
-	$(RM) $(SERVER_OBJ)     \
-    $(RM) $(CLIENT_OBJ)
+	rm -f $(SERVER_OBJ)
+	rm -f $(CLIENT_OBJ)
 
 fclean: clean
-	$(RM) $(SERVER_BIN_NAME)    \
-    $(RM) $(CLIENT_BIN_NAME)
+	rm -f $(SERVER_BIN_NAME)
+	rm -f $(CLIENT_BIN_NAME)
 
 re: fclean all
 
-.PHONY: clean fclean re
+.PHONY: debug fclean clean re all

@@ -27,7 +27,7 @@ static void display_error(char *msg)
 
     for (size_t y = 0; display_err_exist[y].str != NULL; y++) {
         if (strcmp(display_err_exist[y].str, first_word) == 0) {
-            display_err_exist[y].ptr("uuid error unknown\n");
+            display_err_exist[y].ptr(tab[1]);
             return;
         }
     }
@@ -39,7 +39,7 @@ static void display_error(char *msg)
     }
 }
 
-void loop_display_users(char **tab, int y)
+static void loop_display_users(char **tab, int y)
 {
     for (int i = 1; tab[i] != NULL; i += 3) {
         display_users[y].ptr(tab[i], tab[i + 1], atoi(tab[i + 2]));
@@ -53,7 +53,7 @@ static void display_team_user(char *msg)
 
     for (size_t y = 0; display_team_channel[y].str != NULL; y++) {
         if (strcmp(display_team_channel[y].str, first_word) == 0) {
-            display_team_channel[y].ptr("s1\n", "s2\n", "s3\n");
+            display_team_channel[y].ptr(tab[1], tab[2], tab[3]);
             return;
         }
     }
@@ -89,6 +89,8 @@ void select_display_methode(char *msg)
     char **tab = word_array(msg, "\n");
     char *first_word = word_array(tab[0], " ")[0];
 
+//    printf("\nData from the server :\n\n%s\nend of transmission.\n\n", msg);
+//    printf("%s\n", tab[0]);
     display_error(strdup(msg));
     display_team_user(strdup(msg));
     display_thread_reply(strdup(msg));
