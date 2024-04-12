@@ -51,6 +51,7 @@ int retr_cmd(server_t *server, const int client_fd, my_teams_t *team);
 int stor_cmd(server_t *server, const int client_fd, my_teams_t *team);
 int create(server_t *server, const int client_fd, my_teams_t *teams);
 int disp_subscribed(server_t *server, const int client_fd, my_teams_t *teams);
+int use_cmd(server_t *server, const int client_fd, my_teams_t *teams);
 
 // database
 void parse_database(my_teams_t *teams);

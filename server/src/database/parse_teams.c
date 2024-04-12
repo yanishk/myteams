@@ -5,11 +5,11 @@
 ** parse_teams
 */
 
-#include "parsing.h"
+
 #include "teams.h"
 #include "my.h"
 
-static void fill_team(enum TEAM_DATA data, char *line,
+static void fill_team(enum TEAM_CONTEXT data, char *line,
     team_t *team, char **array)
 {
     if (data != TEAM)
@@ -22,7 +22,7 @@ static void fill_team(enum TEAM_DATA data, char *line,
         team->description = strdup(array[1]);
 }
 
-static void fill_channel(enum TEAM_DATA data, char *line,
+static void fill_channel(enum TEAM_CONTEXT data, char *line,
     channel_t *channel, char **array)
 {
     if (data != CHANNEL)
@@ -50,7 +50,7 @@ static void fill_thread_message(thread_t *thread, char **array)
     }
 }
 
-static void fill_thread(enum TEAM_DATA data, char *line,
+static void fill_thread(enum TEAM_CONTEXT data, char *line,
     thread_t *thread, char **array)
 {
     if (data != THREAD)
@@ -105,7 +105,7 @@ void parse_teams(my_teams_t *teams, char *line, int *is_user)
     static team_t *team;
     static channel_t *channel;
     static thread_t *thread;
-    static enum TEAM_DATA data = TEAM;
+    static enum TEAM_CONTEXT data = TEAM;
     char **array = word_array(line, "\t\n=,:");
 
     fill_channel(data, line, channel, array);

@@ -13,6 +13,18 @@
     #include <stddef.h>
     #include <stdio.h>
 
+enum TEAM_CONTEXT {
+    NOTHING,
+    TEAM,
+    CHANNEL,
+    THREAD
+};
+
+typedef struct command_context {
+    enum TEAM_CONTEXT team_context;
+    char *entity_uuid;
+} command_context_t;
+
 typedef struct private_msg {
     char *uuid_sender;
     char *uuid_other;
@@ -66,6 +78,7 @@ typedef struct my_teams {
     TAILQ_HEAD(, team) team_head;
     TAILQ_HEAD(, private_msg) priv_msg_head;
     user_t *new_user;
+    command_context_t *command_context;
 } my_teams_t;
 
 #endif /* !TEAMS_H_ */

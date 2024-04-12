@@ -97,13 +97,20 @@ static int set_sockets(server_t *server)
     return 0;
 }
 
+static void init_my_teams(my_teams_t *teams)
+{
+    TAILQ_INIT(&teams->user_head);
+    TAILQ_INIT(&teams->team_head);
+    TAILQ_INIT(&teams->priv_msg_head);
+    teams->command_context = malloc(sizeof(command_context_t));
+    teams->command_context->team_context = NOTHING;
+}
+
 int run_server(server_t *server)
 {
     my_teams_t teams = {0};
 
-    TAILQ_INIT(&teams.user_head);
-    TAILQ_INIT(&teams.team_head);
-    TAILQ_INIT(&teams.priv_msg_head);
+    init_my_teams(&teams);
     parse_database(&teams);
     while (1) {
         FD_ZERO(&server->readfds);
