@@ -20,7 +20,7 @@ int (*cmd_func[NB_CMD])(server_t *server,
     &help_cmd,
     &disp_subscribed,
     &use_cmd,
-    &stor_cmd,
+    &unsub_team,
     &list_cmd
 };
 

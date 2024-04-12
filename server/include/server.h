@@ -73,7 +73,7 @@ static char *const cmd_lst[NB_CMD] = {
     "/help",
     "/subscribed",
     "/use",
-    "STOR",
+    "/unsubscribe",
     "LIST"
 };
 
