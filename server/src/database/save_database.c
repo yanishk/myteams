@@ -79,7 +79,6 @@ static void save_channels(const int fd, team_t *team)
 {
     channel_t *channel;
 
-    TAILQ_INIT(&team->channel_head);
     TAILQ_FOREACH(channel, &team->channel_head, channel_entries) {
         dprintf(fd, "\tchannel:\n");
         dprintf(fd, "\t\tuuid=%s\n", channel->uuid);

@@ -81,7 +81,8 @@ static bool is_team_line(int *is_user, char *line,
 static bool is_channel_line(char *line, team_t *team, channel_t **channel)
 {
     if (strcmp(line, "\tchannel:\n") == 0) {
-        TAILQ_INIT(&team->channel_head);
+        if (TAILQ_EMPTY(&team->channel_head))
+            TAILQ_INIT(&team->channel_head);
         *channel = malloc(sizeof(channel_t));
         TAILQ_INSERT_TAIL(&team->channel_head, *channel, channel_entries);
         return true;
@@ -92,7 +93,8 @@ static bool is_channel_line(char *line, team_t *team, channel_t **channel)
 static bool is_thread_line(char *line, channel_t *channel, thread_t **thread)
 {
     if (strcmp(line, "\t\tthread:\n") == 0) {
-        TAILQ_INIT(&channel->thread_head);
+        if (TAILQ_EMPTY(&channel->thread_head))
+            TAILQ_INIT(&channel->thread_head);
         *thread = malloc(sizeof(thread_t));
         TAILQ_INSERT_TAIL(&channel->thread_head, *thread, thread_entries);
         return true;

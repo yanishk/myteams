@@ -2,18 +2,17 @@
 ** EPITECH PROJECT, 2024
 ** my_teams
 ** File description:
-** create
+** create_team
 */
 
 #include "my.h"
 #include <uuid/uuid.h>
 
-int error_create_team(server_t *server, const int client_fd, my_teams_t *teams)
+static int error_create_team(server_t *server,
+    const int client_fd, my_teams_t *teams)
 {
     team_t *team_exist;
 
-    if (error_not_login(server, client_fd) != 0)
-        return ERR_CMD;
     if (server->cmd_arg.tab[1] == NULL || server->cmd_arg.tab[2] == NULL) {
         dprintf(client_fd, "%s", "create.c/create : not enough argument\n");
         return ERR_CMD;
@@ -28,7 +27,7 @@ int error_create_team(server_t *server, const int client_fd, my_teams_t *teams)
     return WIN_CMD;
 }
 
-int create(server_t *server, const int client_fd, my_teams_t *teams)
+int create_team(server_t *server, const int client_fd, my_teams_t *teams)
 {
     team_t *team;
     uuid_t tmp_uuid;

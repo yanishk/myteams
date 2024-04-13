@@ -23,9 +23,13 @@ SERVER_SRC =                						\
     ./server/src/commands/private_msg.c             \
     ./server/src/commands/sub_teams.c               \
     ./server/src/commands/unsub.c                   \
-    ./server/src/commands/create.c                  \
     ./server/src/commands/use.c                     \
     ./server/src/commands/reset_command_context.c   \
+    ./server/src/commands/create/create.c           \
+    ./server/src/commands/create/create_team.c      \
+    ./server/src/commands/create/create_channel.c   \
+    ./server/src/commands/create/create_thread.c    \
+    ./server/src/commands/create/create_comment.c   \
     ./server/src/database/parse_database.c          \
     ./server/src/database/save_database.c           \
     ./server/src/database/parse_teams.c             \

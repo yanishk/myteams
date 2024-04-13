@@ -49,11 +49,17 @@ int help_cmd(server_t *server, const int client_fd, my_teams_t *team);
 int sub_team(server_t *server, const int client_fd, my_teams_t *team);
 int retr_cmd(server_t *server, const int client_fd, my_teams_t *team);
 int stor_cmd(server_t *server, const int client_fd, my_teams_t *team);
-int create(server_t *server, const int client_fd, my_teams_t *teams);
 int disp_subscribed(server_t *server, const int client_fd, my_teams_t *teams);
 int use_cmd(server_t *server, const int client_fd, my_teams_t *teams);
 int unsub_team(server_t *server, const int client_fd, my_teams_t *teams);
 void reset_command_context(my_teams_t *teams);
+
+//create
+int create(server_t *server, const int client_fd, my_teams_t *teams);
+int create_team(server_t *server, const int client_fd, my_teams_t *teams);
+int create_channel(server_t *server, const int client_fd, my_teams_t *teams);
+int create_thread(server_t *server, const int client_fd, my_teams_t *teams);
+int create_comment(server_t *server, const int client_fd, my_teams_t *teams);
 
 // database
 void parse_database(my_teams_t *teams);
