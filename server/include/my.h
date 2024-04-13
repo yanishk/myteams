@@ -62,6 +62,13 @@ int create_channel(server_t *server, const int client_fd, my_teams_t *teams);
 int create_thread(server_t *server, const int client_fd, my_teams_t *teams);
 int create_comment(server_t *server, const int client_fd, my_teams_t *teams);
 
+//list
+int list(server_t *server, const int client_fd, my_teams_t *teams);
+int list_team(const int client_fd, my_teams_t *teams);
+int list_channel(const int client_fd, my_teams_t *teams);
+int list_thread(const int client_fd, my_teams_t *teams);
+int list_comment(const int client_fd, my_teams_t *teams);
+
 // database
 void parse_database(my_teams_t *teams);
 void save_database(const my_teams_t teams);
