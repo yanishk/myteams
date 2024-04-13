@@ -15,8 +15,8 @@ static int error_unsub(server_t *server,
     if (error_not_login(server, client_fd) != 0)
         return ERR_CMD;
     if (server->cmd_arg.tab[1] == NULL) {
-        dprintf(client_fd, "%s\n",
-            "unsub.c/error_unsub : not enough argument");
+        dprintf(client_fd, "%s\n%s",
+            "unsub.c/error_unsub : not enough argument", CODE_101);
         return ERR_CMD;
     }
     TAILQ_FOREACH(my_teams, &teams->new_user->team_belong_head,
@@ -24,8 +24,7 @@ static int error_unsub(server_t *server,
         if (strcmp(server->cmd_arg.tab[1], my_teams->uuid) == 0)
             return WIN_CMD;
     }
-    dprintf(client_fd, "%s\n",
-            "unsub.c/error_unsub : You do not belong to the team");
+    dprintf(client_fd, "%s%s", CODE_301, CODE_101);
     return ERR_CMD;
 }
 
@@ -38,6 +37,9 @@ int unsub_team(server_t *server, const int client_fd, my_teams_t *teams)
     TAILQ_FOREACH(my_teams, &teams->new_user->team_belong_head,
         belong_entries) {
         if (strcmp(my_teams->uuid, server->cmd_arg.tab[1]) == 0) {
+            dprintf(client_fd, "%s%s\n%s\n%s", CODE_209,
+            server->clients[server->user_index]->username, my_teams->uuid,
+            CODE_101);
             TAILQ_REMOVE(&teams->new_user->team_belong_head,
                 my_teams, belong_entries);
         }

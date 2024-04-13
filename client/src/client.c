@@ -33,11 +33,25 @@ static int connect_to_server(const char **av, struct sockaddr_in *sock_addr,
     return 0;
 }
 
+static int read_response(const int sock_fd)
+{
+    int pass = 0;
+    char reponse[1024] = {0};
+
+    while (pass == 0) {
+        if (read(sock_fd, reponse, 1023) <= 0)
+            return 18;
+        pass = select_display_methode(reponse);
+    }
+    pass = 0;
+    write(1, "Enter the command : ", strlen("Enter the command : "));
+    return 0;
+}
+
 static int read_server(const int sock_fd, fd_set readfds)
 {
     size_t len = 0;
     char *line = NULL;
-    char reponse[1024] = {0};
 
     if (select(sock_fd + 1, &readfds, NULL, NULL, NULL) == -1) {
         return 1;
@@ -49,10 +63,8 @@ static int read_server(const int sock_fd, fd_set readfds)
         }
     }
     if (FD_ISSET(sock_fd, &readfds)) {
-        if (read(sock_fd, reponse, 1023) <= 0)
+        if (read_response(sock_fd) != 0)
             return 18;
-        select_display_methode(reponse);
-        write(1, "Enter the command : ", strlen("Enter the command : "));
     }
     return 0;
 }

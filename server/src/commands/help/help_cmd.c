@@ -6,35 +6,28 @@
 */
 
 #include "my.h"
+#include <sys/stat.h>
+#include <fcntl.h>
 
-static void print_all_help(const int client_fd)
+static void open_help_msg(const int client_fd)
 {
-    dprintf(client_fd, "%s", CODE_302);
-    for (size_t i = 0; i < NB_CMD; i++) {
-        dprintf(client_fd, "%s", help_msg[i]);
-    }
-}
+    char *buf;
+    struct stat sb;
+    int fd = open("server/src/commands/help/help_msg.txt", O_RDONLY);
 
-static int cmd_help_msg(char *cmd, const int client_fd)
-{
-    for (size_t i = 0; i < NB_CMD; i++) {
-        if (strcmp(cmd, cmd_lst[i]) == 0) {
-            dprintf(client_fd, "%s", CODE_302);
-            dprintf(client_fd, "%s", help_msg[i]);
-            dprintf(client_fd, "%s", CODE_302);
-            return WIN_CMD;
-        }
-    }
-    dprintf(client_fd, "%s", ERR_BAD_ARG);
-    return ERR_CMD;
+    stat("server/src/commands/help/help_msg.txt", &sb);
+    buf = malloc(sizeof(char) * (sb.st_size + 1));
+    read(fd, buf, sb.st_size - 1);
+    buf[sb.st_size - 1] = '\0';
+    close(fd);
+    dprintf(client_fd, "%s%s\n%s", CODE_224, buf, CODE_101);
+    free(buf);
 }
 
 int help_cmd(server_t *server, const int client_fd, my_teams_t *)
 {
-    if (server->cmd_arg.len == 1) {
-        print_all_help(client_fd);
-        return WIN_CMD;
-    } else {
-        return cmd_help_msg(server->cmd_arg.tab[1], client_fd);
-    }
+    if (error_not_login(server, client_fd) != 0)
+        return ERR_CMD;
+    open_help_msg(client_fd);
+    return WIN_CMD;
 }

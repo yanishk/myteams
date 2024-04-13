@@ -27,7 +27,8 @@ int (*cmd_func[NB_CMD])(server_t *server,
 int error_not_login(server_t *server, const int client_fd)
 {
     if (server->clients[server->user_index]->is_connected == false) {
-        write(client_fd, FAIL_MSG_LOGIN, strlen(FAIL_MSG_LOGIN));
+        my_fd_putstr(CODE_301, client_fd);
+        my_fd_putstr(CODE_101, client_fd);
         return 1;
     }
     return 0;
@@ -86,7 +87,9 @@ void get_user_input(server_t *server, const int client_fd, my_teams_t *teams)
             status = cmd_func[i](server, client_fd, teams);
         }
     }
-    if (status == 0)
-        write(client_fd, CODE_301, strlen(CODE_301));
+    if (status == 0) {
+        my_fd_putstr(CODE_301, client_fd);
+        my_fd_putstr(CODE_101, client_fd);
+    }
     free(server->cmd_arg.tab);
 }

@@ -29,6 +29,8 @@
     #define ERR_BAD_ARG "504 Bad arguments\n"
     #define CODE_NOT_IMPLEMENTED "NOT YET IMPLEMENTED\n"
 
+    #define CODE_101 "101 End of transmmission"
+
     #define CODE_201 "201 Client logged in.\n" // Done
     #define CODE_202 "202 Client logged out.\n" // Done
     #define CODE_203 "203 Print users.\n" // 1/2
@@ -52,6 +54,7 @@
     #define CODE_221 "221 Print team.\n"
     #define CODE_222 "222 Print channel.\n"
     #define CODE_223 "223 Print thread.\n"
+    #define CODE_224 "224 Help message.\n"
 
     #define CODE_301 "301 Error unauthorized.\n"
     #define CODE_302 "302 Error already exist.\n"

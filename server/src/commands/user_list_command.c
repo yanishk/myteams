@@ -26,7 +26,7 @@ static int error_handling_user(server_t *server,
             return WIN_CMD;
         }
     }
-    dprintf(client_fd, "%s%s\n", CODE_401, server->cmd_arg.tab[1]);
+    dprintf(client_fd, "%s%s\n%s", CODE_401, server->cmd_arg.tab[1], CODE_101);
     return ERR_CMD;
 }
 
@@ -40,6 +40,7 @@ int user_cmd(server_t *server, const int client_fd, my_teams_t *teams)
     TAILQ_FOREACH(np_user, &teams->user_head, user_entries) {
         dprintf(client_fd, "%s\n%s\n%d\n", np_user->uuid, np_user->name, 5);
     }
+    dprintf(client_fd, "%s", CODE_101);
     return WIN_CMD;
 }
 
@@ -51,11 +52,11 @@ int user_spe_uuid(server_t *server, const int client_fd, my_teams_t *teams)
         return ERR_CMD;
     TAILQ_FOREACH(np_user, &teams->user_head, user_entries) {
         if (strcmp(np_user->uuid, server->cmd_arg.tab[1]) == 0) {
-            dprintf(client_fd, "%s%s\n%s\n%d\n", CODE_204, np_user->uuid,
-            np_user->name, 5);
+            dprintf(client_fd, "%s%s\n%s\n%d\n%s", CODE_204, np_user->uuid,
+            np_user->name, 5, CODE_101);
             return WIN_CMD;
         }
     }
-    dprintf(client_fd, "%s%s\n", CODE_401, server->cmd_arg.tab[1]);
+    dprintf(client_fd, "%s%s\n%s", CODE_401, server->cmd_arg.tab[1], CODE_101);
     return ERR_CMD;
 }

@@ -27,6 +27,6 @@ bool does_file_exists(char *str);
 bool array_is_number(char **array);
 char **word_array(char const *str, char *delim);
 
-void select_display_methode(char *msg);
+int select_display_methode(char *msg);
 
 #endif /* !CLIENT_H_ */

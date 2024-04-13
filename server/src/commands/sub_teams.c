@@ -49,12 +49,12 @@ static int error_sub_team(server_t *server,
         if (strcmp(team_exist->uuid, server->cmd_arg.tab[1]) == 0)
             return WIN_CMD;
     }
-    dprintf(client_fd, "%s",
-        "sub_unsub.c/error_sub_team : specified team does not exist\n");
+    dprintf(client_fd, "%s%s\n%s", CODE_402, server->cmd_arg.tab[1], CODE_101);
     return ERR_CMD;
 }
 
-static void fill_user_subbed(server_t *server, user_t *new_user)
+static void fill_user_subbed(server_t *server, user_t *new_user,
+    const int client_fd)
 {
     team_belong_t *my_team;
 
@@ -66,6 +66,8 @@ static void fill_user_subbed(server_t *server, user_t *new_user)
         TAILQ_INSERT_TAIL(&new_user->team_belong_head,
             my_team, belong_entries);
         my_team->uuid = server->cmd_arg.tab[1];
+        dprintf(client_fd, "%s%s\n%s\n%s", CODE_207,
+        server->clients[server->user_index]->my_uuid, my_team->uuid, CODE_101);
     }
 }
 
@@ -77,10 +79,8 @@ int sub_team(server_t *server, const int client_fd, my_teams_t *teams)
         return ERR_CMD;
     for ((new_user) = ((&teams->user_head)->tqh_first);
         (new_user); (new_user) = ((new_user)->user_entries.tqe_next)) {
-        fill_user_subbed(server, new_user);
+        fill_user_subbed(server, new_user, client_fd);
     }
-    dprintf(client_fd, "%s",
-        "sub_unsub.c/sub_team : Succesfully joined the team\n");
     return WIN_CMD;
 }
 
@@ -89,16 +89,17 @@ static int disp_my_teams(const int client_fd, my_teams_t *teams)
     team_belong_t *my_teams;
     team_t *all_teams;
 
+    dprintf(client_fd, "%s", CODE_208);
     TAILQ_FOREACH(my_teams, &teams->new_user->team_belong_head,
         belong_entries) {
         TAILQ_FOREACH(all_teams, &teams->team_head, team_entries) {
             if (strcmp(my_teams->uuid, all_teams->uuid) == 0) {
-                dprintf(client_fd, "%s\n", all_teams->name);
-                dprintf(client_fd, "%s\n", all_teams->description);
-                dprintf(client_fd, "%s\n", all_teams->uuid);
+                dprintf(client_fd, "%s\n%s\n%s\n", all_teams->uuid,
+                all_teams->name, all_teams->description);
             }
         }
     }
+    dprintf(client_fd, "%s", CODE_101);
     return WIN_CMD;
 }
 
@@ -111,8 +112,7 @@ static int is_in_team(server_t *server, const int client_fd, my_teams_t *teams)
         if (strcmp(my_teams->uuid, server->cmd_arg.tab[1]) == 0)
             return WIN_CMD;
     }
-    dprintf(client_fd,
-        "sub_unsub.c/sub_team : You are not allowed to see this team\n");
+    dprintf(client_fd, "%s%s", CODE_301, CODE_101);
     return ERR_CMD;
 }
 

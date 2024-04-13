@@ -15,16 +15,16 @@ static int error_send_msg(server_t *server,
     if (error_not_login(server, client_fd) != 0)
         return ERR_CMD;
     if (server->cmd_arg.tab[1] == NULL || server->cmd_arg.tab[2] == NULL) {
-        dprintf(client_fd, "%s\n",
-            "private_msg.c/error_send_msg : not enough argument");
+        dprintf(client_fd, "%s\n%s",
+            "private_msg.c/error_send_msg : not enough argument", CODE_101);
         return ERR_CMD;
     }
     TAILQ_FOREACH(new_user, &teams->user_head, user_entries) {
         if (strcmp(server->cmd_arg.tab[1], new_user->uuid) == 0)
             return WIN_CMD;
     }
-    dprintf(client_fd, "%s%s\n", CODE_401,
-        server->clients[server->user_index]->my_uuid);
+    dprintf(client_fd, "%s%s\n%s", CODE_401,
+        server->clients[server->user_index]->my_uuid, CODE_101);
     return ERR_CMD;
 }
 
@@ -39,7 +39,7 @@ int send_msg(server_t *server, const int client_fd, my_teams_t *teams)
     priv_msg->uuid_sender = server->clients[server->user_index]->my_uuid;
     priv_msg->uuid_other = server->cmd_arg.tab[1];
     priv_msg->body = server->cmd_arg.tab[2];
-    dprintf(client_fd, "%s", CODE_200);
+    dprintf(client_fd, "%s%s", CODE_200, CODE_101);
     return WIN_CMD;
 }
 
@@ -59,8 +59,8 @@ static int error_disp_msg(server_t *server,
         if (strcmp(server->cmd_arg.tab[1], new_user->uuid) == 0)
             return WIN_CMD;
     }
-    dprintf(client_fd, "%s%s\n", CODE_401,
-    server->clients[server->user_index]->my_uuid);
+    dprintf(client_fd, "%s%s\n%s", CODE_401,
+    server->clients[server->user_index]->my_uuid, CODE_101);
     return ERR_CMD;
 }
 
@@ -74,6 +74,6 @@ int display_priv_msg(server_t *server, const int client_fd, my_teams_t *teams)
         if (strcmp(prv_msg->uuid_other, server->cmd_arg.tab[1]) == 0)
             dprintf(client_fd, "%s\n", prv_msg->body);
     }
-    dprintf(client_fd, "%s", CODE_200);
+    dprintf(client_fd, "%s%s", CODE_200, CODE_101);
     return WIN_CMD;
 }

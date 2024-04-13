@@ -11,6 +11,7 @@
     #include "logging_client.h"
 
     #define NB_CODE 2
+    #define CODE_101 "101 End of transmmission"
 
 typedef struct {
     char *str;

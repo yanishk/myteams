@@ -15,17 +15,18 @@ static void add_user(server_t *server, const char *username,
     server->clients[server->user_index]->username = strdup(username);
     server->clients[server->user_index]->is_connected = true;
     server->clients[server->user_index]->my_uuid = new_user->uuid;
-    dprintf(client_fd, "%s%s\n%s\n", CODE_201, new_user->uuid, username);
+    dprintf(client_fd, "%s%s\n%s\n%s", CODE_201, new_user->uuid,
+    username, CODE_101);
 }
 
 static int error_login(server_t *server, const int client_fd)
 {
     if (server->clients[server->user_index]->is_connected == true) {
-        dprintf(client_fd, "%s", ALRD_LOGIN);
+        dprintf(client_fd, "%s%s", CODE_301, CODE_101);
         return ERR_CMD;
     }
     if (server->cmd_arg.tab[1] == NULL) {
-        write(client_fd, FAIL_MSG_LOGIN, strlen(FAIL_MSG_LOGIN));
+        dprintf(client_fd, "%s%s", CODE_301, CODE_101);
         return ERR_CMD;
     }
     return WIN_CMD;
