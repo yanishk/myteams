@@ -70,6 +70,7 @@ static void init_thread(server_t *server,
             TAILQ_INSERT_TAIL(&channel->thread_head, thread, thread_entries);
             thread->name = server->cmd_arg.tab[1];
             thread->description = server->cmd_arg.tab[2];
+            thread->timestamp = time(NULL);
             uuid_generate_random(tmp_uuid);
             thread->uuid = malloc(37);
             uuid_unparse(tmp_uuid, thread->uuid);

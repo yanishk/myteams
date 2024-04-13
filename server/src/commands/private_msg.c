@@ -39,6 +39,7 @@ int send_msg(server_t *server, const int client_fd, my_teams_t *teams)
     priv_msg->uuid_sender = server->clients[server->user_index]->my_uuid;
     priv_msg->uuid_other = server->cmd_arg.tab[1];
     priv_msg->body = server->cmd_arg.tab[2];
+    priv_msg->timestamp = time(NULL);
     dprintf(client_fd, "%s%s", CODE_200, CODE_101);
     return WIN_CMD;
 }

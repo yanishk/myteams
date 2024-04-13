@@ -45,8 +45,10 @@ static void fill_thread_message(thread_t *thread, char **array)
             thread_msg = malloc(sizeof(private_msg_t));
             TAILQ_INSERT_TAIL(&thread->thread_msg_head, thread_msg,
                 thread_msg_entries);
-            thread_msg->body = array[i + 1];
+            thread_msg->body = strdup(array[i + 1]);
         }
+        if (strcmp(array[i], "timestamp") == 0)
+            thread_msg->timestamp = my_get_timestamp(array[i + 1]);
     }
 }
 
@@ -61,6 +63,8 @@ static void fill_thread(enum TEAM_CONTEXT data, char *line,
         thread->name = strdup(array[1]);
     if (strncmp(line, "\t\t\tdescription=", strlen("\t\t\tdescription=")) == 0)
         thread->description = strdup(array[1]);
+    if (strncmp(line, "\t\t\ttimestamp=", strlen("\t\t\ttimestamp=")) == 0)
+        thread->timestamp = my_get_timestamp(line);
     if (strncmp(line, "\t\t\tthread_message=",
         strlen("\t\t\tthread_message=")) == 0)
         fill_thread_message(thread, array);

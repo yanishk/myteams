@@ -34,6 +34,7 @@ static void save_private_msg(const int fd, const my_teams_t teams)
         dprintf(fd, "\tuuid_sender=%s\n", private_msg->uuid_sender);
         dprintf(fd, "\tuuid_other=%s\n", private_msg->uuid_other);
         dprintf(fd, "\tbody=%s\n", private_msg->body);
+        dprintf(fd, "\ttimestamp=%ld\n", private_msg->timestamp);
     }
 }
 
@@ -56,7 +57,8 @@ static void save_threads_msg(const int fd, thread_t *thread)
 
     dprintf(fd, "\t\t\tthread_message=");
     TAILQ_FOREACH(thread_msg, &thread->thread_msg_head, thread_msg_entries) {
-        dprintf(fd, "body:%s", thread_msg->body);
+        dprintf(fd, "body:%s,", thread_msg->body);
+        dprintf(fd, "timestamp:%ld", thread_msg->timestamp);
         if (TAILQ_NEXT(thread_msg, thread_msg_entries) != NULL)
             dprintf(fd, ",");
     }
@@ -72,6 +74,7 @@ static void save_threads(const int fd, channel_t *channel)
         dprintf(fd, "\t\t\tuuid=%s\n", thread->uuid);
         dprintf(fd, "\t\t\tname=%s\n", thread->name);
         dprintf(fd, "\t\t\tdescription=%s\n", thread->description);
+        dprintf(fd, "\t\t\ttimestamp=%ld\n", thread->timestamp);
         save_threads_msg(fd, thread);
     }
 }

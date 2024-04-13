@@ -22,8 +22,6 @@ int array_size(char **array);
 void print_array(char **array);
 void free_array(char **array);
 char *concat_strings(char *str1, char *str2, char *delim);
-char *does_path_exists(char *str);
-bool does_file_exists(char *str);
 bool array_is_number(char **array);
 char **word_array(char const *str, char *delim);
 

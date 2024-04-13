@@ -13,6 +13,7 @@
     #include <stddef.h>
     #include <stdbool.h>
     #include <stdio.h>
+    #include <time.h>
 
 enum TEAM_CONTEXT {
     NOTHING,
@@ -32,6 +33,7 @@ typedef struct private_msg {
     char *uuid_sender;
     char *uuid_other;
     char *body;
+    time_t timestamp;
     TAILQ_ENTRY(private_msg) private_msg_entries;
 } private_msg_t;
 
@@ -50,6 +52,7 @@ typedef struct user {
 
 typedef struct thread_msg {
     char *body;
+    time_t timestamp;
     TAILQ_ENTRY(thread_msg) thread_msg_entries;
 } thread_msg_t;
 
@@ -57,6 +60,7 @@ typedef struct thread {
     char *uuid;
     char *name;
     char *description;
+    time_t timestamp;
     TAILQ_HEAD(, thread_msg) thread_msg_head;
     TAILQ_ENTRY(thread) thread_entries;
 } thread_t;

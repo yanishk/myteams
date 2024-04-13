@@ -8,20 +8,28 @@
 #include "my.h"
 #include <uuid/uuid.h>
 
+static void fill_comment(server_t *server, thread_t *thread)
+{
+    thread_msg_t *comment;
+
+    if (TAILQ_EMPTY(&thread->thread_msg_head))
+        TAILQ_INIT(&thread->thread_msg_head);
+    comment = malloc(sizeof(thread_msg_t));
+    TAILQ_INSERT_TAIL(&thread->thread_msg_head,
+        comment, thread_msg_entries);
+    comment->body = server->cmd_arg.tab[1];
+    comment->timestamp = time(NULL);
+}
+
 static void init_channel(server_t *server, my_teams_t *teams,
     channel_t *channel)
 {
     thread_t *thread;
-    thread_msg_t *comment;
 
     for ((thread) = ((&channel->thread_head)->tqh_first); (thread);
         (thread) = ((thread)->thread_entries.tqe_next)) {
-        if (strcmp(thread->uuid, teams->command_context->thread_uuid) == 0) {
-            comment = malloc(sizeof(thread_msg_t));
-            TAILQ_INSERT_TAIL(&thread->thread_msg_head,
-                comment, thread_msg_entries);
-            comment->body = server->cmd_arg.tab[1];
-        }
+        if (strcmp(thread->uuid, teams->command_context->thread_uuid) == 0)
+            fill_comment(server, thread);
     }
 }
 

@@ -29,6 +29,8 @@ void parse_mp(my_teams_t *teams, char *line, int *is_user)
         dm->uuid_other = strdup(array[1]);
     if (strncmp(line, "\tbody=", strlen("\tbody=")) == 0)
         dm->body = strdup(array[1]);
+    if (strncmp(line, "\ttimestamp=", strlen("\ttimestamp=")) == 0)
+        dm->timestamp = my_get_timestamp(array[1]);
 }
 
 void parse_database(my_teams_t *teams)
