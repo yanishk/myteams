@@ -20,7 +20,7 @@
 
     #define MAX_USER 1024
     #define BUFFER_MAX_SIZE 1024
-    #define NB_CMD 13 //14 commande dmd dans le pdf (enfin je croie)
+    #define NB_CMD 14 //14 commande dmd dans le pdf (enfin je croie)
 
     #define FAIL_MSG_LOGIN "530 Not logged in.\n"
     #define ALRD_LOGIN "531 Already logged in.\n"
@@ -77,7 +77,8 @@ static char *const cmd_lst[NB_CMD] = {
     "/subscribed",
     "/use",
     "/unsubscribe",
-    "/list"
+    "/list",
+    "/info"
 };
 
 static char *const help_msg[NB_CMD] = {

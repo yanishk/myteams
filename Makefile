@@ -35,6 +35,11 @@ SERVER_SRC =                						\
     ./server/src/commands/list/list_channel.c       \
     ./server/src/commands/list/list_thread.c        \
     ./server/src/commands/list/list_comment.c       \
+    ./server/src/commands/info/info.c               \
+    ./server/src/commands/info/info_user.c          \
+    ./server/src/commands/info/info_team.c          \
+    ./server/src/commands/info/info_channel.c       \
+    ./server/src/commands/info/info_thread.c        \
     ./server/src/database/parse_database.c          \
     ./server/src/database/save_database.c           \
     ./server/src/database/parse_teams.c             \

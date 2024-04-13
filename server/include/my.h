@@ -68,6 +68,13 @@ int list_channel(const int client_fd, my_teams_t *teams);
 int list_thread(const int client_fd, my_teams_t *teams);
 int list_comment(const int client_fd, my_teams_t *teams);
 
+//info
+int info(server_t *server, const int client_fd, my_teams_t *teams);
+int info_user(const int client_fd, my_teams_t *teams);
+int info_team(const int client_fd, my_teams_t *teams);
+int info_channel(const int client_fd, my_teams_t *teams);
+int info_thread(const int client_fd, my_teams_t *teams);
+
 // database
 void parse_database(my_teams_t *teams);
 void save_database(const my_teams_t teams);
