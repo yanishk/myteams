@@ -25,7 +25,11 @@ static int error_login(server_t *server, const int client_fd)
         dprintf(client_fd, "%s%s", CODE_301, CODE_101);
         return ERR_CMD;
     }
-    if (server->cmd_arg.tab[1] == NULL) {
+    if (server->cmd_arg.len != 2) {
+        dprintf(client_fd, "%s%s", CODE_301, CODE_101);
+        return ERR_CMD;
+    }
+    if (strlen(server->cmd_arg.tab[1]) >= MAX_NAME_LENGTH) {
         dprintf(client_fd, "%s%s", CODE_301, CODE_101);
         return ERR_CMD;
     }
@@ -39,7 +43,7 @@ static void create_new_user(server_t *server, const int client_fd,
 
     teams->new_user = malloc(sizeof(user_t));
     TAILQ_INSERT_TAIL(&teams->user_head, teams->new_user, user_entries);
-    teams->new_user->name = server->cmd_arg.tab[1];
+    strcpy(teams->new_user->name, server->cmd_arg.tab[1]);
     uuid_generate_random(tmp_uuid);
     teams->new_user->uuid = malloc(37);
     teams->new_user->is_logged = true;

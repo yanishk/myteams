@@ -9,30 +9,6 @@
 #include "teams.h"
 #include "my.h"
 
-void parse_mp(my_teams_t *teams, char *line, int *is_user)
-{
-    static private_msg_t *dm;
-    char **array = word_array(line, "\t\n=,:");
-
-    if (strcmp(line, "private_msg:\n") == 0) {
-        dm = malloc(sizeof(private_msg_t));
-        TAILQ_INSERT_TAIL(&teams->priv_msg_head, dm, private_msg_entries);
-        *is_user = 2;
-    }
-    if (*is_user != 2 || array_size(array) < 2) {
-        free(array);
-        return;
-    }
-    if (strncmp(line, "\tuuid_sender=", strlen("\tuuid_sender=")) == 0)
-        dm->uuid_sender = strdup(array[1]);
-    if (strncmp(line, "\tuuid_other=", strlen("\tuuid_other=")) == 0)
-        dm->uuid_other = strdup(array[1]);
-    if (strncmp(line, "\tbody=", strlen("\tbody=")) == 0)
-        dm->body = strdup(array[1]);
-    if (strncmp(line, "\ttimestamp=", strlen("\ttimestamp=")) == 0)
-        dm->timestamp = my_get_timestamp(array[1]);
-}
-
 void parse_database(my_teams_t *teams)
 {
     FILE *stream = fopen(".database", "r");

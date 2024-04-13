@@ -16,10 +16,12 @@ static void fill_team(enum TEAM_CONTEXT data, char *line,
         return;
     if (strncmp(line, "\tuuid=", strlen("\tuuid=")) == 0)
         team->uuid = strdup(array[1]);
-    if (strncmp(line, "\tname=", strlen("\tname=")) == 0)
-        team->name = strdup(array[1]);
-    if (strncmp(line, "\tdescription=", strlen("\tdescription=")) == 0)
-        team->description = strdup(array[1]);
+    if (strncmp(line, "\tname=", strlen("\tname=")) == 0 &&
+        strlen(array[1]) < MAX_NAME_LENGTH)
+        strcpy(team->name, array[1]);
+    if (strncmp(line, "\tdescription=", strlen("\tdescription=")) == 0 &&
+        strlen(array[1]) < MAX_DESCRIPTION_LENGTH)
+        strcpy(team->description, array[1]);
 }
 
 static void fill_channel(enum TEAM_CONTEXT data, char *line,
@@ -29,10 +31,12 @@ static void fill_channel(enum TEAM_CONTEXT data, char *line,
         return;
     if (strncmp(line, "\t\tuuid=", strlen("\t\tuuid=")) == 0)
         channel->uuid = strdup(array[1]);
-    if (strncmp(line, "\t\tname=", strlen("\t\tname=")) == 0)
-        channel->name = strdup(array[1]);
-    if (strncmp(line, "\t\tdescription=", strlen("\t\tdescription=")) == 0)
-        channel->description = strdup(array[1]);
+    if (strncmp(line, "\t\tname=", strlen("\t\tname=")) == 0 &&
+        strlen(array[1]) < MAX_NAME_LENGTH)
+        strcpy(channel->name, array[1]);
+    if (strncmp(line, "\t\tdescription=", strlen("\t\tdescription=")) == 0 &&
+        strlen(array[1]) < MAX_DESCRIPTION_LENGTH)
+        strcpy(channel->description, array[1]);
 }
 
 static void fill_thread_message(thread_t *thread, char **array)
@@ -41,11 +45,12 @@ static void fill_thread_message(thread_t *thread, char **array)
 
     TAILQ_INIT(&thread->thread_msg_head);
     for (size_t i = 1; array[i] != NULL; i += 2) {
-        if (strcmp(array[i], "body") == 0) {
+        if (strcmp(array[i], "body") == 0 &&
+        strlen(array[i + 1]) < MAX_BODY_LENGTH) {
             thread_msg = malloc(sizeof(private_msg_t));
             TAILQ_INSERT_TAIL(&thread->thread_msg_head, thread_msg,
                 thread_msg_entries);
-            thread_msg->body = strdup(array[i + 1]);
+            strcpy(thread_msg->body, array[i + 1]);
         }
         if (strcmp(array[i], "timestamp") == 0)
             thread_msg->timestamp = my_get_timestamp(array[i + 1]);
@@ -59,10 +64,12 @@ static void fill_thread(enum TEAM_CONTEXT data, char *line,
         return;
     if (strncmp(line, "\t\t\tuuid=", strlen("\t\t\tuuid=")) == 0)
         thread->uuid = strdup(array[1]);
-    if (strncmp(line, "\t\t\tname=", strlen("\t\t\tname=")) == 0)
-        thread->name = strdup(array[1]);
-    if (strncmp(line, "\t\t\tdescription=", strlen("\t\t\tdescription=")) == 0)
-        thread->description = strdup(array[1]);
+    if (strncmp(line, "\t\t\tname=", strlen("\t\t\tname=")) == 0 &&
+        strlen(array[1]) < MAX_NAME_LENGTH)
+        strcpy(thread->name, array[1]);
+    if (strncmp(line, "\t\t\tdescription=", strlen("\t\t\tdescription=")) == 0
+        && strlen(array[1]) < MAX_DESCRIPTION_LENGTH)
+        strcpy(thread->description, array[1]);
     if (strncmp(line, "\t\t\ttimestamp=", strlen("\t\t\ttimestamp=")) == 0)
         thread->timestamp = my_get_timestamp(line);
     if (strncmp(line, "\t\t\tthread_message=",

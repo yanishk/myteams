@@ -77,8 +77,9 @@ int info_thread(const int client_fd, my_teams_t *teams);
 
 // database
 void parse_database(my_teams_t *teams);
-void save_database(const my_teams_t teams);
 void parse_teams(my_teams_t *teams, char *line, int *is_user);
 void parse_users(my_teams_t *teams, char *line, int *is_user);
+void parse_mp(my_teams_t *teams, char *line, int *is_user);
+void save_database(const my_teams_t teams);
 
 #endif /* !MY_H_ */

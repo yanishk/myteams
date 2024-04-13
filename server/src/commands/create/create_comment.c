@@ -18,7 +18,7 @@ static void fill_comment(server_t *server, thread_t *thread,
     comment = malloc(sizeof(thread_msg_t));
     TAILQ_INSERT_TAIL(&thread->thread_msg_head,
         comment, thread_msg_entries);
-    comment->body = server->cmd_arg.tab[1];
+    strcpy(comment->body, server->cmd_arg.tab[1]);
     comment->timestamp = time(NULL);
     dprintf(client_fd, "%s%s\n%s\n%ld\n%s\n%s", CODE_217, thread->uuid,
     server->clients[server->user_index]->my_uuid, thread->timestamp,
@@ -54,11 +54,13 @@ int create_comment(server_t *server, const int client_fd, my_teams_t *teams)
 {
     team_t *above_team;
 
-    if (server->cmd_arg.tab[1] == NULL) {
+    if (server->cmd_arg.len != 2) {
         dprintf(client_fd, "%s",
             "create.c/error_channel : not enough argument\n");
         return ERR_CMD;
     }
+    if (strlen(server->cmd_arg.tab[1]) >= MAX_BODY_LENGTH)
+        return ERR_CMD;
     for ((above_team) = ((&teams->team_head)->tqh_first); (above_team);
         (above_team) = ((above_team)->team_entries.tqe_next)) {
         if (strcmp(above_team->uuid, teams->command_context->team_uuid) == 0) {

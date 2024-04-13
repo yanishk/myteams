@@ -15,6 +15,10 @@
     #include <stdio.h>
     #include <time.h>
 
+    #define MAX_NAME_LENGTH 32
+    #define MAX_DESCRIPTION_LENGTH 255
+    #define MAX_BODY_LENGTH 512
+
 enum TEAM_CONTEXT {
     NOTHING,
     TEAM,
@@ -32,7 +36,7 @@ typedef struct command_context {
 typedef struct private_msg {
     char *uuid_sender;
     char *uuid_other;
-    char *body;
+    char body[MAX_BODY_LENGTH];
     time_t timestamp;
     TAILQ_ENTRY(private_msg) private_msg_entries;
 } private_msg_t;
@@ -44,22 +48,22 @@ typedef struct team_belong {
 
 typedef struct user {
     char *uuid;
-    char *name;
+    char name[MAX_NAME_LENGTH];
     bool is_logged;
     TAILQ_HEAD(, team_belong) team_belong_head;
     TAILQ_ENTRY(user) user_entries;
 } user_t;
 
 typedef struct thread_msg {
-    char *body;
+    char body[MAX_BODY_LENGTH];
     time_t timestamp;
     TAILQ_ENTRY(thread_msg) thread_msg_entries;
 } thread_msg_t;
 
 typedef struct thread {
     char *uuid;
-    char *name;
-    char *description;
+    char name[MAX_NAME_LENGTH];
+    char description[MAX_DESCRIPTION_LENGTH];
     time_t timestamp;
     TAILQ_HEAD(, thread_msg) thread_msg_head;
     TAILQ_ENTRY(thread) thread_entries;
@@ -67,16 +71,16 @@ typedef struct thread {
 
 typedef struct channel {
     char *uuid;
-    char *name;
-    char *description;
+    char name[MAX_NAME_LENGTH];
+    char description[MAX_DESCRIPTION_LENGTH];
     TAILQ_HEAD(, thread) thread_head;
     TAILQ_ENTRY(channel) channel_entries;
 } channel_t;
 
 typedef struct team {
     char *uuid;
-    char *name;
-    char *description;
+    char name[MAX_NAME_LENGTH];
+    char description[MAX_DESCRIPTION_LENGTH];
     TAILQ_HEAD(, channel) channel_head;
     TAILQ_ENTRY(team) team_entries;
 } team_t;

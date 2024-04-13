@@ -47,6 +47,9 @@ static int error_thread(server_t *server,
             "create.c/error_channel : not enough argument\n");
         return ERR_CMD;
     }
+    if (strlen(server->cmd_arg.tab[1]) >= MAX_NAME_LENGTH ||
+        strlen(server->cmd_arg.tab[2]) >= MAX_DESCRIPTION_LENGTH)
+        return ERR_CMD;
     TAILQ_FOREACH(above_team, &teams->team_head, team_entries) {
         if (strcmp(above_team->uuid, teams->command_context->team_uuid) == 0) {
             return find_channel(server, client_fd, teams, above_team);
@@ -67,8 +70,8 @@ static void init_thread(server_t *server,
         if (strcmp(channel->uuid, teams->command_context->channel_uuid) == 0) {
             thread = malloc(sizeof(thread_t));
             TAILQ_INSERT_TAIL(&channel->thread_head, thread, thread_entries);
-            thread->name = server->cmd_arg.tab[1];
-            thread->description = server->cmd_arg.tab[2];
+            strcpy(thread->name, server->cmd_arg.tab[1]);
+            strcpy(thread->description, server->cmd_arg.tab[2]);
             thread->timestamp = time(NULL);
             uuid_generate_random(tmp_uuid);
             thread->uuid = malloc(37);

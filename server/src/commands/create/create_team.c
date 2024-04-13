@@ -17,6 +17,9 @@ static int error_create_team(server_t *server,
         dprintf(client_fd, "%s", "create.c/create : not enough argument\n");
         return ERR_CMD;
     }
+    if (strlen(server->cmd_arg.tab[1]) >= MAX_NAME_LENGTH ||
+        strlen(server->cmd_arg.tab[2]) >= MAX_DESCRIPTION_LENGTH)
+        return ERR_CMD;
     TAILQ_FOREACH(team_exist, &teams->team_head, team_entries) {
         if (strcmp(team_exist->name, server->cmd_arg.tab[1]) == 0) {
             dprintf(client_fd, "%s%s", CODE_302, CODE_101);
@@ -35,8 +38,8 @@ int create_team(server_t *server, const int client_fd, my_teams_t *teams)
         return ERR_CMD;
     team = malloc(sizeof(team_t));
     TAILQ_INSERT_TAIL(&teams->team_head, team, team_entries);
-    team->name = server->cmd_arg.tab[1];
-    team->description = server->cmd_arg.tab[2];
+    strcpy(team->name, server->cmd_arg.tab[1]);
+    strcpy(team->description, server->cmd_arg.tab[2]);
     uuid_generate_random(tmp_uuid);
     team->uuid = malloc(37);
     uuid_unparse(tmp_uuid, team->uuid);

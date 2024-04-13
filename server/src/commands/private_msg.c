@@ -19,6 +19,8 @@ static int error_send_msg(server_t *server,
             "private_msg.c/error_send_msg : not enough argument", CODE_101);
         return ERR_CMD;
     }
+    if (strlen(server->cmd_arg.tab[2]) >= MAX_BODY_LENGTH)
+        return ERR_CMD;
     TAILQ_FOREACH(new_user, &teams->user_head, user_entries) {
         if (strcmp(server->cmd_arg.tab[1], new_user->uuid) == 0)
             return WIN_CMD;
@@ -38,7 +40,7 @@ int send_msg(server_t *server, const int client_fd, my_teams_t *teams)
     TAILQ_INSERT_TAIL(&teams->priv_msg_head, priv_msg, private_msg_entries);
     priv_msg->uuid_sender = server->clients[server->user_index]->my_uuid;
     priv_msg->uuid_other = server->cmd_arg.tab[1];
-    priv_msg->body = server->cmd_arg.tab[2];
+    strcpy(priv_msg->body, server->cmd_arg.tab[2]);
     priv_msg->timestamp = time(NULL);
     dprintf(client_fd, "%s%s", CODE_200, CODE_101);
     return WIN_CMD;

@@ -44,6 +44,7 @@ SERVER_SRC =                						\
     ./server/src/database/save_database.c           \
     ./server/src/database/parse_teams.c             \
     ./server/src/database/parse_users.c             \
+    ./server/src/database/parse_mp.c                \
 	./server/main.c
 
 CLIENT_SRC =                				\
