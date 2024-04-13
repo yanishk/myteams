@@ -7,7 +7,7 @@
 
 #include "my.h"
 
-int quit_cmd(server_t *server, const int client_fd, my_teams_t *)
+int quit_cmd(server_t *server, const int client_fd, my_teams_t *teams)
 {
     char *uuid;
     char *username;
@@ -17,6 +17,7 @@ int quit_cmd(server_t *server, const int client_fd, my_teams_t *)
     uuid = strdup(server->clients[server->user_index]->my_uuid);
     username = strdup(server->clients[server->user_index]->username);
     dprintf(client_fd, "%s%s\n%s\n", CODE_202, uuid, username);
+    teams->new_user->is_logged = false;
     server->clients[server->user_index]->username = malloc(sizeof(char) * 1);
     server->clients[server->user_index]->is_connected = false;
     server->fd_array[server->user_index] = 0;

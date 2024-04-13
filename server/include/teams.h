@@ -11,6 +11,7 @@
     #include <sys/queue.h>
     #include <stdlib.h>
     #include <stddef.h>
+    #include <stdbool.h>
     #include <stdio.h>
 
 enum TEAM_CONTEXT {
@@ -42,6 +43,7 @@ typedef struct team_belong {
 typedef struct user {
     char *uuid;
     char *name;
+    bool is_logged;
     TAILQ_HEAD(, team_belong) team_belong_head;
     TAILQ_ENTRY(user) user_entries;
 } user_t;

@@ -26,8 +26,10 @@ static void fill_user(char *line, user_t *user, char **array)
 {
     if (strncmp(line, "\tuuid=", strlen("\tuuid=")) == 0)
         user->uuid = strdup(array[1]);
-    if (strncmp(line, "\tname=", strlen("\tname=")) == 0) {
+    if (strncmp(line, "\tname=", strlen("\tname=")) == 0)
         user->name = strdup(array[1]);
+    if (strncmp(line, "\tis_logged=", strlen("\tis_logged=")) == 0) {
+        user->is_logged = my_getnbr(array[1]);
         server_event_user_loaded(user->uuid, user->name);
     }
     if (strncmp(line, "\tteams_uuid=", strlen("\tteams_uuid=")) == 0)

@@ -31,25 +31,35 @@ static int error_login(server_t *server, const int client_fd)
     return WIN_CMD;
 }
 
-int user_login(server_t *server, const int client_fd, my_teams_t *teams)
+static void create_new_user(server_t *server, const int client_fd,
+    my_teams_t *teams)
 {
     uuid_t tmp_uuid;
 
-    if (error_login(server, client_fd) == ERR_CMD)
-        return ERR_CMD;
-    TAILQ_FOREACH(teams->new_user, &teams->user_head, user_entries) {
-        if (strcmp(teams->new_user->name, server->cmd_arg.tab[1]) == 0) {
-            add_user(server, server->cmd_arg.tab[1],
-                teams->new_user, client_fd);
-            return WIN_CMD;
-        }
-    }
     teams->new_user = malloc(sizeof(user_t));
     TAILQ_INSERT_TAIL(&teams->user_head, teams->new_user, user_entries);
     teams->new_user->name = server->cmd_arg.tab[1];
     uuid_generate_random(tmp_uuid);
     teams->new_user->uuid = malloc(37);
+    teams->new_user->is_logged = true;
     uuid_unparse(tmp_uuid, teams->new_user->uuid);
     add_user(server, server->cmd_arg.tab[1], teams->new_user, client_fd);
+}
+
+int user_login(server_t *server, const int client_fd, my_teams_t *teams)
+{
+    if (error_login(server, client_fd) == ERR_CMD)
+        return ERR_CMD;
+    for ((teams->new_user) = ((&teams->user_head)->tqh_first);
+        (teams->new_user); (teams->new_user) =
+        ((teams->new_user)->user_entries.tqe_next)) {
+        if (strcmp(teams->new_user->name, server->cmd_arg.tab[1]) == 0) {
+            add_user(server, server->cmd_arg.tab[1],
+                teams->new_user, client_fd);
+            teams->new_user->is_logged = true;
+            return WIN_CMD;
+        }
+    }
+    create_new_user(server, client_fd, teams);
     return WIN_CMD;
 }

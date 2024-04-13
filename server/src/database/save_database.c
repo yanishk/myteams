@@ -45,6 +45,7 @@ static void save_users(const int fd, const my_teams_t teams)
         dprintf(fd, "user:\n");
         dprintf(fd, "\tuuid=%s\n", user->uuid);
         dprintf(fd, "\tname=%s\n", user->name);
+        dprintf(fd, "\tis_logged=%d\n", user->is_logged);
         save_team_belong(fd, user);
     }
 }

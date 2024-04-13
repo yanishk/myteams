@@ -25,6 +25,7 @@ bool array_is_number(char **array);
 char **word_array(char const *str, char *delim);
 void my_swap_str(char **a, char **b);
 void my_fd_putstr(char *str, const int client_fd);
+int my_getnbr(char const *str);
 
 // server
 int server(const char *port_number);
