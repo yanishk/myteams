@@ -19,8 +19,7 @@ static int error_create_team(server_t *server,
     }
     TAILQ_FOREACH(team_exist, &teams->team_head, team_entries) {
         if (strcmp(team_exist->name, server->cmd_arg.tab[1]) == 0) {
-            dprintf(client_fd, "%s",
-                "create.c/error_create_team : name already used\n");
+            dprintf(client_fd, "%s%s", CODE_302, CODE_101);
             return ERR_CMD;
         }
     }
@@ -31,7 +30,6 @@ int create_team(server_t *server, const int client_fd, my_teams_t *teams)
 {
     team_t *team;
     uuid_t tmp_uuid;
-    time_t msg_time;
 
     if (error_create_team(server, client_fd, teams) == ERR_CMD)
         return ERR_CMD;
@@ -42,7 +40,7 @@ int create_team(server_t *server, const int client_fd, my_teams_t *teams)
     uuid_generate_random(tmp_uuid);
     team->uuid = malloc(37);
     uuid_unparse(tmp_uuid, team->uuid);
-    msg_time = time(NULL);
-    dprintf(client_fd, "%s", "create.c/create : succesfully created a team\n");
+    dprintf(client_fd, "%s%s\n%s\n%s\n%s", CODE_211, team->uuid, team->name,
+    team->description, CODE_101);
     return WIN_CMD;
 }

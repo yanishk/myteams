@@ -17,8 +17,7 @@ static int thread_exist(server_t *server,
         TAILQ_INIT(&channel->thread_head);
     TAILQ_FOREACH(thread, &channel->thread_head, thread_entries) {
         if (strcmp(thread->name, server->cmd_arg.tab[1]) == 0) {
-            dprintf(client_fd, "%s\n",
-                "create.c/create_thread: thread already exist");
+            dprintf(client_fd, "%s%s", CODE_302, CODE_101);
             return ERR_CMD;
         }
     }
@@ -57,7 +56,7 @@ static int error_thread(server_t *server,
 }
 
 static void init_thread(server_t *server,
-    my_teams_t *teams, team_t *above_team)
+    my_teams_t *teams, team_t *above_team, const int client_fd)
 {
     channel_t *channel;
     thread_t *thread;
@@ -74,6 +73,8 @@ static void init_thread(server_t *server,
             uuid_generate_random(tmp_uuid);
             thread->uuid = malloc(37);
             uuid_unparse(tmp_uuid, thread->uuid);
+            dprintf(client_fd, "%s%s\n%s\n%s\n%s", CODE_213, thread->uuid,
+            thread->name, thread->description, CODE_101);
         }
     }
 }
@@ -87,7 +88,7 @@ int create_thread(server_t *server, const int client_fd, my_teams_t *teams)
     for ((above_team) = ((&teams->team_head)->tqh_first); (above_team);
         (above_team) = ((above_team)->team_entries.tqe_next)) {
         if (strcmp(above_team->uuid, teams->command_context->team_uuid) == 0)
-            init_thread(server, teams, above_team);
+            init_thread(server, teams, above_team, client_fd);
     }
     return WIN_CMD;
 }

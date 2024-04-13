@@ -7,8 +7,7 @@
 
 #include "my.h"
 
-static void display_threads(const int client_fd,
-    my_teams_t *teams, thread_t *thread)
+static void display_threads(const int client_fd, thread_t *thread)
 {
     thread_msg_t *thread_msg;
 
@@ -24,7 +23,7 @@ static void find_thread(const int client_fd,
 
     TAILQ_FOREACH(thread, &channel->thread_head, thread_entries) {
         if (strcmp(thread->uuid, teams->command_context->thread_uuid) == 0) {
-            display_threads(client_fd, teams, thread);
+            display_threads(client_fd, thread);
         }
     }
 }

@@ -83,7 +83,8 @@ static int display_thread_reply(char *msg)
     }
     for (size_t y = 0; display_print_reply[y].str != NULL; y++) {
         if (strcmp(display_print_reply[y].str, first_word) == 0) {
-            display_print_reply[y].ptr("s1\n", "s2\n", (time_t) 4, "s3\n");
+            display_print_reply[y].ptr(tab[1], tab[2],
+            (time_t) atoi(tab[3]), tab[4]);
             return 1;
         }
     }

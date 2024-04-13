@@ -18,8 +18,7 @@ static int channel_exist(server_t *server,
     TAILQ_FOREACH(channel, &above_team->channel_head,
         channel_entries) {
         if (strcmp(channel->name, server->cmd_arg.tab[1]) == 0) {
-            dprintf(client_fd, "%s\n",
-                "create.c/error_channel: channel already exist");
+            dprintf(client_fd, "%s%s", CODE_302, CODE_101);
             return ERR_CMD;
         }
     }
@@ -44,7 +43,7 @@ static int error_channel(server_t *server,
 }
 
 static void init_channel(server_t *server,
-    team_t *above_team)
+    team_t *above_team, const int client_fd)
 {
     uuid_t tmp_uuid;
     channel_t *channel;
@@ -57,6 +56,8 @@ static void init_channel(server_t *server,
     uuid_generate_random(tmp_uuid);
     channel->uuid = malloc(37);
     uuid_unparse(tmp_uuid, channel->uuid);
+    dprintf(client_fd, "%s%s\n%s\n%s\n%s", CODE_212, channel->uuid,
+            channel->name, channel->description, CODE_101);
 }
 
 int create_channel(server_t *server, const int client_fd, my_teams_t *teams)
@@ -68,9 +69,7 @@ int create_channel(server_t *server, const int client_fd, my_teams_t *teams)
     for ((above_team) = ((&teams->team_head)->tqh_first); (above_team);
         (above_team) = ((above_team)->team_entries.tqe_next)) {
         if (strcmp(above_team->uuid, teams->command_context->team_uuid) == 0)
-            init_channel(server, above_team);
+            init_channel(server, above_team, client_fd);
     }
-    dprintf(client_fd, "%s\n",
-        "create.c/create_channel: succesfully create a channel");
     return WIN_CMD;
 }
