@@ -75,6 +75,7 @@ static void init_thread(server_t *server,
             thread->timestamp = time(NULL);
             uuid_generate_random(tmp_uuid);
             thread->uuid = malloc(37);
+            thread->uuid_creator = strdup(teams->new_user->uuid);
             uuid_unparse(tmp_uuid, thread->uuid);
             dprintf(client_fd, "%s%s\n%s\n%s\n%s", CODE_213, thread->uuid,
             thread->name, thread->description, CODE_101);

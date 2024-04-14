@@ -8,8 +8,8 @@
 #include "my.h"
 #include <uuid/uuid.h>
 
-static void fill_comment(server_t *server, thread_t *thread,
-    const int client_fd)
+static void fill_comment(server_t *server, my_teams_t *teams,
+thread_t *thread, const int client_fd)
 {
     thread_msg_t *comment;
 
@@ -18,6 +18,7 @@ static void fill_comment(server_t *server, thread_t *thread,
     comment = malloc(sizeof(thread_msg_t));
     TAILQ_INSERT_TAIL(&thread->thread_msg_head,
         comment, thread_msg_entries);
+    comment->uuid_sender = strdup(teams->new_user->uuid);
     strcpy(comment->body, server->cmd_arg.tab[1]);
     comment->timestamp = time(NULL);
     dprintf(client_fd, "%s%s\n%s\n%ld\n%s\n%s", CODE_217, thread->uuid,
@@ -33,7 +34,7 @@ static void init_channel(server_t *server, my_teams_t *teams,
     for ((thread) = ((&channel->thread_head)->tqh_first); (thread);
         (thread) = ((thread)->thread_entries.tqe_next)) {
         if (strcmp(thread->uuid, teams->command_context->thread_uuid) == 0)
-            fill_comment(server, thread, client_fd);
+            fill_comment(server, teams, thread, client_fd);
     }
 }
 

@@ -55,6 +55,7 @@ typedef struct user {
 } user_t;
 
 typedef struct thread_msg {
+    char *uuid_sender;
     char body[MAX_BODY_LENGTH];
     time_t timestamp;
     TAILQ_ENTRY(thread_msg) thread_msg_entries;
@@ -62,6 +63,7 @@ typedef struct thread_msg {
 
 typedef struct thread {
     char *uuid;
+    char *uuid_creator;
     char name[MAX_NAME_LENGTH];
     char description[MAX_DESCRIPTION_LENGTH];
     time_t timestamp;

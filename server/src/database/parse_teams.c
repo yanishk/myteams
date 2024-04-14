@@ -45,13 +45,15 @@ static void fill_thread_message(thread_t *thread, char **array)
 
     TAILQ_INIT(&thread->thread_msg_head);
     for (size_t i = 1; array[i] != NULL; i += 2) {
-        if (strcmp(array[i], "body") == 0 &&
-        strlen(array[i + 1]) < MAX_BODY_LENGTH) {
+        if (strcmp(array[i], "uuid_sender") == 0) {
             thread_msg = malloc(sizeof(private_msg_t));
             TAILQ_INSERT_TAIL(&thread->thread_msg_head, thread_msg,
                 thread_msg_entries);
-            strcpy(thread_msg->body, array[i + 1]);
+            thread_msg->uuid_sender = strdup(array[i + 1]);
         }
+        if (strcmp(array[i], "body") == 0 &&
+        strlen(array[i + 1]) < MAX_BODY_LENGTH)
+            strcpy(thread_msg->body, array[i + 1]);
         if (strcmp(array[i], "timestamp") == 0)
             thread_msg->timestamp = my_get_timestamp(array[i + 1]);
     }
@@ -64,6 +66,8 @@ static void fill_thread(enum TEAM_CONTEXT data, char *line,
         return;
     if (strncmp(line, "\t\t\tuuid=", strlen("\t\t\tuuid=")) == 0)
         thread->uuid = strdup(array[1]);
+    if (strncmp(line, "\t\t\tuuid_creator=", strlen("\t\t\tuuid_creator=")) == 0)
+        thread->uuid_creator = strdup(array[1]);
     if (strncmp(line, "\t\t\tname=", strlen("\t\t\tname=")) == 0 &&
         strlen(array[1]) < MAX_NAME_LENGTH)
         strcpy(thread->name, array[1]);
