@@ -17,6 +17,7 @@ static void add_user(server_t *server, const char *username,
     server->clients[server->user_index]->my_uuid = new_user->uuid;
     dprintf(client_fd, "%s%s\n%s\n%s", CODE_201, new_user->uuid,
     username, CODE_101);
+    server_event_user_logged_in(server->clients[server->user_index]->my_uuid);
 }
 
 static int error_login(server_t *server, const int client_fd)
@@ -49,6 +50,7 @@ static void create_new_user(server_t *server, const int client_fd,
     teams->new_user->is_logged = true;
     uuid_unparse(tmp_uuid, teams->new_user->uuid);
     add_user(server, server->cmd_arg.tab[1], teams->new_user, client_fd);
+    server_event_user_created(teams->new_user->uuid, teams->new_user->name);
 }
 
 int user_login(server_t *server, const int client_fd, my_teams_t *teams)

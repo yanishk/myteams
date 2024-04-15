@@ -24,6 +24,8 @@ static void fill_comment(server_t *server, my_teams_t *teams,
     dprintf(client_fd, "%s%s\n%s\n%ld\n%s\n%s", CODE_217, thread->uuid,
     server->clients[server->user_index]->my_uuid, thread->timestamp,
     comment->body, CODE_101);
+    server_event_reply_created(thread->uuid, thread->uuid_creator,
+    thread->description);
 }
 
 static void init_channel(server_t *server, my_teams_t *teams,

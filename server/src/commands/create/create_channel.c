@@ -46,7 +46,7 @@ static int error_channel(server_t *server,
 }
 
 static void init_channel(server_t *server,
-    team_t *above_team, const int client_fd)
+    team_t *above_team, const int client_fd, my_teams_t *teams)
 {
     uuid_t tmp_uuid;
     channel_t *channel;
@@ -60,7 +60,9 @@ static void init_channel(server_t *server,
     channel->uuid = malloc(37);
     uuid_unparse(tmp_uuid, channel->uuid);
     dprintf(client_fd, "%s%s\n%s\n%s\n%s", CODE_212, channel->uuid,
-            channel->name, channel->description, CODE_101);
+    channel->name, channel->description, CODE_101);
+    server_event_channel_created(teams->command_context->team_uuid,
+    channel->uuid, channel->name);
 }
 
 int create_channel(server_t *server, const int client_fd, my_teams_t *teams)
@@ -72,7 +74,7 @@ int create_channel(server_t *server, const int client_fd, my_teams_t *teams)
     for ((above_team) = ((&teams->team_head)->tqh_first); (above_team);
         (above_team) = ((above_team)->team_entries.tqe_next)) {
         if (strcmp(above_team->uuid, teams->command_context->team_uuid) == 0)
-            init_channel(server, above_team, client_fd);
+            init_channel(server, above_team, client_fd, teams);
     }
     return WIN_CMD;
 }

@@ -40,6 +40,8 @@ int unsub_team(server_t *server, const int client_fd, my_teams_t *teams)
             dprintf(client_fd, "%s%s\n%s\n%s", CODE_209,
             server->clients[server->user_index]->username, my_teams->uuid,
             CODE_101);
+            server_event_user_unsubscribed(my_teams->uuid,
+            server->clients[server->user_index]->username);
             TAILQ_REMOVE(&teams->new_user->team_belong_head,
                 my_teams, belong_entries);
         }

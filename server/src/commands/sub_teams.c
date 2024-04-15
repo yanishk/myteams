@@ -68,6 +68,7 @@ static void fill_user_subbed(server_t *server, user_t *new_user,
         my_team->uuid = server->cmd_arg.tab[1];
         dprintf(client_fd, "%s%s\n%s\n%s", CODE_207,
         server->clients[server->user_index]->my_uuid, my_team->uuid, CODE_101);
+        server_event_user_subscribed(my_team->uuid, new_user->uuid);
     }
 }
 

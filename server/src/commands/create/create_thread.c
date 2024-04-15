@@ -58,6 +58,17 @@ static int error_thread(server_t *server,
     return WIN_CMD;
 }
 
+static void display_send(const int client_fd, my_teams_t *teams,
+    thread_t *thread)
+{
+    dprintf(client_fd, "%s%s\n%s\n%ld\n%s\n%s\n%s", CODE_213,
+    thread->uuid, thread->uuid_creator, thread->timestamp,
+    thread->name, thread->description, CODE_101);
+    server_event_thread_created(teams->command_context->channel_uuid,
+    thread->uuid, thread->uuid_creator, thread->name,
+    thread->description);
+}
+
 static void init_thread(server_t *server,
     my_teams_t *teams, team_t *above_team, const int client_fd)
 {
@@ -77,8 +88,7 @@ static void init_thread(server_t *server,
             thread->uuid = malloc(37);
             thread->uuid_creator = strdup(teams->new_user->uuid);
             uuid_unparse(tmp_uuid, thread->uuid);
-            dprintf(client_fd, "%s%s\n%s\n%s\n%s", CODE_213, thread->uuid,
-            thread->name, thread->description, CODE_101);
+            display_send(client_fd, teams, thread);
         }
     }
 }
