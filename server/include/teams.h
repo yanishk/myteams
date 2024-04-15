@@ -50,6 +50,7 @@ typedef struct user {
     char *uuid;
     char name[MAX_NAME_LENGTH];
     bool is_logged;
+    bool is_team_belong_init;
     TAILQ_HEAD(, team_belong) team_belong_head;
     TAILQ_ENTRY(user) user_entries;
 } user_t;

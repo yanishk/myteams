@@ -48,6 +48,7 @@ static void create_new_user(server_t *server, const int client_fd,
     uuid_generate_random(tmp_uuid);
     teams->new_user->uuid = malloc(37);
     teams->new_user->is_logged = true;
+    teams->new_user->is_team_belong_init = false;
     uuid_unparse(tmp_uuid, teams->new_user->uuid);
     add_user(server, server->cmd_arg.tab[1], teams->new_user, client_fd);
     server_event_user_created(teams->new_user->uuid, teams->new_user->name);

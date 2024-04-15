@@ -61,8 +61,10 @@ static void fill_user_subbed(server_t *server, user_t *new_user,
     if (strcmp(new_user->uuid,
         server->clients[server->user_index]->my_uuid) == 0) {
         my_team = malloc(sizeof(team_belong_t));
-        if (TAILQ_EMPTY(&new_user->team_belong_head))
+        if (!new_user->is_team_belong_init) {
             TAILQ_INIT(&new_user->team_belong_head);
+            new_user->is_team_belong_init = true;
+        }
         TAILQ_INSERT_TAIL(&new_user->team_belong_head,
             my_team, belong_entries);
         my_team->uuid = server->cmd_arg.tab[1];
