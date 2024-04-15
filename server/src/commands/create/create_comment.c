@@ -8,8 +8,52 @@
 #include "my.h"
 #include <uuid/uuid.h>
 
+static bool is_receivable(my_teams_t *teams, user_t *user)
+{
+    team_belong_t *team_belong;
+
+    TAILQ_FOREACH(team_belong, &user->team_belong_head,
+        belong_entries) {
+        if (strcmp(teams->command_context->team_uuid,
+            team_belong->uuid) == 0)
+            return true;
+    }
+    return false;
+}
+
+static void print_receiver(server_t *server, my_teams_t *teams,
+    thread_msg_t *comment, size_t index)
+{
+    user_t *user;
+    bool send = false;
+
+    TAILQ_FOREACH(user, &teams->user_head, user_entries) {
+        if (server->clients[index]->my_uuid == NULL)
+            continue;
+        if (strcmp(user->uuid, server->clients[index]->my_uuid) == 0
+            && strcmp(user->uuid, comment->uuid_sender) != 0
+            && server->clients[index]->is_connected == true)
+                send = is_receivable(teams, user);
+    }
+    if (send) {
+        dprintf(server->clients[index]->client_fd,
+            "%s%s\n%s\n%s\n%s\n%s",
+            CODE_210, teams->command_context->team_uuid,
+            teams->command_context->thread_uuid,
+            comment->uuid_sender, comment->body, CODE_101);
+    }
+}
+
+static void send_all_reply(server_t *server, my_teams_t *teams,
+    thread_msg_t *comment)
+{
+    for (int index = 0; index != MAX_USER; index += 1) {
+        print_receiver(server, teams, comment, index);
+    }
+}
+
 static void fill_comment(server_t *server,
-    thread_t *thread, const int client_fd)
+    thread_t *thread, const int client_fd, my_teams_t *teams)
 {
     thread_msg_t *comment;
 
@@ -27,6 +71,7 @@ static void fill_comment(server_t *server,
     comment->body, CODE_101);
     server_event_reply_created(thread->uuid, comment->uuid_sender,
     comment->body);
+    send_all_reply(server, teams, comment);
 }
 
 static void init_channel(server_t *server, my_teams_t *teams,
@@ -37,7 +82,7 @@ static void init_channel(server_t *server, my_teams_t *teams,
     for ((thread) = ((&channel->thread_head)->tqh_first); (thread);
         (thread) = ((thread)->thread_entries.tqe_next)) {
         if (strcmp(thread->uuid, teams->command_context->thread_uuid) == 0)
-            fill_comment(server, thread, client_fd);
+            fill_comment(server, thread, client_fd, teams);
     }
 }
 
