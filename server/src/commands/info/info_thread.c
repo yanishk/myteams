@@ -11,11 +11,12 @@ static void display_info_channel(const int client_fd,
     my_teams_t *teams, thread_t *thread)
 {
     if (strcmp(thread->uuid, teams->command_context->thread_uuid) == 0) {
-        dprintf(client_fd, "%s\n", thread->uuid);
-        dprintf(client_fd, "%ld\n", thread->timestamp);
-        dprintf(client_fd, "%s\n", thread->name);
-        dprintf(client_fd, "%s\n", thread->description);
+        dprintf(client_fd, "%s%s\n%s\n%ld\n%s\n%s\n%s", CODE_219,
+        thread->uuid, thread->uuid_creator, thread->timestamp, thread->name,
+        thread->description, CODE_101);
     }
+    dprintf(client_fd, "%s%s\n%s", CODE_404,
+    teams->command_context->thread_uuid, CODE_101);
 }
 
 static void find_channel(const int client_fd, my_teams_t *teams, team_t *team)

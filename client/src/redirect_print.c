@@ -13,11 +13,12 @@ static int display_msg(char *msg, int nb)
     char **tab = word_array(msg, "\n");
 
     if (nb == 0) {
-        client_private_message_print_messages(tab[0], (time_t) 10, "s2\n");
+        client_private_message_print_messages(tab[1],
+        (time_t) atoi(tab[2]), tab[3]);
         return 1;
     }
     if (nb == 1) {
-        client_event_thread_reply_received(tab[0], "s2\n", "s3\n", "s4\n");
+        client_event_thread_reply_received(tab[1], tab[2], tab[3], tab[4]);
         return 1;
     }
     return 0;
@@ -77,7 +78,8 @@ static int display_thread_reply(char *msg)
 
     for (size_t y = 0; display_thread[y].str != NULL; y++) {
         if (strcmp(display_thread[y].str, first_word) == 0) {
-            display_thread[y].ptr("s1\n", "s2\n", (time_t) 4, "s3\n", "s4\n");
+            display_thread[y].ptr(tab[1], tab[2],
+            (time_t) atoi(tab[3]), tab[4], tab[5]);
             return 1;
         }
     }

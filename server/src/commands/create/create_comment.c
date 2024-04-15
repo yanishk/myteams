@@ -9,7 +9,7 @@
 #include <uuid/uuid.h>
 
 static void fill_comment(server_t *server, my_teams_t *teams,
-thread_t *thread, const int client_fd)
+    thread_t *thread, const int client_fd)
 {
     thread_msg_t *comment;
 

@@ -13,10 +13,12 @@ int info_team(const int client_fd, my_teams_t *teams)
 
     TAILQ_FOREACH(team, &teams->team_head, team_entries) {
         if (strcmp(team->uuid, teams->command_context->team_uuid) == 0) {
-            dprintf(client_fd, "%s\n", team->uuid);
-            dprintf(client_fd, "%s\n", team->name);
-            dprintf(client_fd, "%s\n", team->description);
+            dprintf(client_fd, "%s%s\n%s\n%s\n%s", CODE_208, team->uuid,
+            team->name, team->description, CODE_101);
+            return WIN_CMD;
         }
     }
-    return WIN_CMD;
+    dprintf(client_fd, "%s%s\n%s", CODE_402, teams->command_context->team_uuid,
+    CODE_101);
+    return ERR_CMD;
 }

@@ -12,7 +12,9 @@ static void display_threads(const int client_fd, thread_t *thread)
     thread_msg_t *thread_msg;
 
     TAILQ_FOREACH(thread_msg, &thread->thread_msg_head, thread_msg_entries) {
-        dprintf(client_fd, "%s\n", thread_msg->body);
+        dprintf(client_fd, "%s%s\n%s\n%ld\n%s\n%s", CODE_220, thread->uuid,
+        thread_msg->uuid_sender, thread_msg->timestamp, thread_msg->body,
+        CODE_101);
     }
 }
 

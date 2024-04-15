@@ -66,7 +66,8 @@ static void fill_thread(enum TEAM_CONTEXT data, char *line,
         return;
     if (strncmp(line, "\t\t\tuuid=", strlen("\t\t\tuuid=")) == 0)
         thread->uuid = strdup(array[1]);
-    if (strncmp(line, "\t\t\tuuid_creator=", strlen("\t\t\tuuid_creator=")) == 0)
+    if (strncmp(line, "\t\t\tuuid_creator=",
+    strlen("\t\t\tuuid_creator=")) == 0)
         thread->uuid_creator = strdup(array[1]);
     if (strncmp(line, "\t\t\tname=", strlen("\t\t\tname=")) == 0 &&
         strlen(array[1]) < MAX_NAME_LENGTH)

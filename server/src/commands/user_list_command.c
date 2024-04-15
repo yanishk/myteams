@@ -38,7 +38,8 @@ int user_cmd(server_t *server, const int client_fd, my_teams_t *teams)
         return ERR_CMD;
     dprintf(client_fd, "%s", CODE_203);
     TAILQ_FOREACH(np_user, &teams->user_head, user_entries) {
-        dprintf(client_fd, "%s\n%s\n%d\n", np_user->uuid, np_user->name, 5);
+        dprintf(client_fd, "%s\n%s\n%d\n",
+        np_user->uuid, np_user->name, np_user->is_logged);
     }
     dprintf(client_fd, "%s", CODE_101);
     return WIN_CMD;
@@ -53,7 +54,7 @@ int user_spe_uuid(server_t *server, const int client_fd, my_teams_t *teams)
     TAILQ_FOREACH(np_user, &teams->user_head, user_entries) {
         if (strcmp(np_user->uuid, server->cmd_arg.tab[1]) == 0) {
             dprintf(client_fd, "%s%s\n%s\n%d\n%s", CODE_204, np_user->uuid,
-            np_user->name, 5, CODE_101);
+            np_user->name, np_user->is_logged, CODE_101);
             return WIN_CMD;
         }
     }

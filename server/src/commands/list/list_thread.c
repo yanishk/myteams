@@ -15,7 +15,10 @@ static void find_channel(const int client_fd, my_teams_t *teams, team_t *team)
     TAILQ_FOREACH(channel, &team->channel_head, channel_entries) {
         if (strcmp(channel->uuid, teams->command_context->channel_uuid) == 0) {
             TAILQ_FOREACH(thread, &channel->thread_head, thread_entries) {
-                dprintf(client_fd, "%s\n", thread->name);
+                dprintf(client_fd, "%s%s\n%s\n%ld\n%s\n%s\n%s", CODE_219,
+                thread->uuid, thread->uuid_creator,
+                thread->timestamp, thread->name, thread->description,
+                CODE_101);
             }
         }
     }
