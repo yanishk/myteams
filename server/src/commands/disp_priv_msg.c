@@ -23,8 +23,7 @@ static int error_disp_msg(server_t *server,
         if (strcmp(server->cmd_arg.tab[1], new_user->uuid) == 0)
             return WIN_CMD;
     }
-    dprintf(client_fd, "%s%s\n%s", CODE_401,
-    server->clients[server->user_index]->my_uuid, CODE_101);
+    dprintf(client_fd, "%s%s\n%s", CODE_401, server->cmd_arg.tab[1], CODE_101);
     return ERR_CMD;
 }
 
@@ -34,10 +33,13 @@ int display_priv_msg(server_t *server, const int client_fd, my_teams_t *teams)
 
     if (error_disp_msg(server, client_fd, teams) == ERR_CMD)
         return ERR_CMD;
+    dprintf(client_fd, "%s", CODE_206);
     TAILQ_FOREACH(prv_msg, &teams->priv_msg_head, private_msg_entries) {
-        if (strcmp(prv_msg->uuid_other, server->cmd_arg.tab[1]) == 0)
-            dprintf(client_fd, "%s\n", prv_msg->body);
+        if (strcmp(prv_msg->uuid_other, server->cmd_arg.tab[1]) == 0) {
+            dprintf(client_fd, "%s\n%ld\n%s\n", prv_msg->uuid_sender,
+            prv_msg->timestamp, prv_msg->body);
+        }
     }
-    dprintf(client_fd, "%s%s", CODE_200, CODE_101);
+    dprintf(client_fd, "%s", CODE_101);
     return WIN_CMD;
 }

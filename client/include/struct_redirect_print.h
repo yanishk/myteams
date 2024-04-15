@@ -55,7 +55,7 @@ typedef struct {
         char const *user_uuid,
         time_t reply_timestamp,
         char const *reply_body);
-} display_print_reply_t;
+} print_reply_t;
 
 display_err_exist_t display_err_exist[] = {
     {"401", &client_error_unknown_user},
@@ -106,7 +106,7 @@ display_thread_t display_thread[] = {
     {'\0', NULL}
 };
 
-display_print_reply_t display_print_reply[] = {
+print_reply_t print_reply[] = {
     {"217", &client_print_reply_created},
     {"220", &client_thread_print_replies},
     {'\0', NULL}
