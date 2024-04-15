@@ -11,8 +11,9 @@ int list_team(const int client_fd, my_teams_t *teams)
 {
     team_t *team;
 
+    dprintf(client_fd, "%s", CODE_208);
     TAILQ_FOREACH(team, &teams->team_head, team_entries)
-        dprintf(client_fd, "%s%s\n%s\n%s\n", CODE_208,
+        dprintf(client_fd, "%s\n%s\n%s\n",
         team->uuid, team->name, team->description);
     dprintf(client_fd, "%s", CODE_101);
     return WIN_CMD;

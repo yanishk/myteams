@@ -51,6 +51,13 @@ static void loop_display_users(char **tab, int y)
     }
 }
 
+static void loop_display_team(char **tab, int y)
+{
+    for (int i = 1; tab[i] != NULL && strcmp(tab[i], CODE_101) != 0; i += 3) {
+        display_team_channel[y].ptr(tab[i], tab[i + 1], tab[i + 2]);
+    }
+}
+
 static int display_team_user(char *msg)
 {
     char **tab = word_array(msg, "\n");
@@ -58,7 +65,7 @@ static int display_team_user(char *msg)
 
     for (size_t y = 0; display_team_channel[y].str != NULL; y++) {
         if (strcmp(display_team_channel[y].str, first_word) == 0) {
-            display_team_channel[y].ptr(tab[1], tab[2], tab[3]);
+            loop_display_team(tab, y);
             return 1;
         }
     }

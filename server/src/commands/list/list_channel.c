@@ -14,10 +14,12 @@ int list_channel(const int client_fd, my_teams_t *teams)
 
     TAILQ_FOREACH(team, &teams->team_head, team_entries) {
         if (strcmp(team->uuid, teams->command_context->team_uuid) == 0) {
+            dprintf(client_fd, "%s", CODE_218);
             TAILQ_FOREACH(channel, &team->channel_head, channel_entries) {
-                dprintf(client_fd, "%s%s\n%s\n%s\n%s", CODE_218,
-                channel->uuid, channel->name, channel->description, CODE_101);
+                dprintf(client_fd, "%s\n%s\n%s\n",
+                channel->uuid, channel->name, channel->description);
             }
+            dprintf(client_fd, "%s", CODE_101);
         }
     }
     return WIN_CMD;
