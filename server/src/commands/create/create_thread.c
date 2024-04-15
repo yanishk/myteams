@@ -85,10 +85,10 @@ static void init_thread(server_t *server,
             strcpy(thread->description, server->cmd_arg.tab[2]);
             thread->timestamp = time(NULL);
             uuid_generate_random(tmp_uuid);
-            thread->uuid = malloc(37);
-            thread->uuid_creator =
-                strdup(server->clients[server->user_index]->new_user->uuid);
+            strcpy(thread->uuid_creator,
+                server->clients[server->user_index]->new_user->uuid);
             uuid_unparse(tmp_uuid, thread->uuid);
+            TAILQ_INIT(&thread->thread_msg_head);
             display_send(client_fd, teams, thread);
         }
     }

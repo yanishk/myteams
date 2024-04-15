@@ -57,8 +57,8 @@ static void init_channel(server_t *server,
     strcpy(channel->name, server->cmd_arg.tab[1]);
     strcpy(channel->description, server->cmd_arg.tab[2]);
     uuid_generate_random(tmp_uuid);
-    channel->uuid = malloc(37);
     uuid_unparse(tmp_uuid, channel->uuid);
+    TAILQ_INIT(&channel->thread_head);
     dprintf(client_fd, "%s%s\n%s\n%s\n%s", CODE_212, channel->uuid,
     channel->name, channel->description, CODE_101);
     server_event_channel_created(teams->command_context->team_uuid,

@@ -52,8 +52,9 @@ int send_msg(server_t *server, const int client_fd, my_teams_t *teams)
         return ERR_CMD;
     priv_msg = malloc(sizeof(private_msg_t));
     TAILQ_INSERT_TAIL(&teams->priv_msg_head, priv_msg, private_msg_entries);
-    priv_msg->uuid_sender = server->clients[server->user_index]->my_uuid;
-    priv_msg->uuid_other = server->cmd_arg.tab[1];
+    strcpy(priv_msg->uuid_sender,
+        server->clients[server->user_index]->my_uuid);
+    strcpy(priv_msg->uuid_other, server->cmd_arg.tab[1]);
     strcpy(priv_msg->body, server->cmd_arg.tab[2]);
     priv_msg->timestamp = time(NULL);
     display_msg_other(server, priv_msg);

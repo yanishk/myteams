@@ -48,9 +48,9 @@ static void create_new_user(server_t *server, const int client_fd,
     strcpy(server->clients[server->user_index]->new_user->name,
         server->cmd_arg.tab[1]);
     uuid_generate_random(tmp_uuid);
-    server->clients[server->user_index]->new_user->uuid = malloc(37);
     server->clients[server->user_index]->new_user->is_logged = true;
-    server->clients[server->user_index]->new_user->is_team_belong_init = false;
+    TAILQ_INIT(&server->clients[server->user_index]->
+        new_user->team_belong_head);
     uuid_unparse(tmp_uuid,
         server->clients[server->user_index]->new_user->uuid);
     add_user(server, server->cmd_arg.tab[1],

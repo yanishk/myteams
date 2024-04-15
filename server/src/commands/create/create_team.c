@@ -41,8 +41,8 @@ int create_team(server_t *server, const int client_fd, my_teams_t *teams)
     strcpy(team->name, server->cmd_arg.tab[1]);
     strcpy(team->description, server->cmd_arg.tab[2]);
     uuid_generate_random(tmp_uuid);
-    team->uuid = malloc(37);
     uuid_unparse(tmp_uuid, team->uuid);
+    TAILQ_INIT(&team->channel_head);
     dprintf(client_fd, "%s%s\n%s\n%s\n%s", CODE_211, team->uuid, team->name,
     team->description, CODE_101);
     server_event_team_created(team->uuid, team->name,

@@ -13,8 +13,6 @@ static void save_team_belong(const int fd, user_t *user)
 {
     team_belong_t *team_belong;
 
-    if (!user->is_team_belong_init)
-        TAILQ_INIT(&user->team_belong_head);
     dprintf(fd, "\tteams_uuid=");
     TAILQ_FOREACH(team_belong, &user->team_belong_head,
         belong_entries) {
@@ -47,7 +45,6 @@ static void save_users(const int fd, const my_teams_t teams)
         dprintf(fd, "\tuuid=%s\n", user->uuid);
         dprintf(fd, "\tname=%s\n", user->name);
         dprintf(fd, "\tis_logged=%d\n", user->is_logged);
-        dprintf(fd, "\tis_team_belong_init=%d\n", user->is_team_belong_init);
         save_team_belong(fd, user);
     }
 }

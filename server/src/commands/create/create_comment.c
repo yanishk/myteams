@@ -18,8 +18,8 @@ static void fill_comment(server_t *server,
     comment = malloc(sizeof(thread_msg_t));
     TAILQ_INSERT_TAIL(&thread->thread_msg_head,
         comment, thread_msg_entries);
-    comment->uuid_sender =
-        strdup(server->clients[server->user_index]->new_user->uuid);
+    strcpy(comment->uuid_sender,
+        server->clients[server->user_index]->new_user->uuid);
     strcpy(comment->body, server->cmd_arg.tab[1]);
     comment->timestamp = time(NULL);
     dprintf(client_fd, "%s%s\n%s\n%ld\n%s\n%s", CODE_217, thread->uuid,

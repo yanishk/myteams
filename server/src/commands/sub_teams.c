@@ -62,13 +62,9 @@ static void fill_user_subbed(server_t *server, user_t *new_user,
     if (strcmp(new_user->uuid,
         server->clients[server->user_index]->my_uuid) == 0) {
         my_team = malloc(sizeof(team_belong_t));
-        if (!new_user->is_team_belong_init) {
-            TAILQ_INIT(&new_user->team_belong_head);
-            new_user->is_team_belong_init = true;
-        }
         TAILQ_INSERT_TAIL(&new_user->team_belong_head,
             my_team, belong_entries);
-        my_team->uuid = server->cmd_arg.tab[1];
+        strcpy(my_team->uuid, server->cmd_arg.tab[1]);
         dprintf(client_fd, "%s%s\n%s\n%s", CODE_207,
         server->clients[server->user_index]->my_uuid, my_team->uuid, CODE_101);
         server_event_user_subscribed(my_team->uuid, new_user->uuid);

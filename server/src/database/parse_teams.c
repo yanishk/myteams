@@ -15,7 +15,7 @@ static void fill_team(enum TEAM_CONTEXT data, char *line,
     if (data != TEAM)
         return;
     if (strncmp(line, "\tuuid=", strlen("\tuuid=")) == 0)
-        team->uuid = strdup(array[1]);
+        strcpy(team->uuid, array[1]);
     if (strncmp(line, "\tname=", strlen("\tname=")) == 0 &&
         strlen(array[1]) < MAX_NAME_LENGTH)
         strcpy(team->name, array[1]);
@@ -30,7 +30,7 @@ static void fill_channel(enum TEAM_CONTEXT data, char *line,
     if (data != CHANNEL)
         return;
     if (strncmp(line, "\t\tuuid=", strlen("\t\tuuid=")) == 0)
-        channel->uuid = strdup(array[1]);
+        strcpy(channel->uuid, array[1]);
     if (strncmp(line, "\t\tname=", strlen("\t\tname=")) == 0 &&
         strlen(array[1]) < MAX_NAME_LENGTH)
         strcpy(channel->name, array[1]);
@@ -43,13 +43,12 @@ static void fill_thread_message(thread_t *thread, char **array)
 {
     thread_msg_t *thread_msg;
 
-    TAILQ_INIT(&thread->thread_msg_head);
     for (size_t i = 1; array[i] != NULL; i += 2) {
         if (strcmp(array[i], "uuid_sender") == 0) {
             thread_msg = malloc(sizeof(private_msg_t));
             TAILQ_INSERT_TAIL(&thread->thread_msg_head, thread_msg,
                 thread_msg_entries);
-            thread_msg->uuid_sender = strdup(array[i + 1]);
+            strcpy(thread_msg->uuid_sender, array[i + 1]);
         }
         if (strcmp(array[i], "body") == 0 &&
         strlen(array[i + 1]) < MAX_BODY_LENGTH)
@@ -65,10 +64,10 @@ static void fill_thread(enum TEAM_CONTEXT data, char *line,
     if (data != THREAD)
         return;
     if (strncmp(line, "\t\t\tuuid=", strlen("\t\t\tuuid=")) == 0)
-        thread->uuid = strdup(array[1]);
+        strcpy(thread->uuid, array[1]);
     if (strncmp(line, "\t\t\tuuid_creator=",
     strlen("\t\t\tuuid_creator=")) == 0)
-        thread->uuid_creator = strdup(array[1]);
+        strcpy(thread->uuid_creator, array[1]);
     if (strncmp(line, "\t\t\tname=", strlen("\t\t\tname=")) == 0 &&
         strlen(array[1]) < MAX_NAME_LENGTH)
         strcpy(thread->name, array[1]);
@@ -89,6 +88,7 @@ static bool is_team_line(int *is_user, char *line,
         *is_user = 1;
         *team = malloc(sizeof(team_t));
         TAILQ_INSERT_TAIL(&teams->team_head, *team, team_entries);
+        TAILQ_INIT(&(*team)->channel_head);
         return true;
     }
     return false;
@@ -97,10 +97,9 @@ static bool is_team_line(int *is_user, char *line,
 static bool is_channel_line(char *line, team_t *team, channel_t **channel)
 {
     if (strcmp(line, "\tchannel:\n") == 0) {
-        if (TAILQ_EMPTY(&team->channel_head))
-            TAILQ_INIT(&team->channel_head);
         *channel = malloc(sizeof(channel_t));
         TAILQ_INSERT_TAIL(&team->channel_head, *channel, channel_entries);
+        TAILQ_INIT(&(*channel)->thread_head);
         return true;
     }
     return false;
@@ -109,10 +108,9 @@ static bool is_channel_line(char *line, team_t *team, channel_t **channel)
 static bool is_thread_line(char *line, channel_t *channel, thread_t **thread)
 {
     if (strcmp(line, "\t\tthread:\n") == 0) {
-        if (TAILQ_EMPTY(&channel->thread_head))
-            TAILQ_INIT(&channel->thread_head);
         *thread = malloc(sizeof(thread_t));
         TAILQ_INSERT_TAIL(&channel->thread_head, *thread, thread_entries);
+        TAILQ_INIT(&(*thread)->thread_msg_head);
         return true;
     }
     return false;
