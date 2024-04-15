@@ -49,6 +49,8 @@ int user_spe_uuid(server_t *server, const int client_fd, my_teams_t *teams)
 {
     user_t *np_user;
 
+    if (error_not_login(server, client_fd) != 0)
+        return ERR_CMD;
     if (error_handling_user(server, client_fd, teams) == ERR_CMD)
         return ERR_CMD;
     TAILQ_FOREACH(np_user, &teams->user_head, user_entries) {

@@ -14,7 +14,7 @@ static int error_create_team(server_t *server,
     team_t *team_exist;
 
     if (server->cmd_arg.tab[1] == NULL || server->cmd_arg.tab[2] == NULL) {
-        dprintf(client_fd, "%s", "create.c/create : not enough argument\n");
+        dprintf(client_fd, "%s%s", CODE_301, CODE_101);
         return ERR_CMD;
     }
     if (strlen(server->cmd_arg.tab[1]) >= MAX_NAME_LENGTH ||

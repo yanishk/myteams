@@ -25,7 +25,7 @@ static int error_unsub(server_t *server,
         if (strcmp(server->cmd_arg.tab[1], my_teams->uuid) == 0)
             return WIN_CMD;
     }
-    dprintf(client_fd, "%s%s", CODE_301, CODE_101);
+    dprintf(client_fd, "%s%s\n%s", CODE_402, server->cmd_arg.tab[1], CODE_101);
     return ERR_CMD;
 }
 

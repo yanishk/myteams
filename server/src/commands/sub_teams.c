@@ -131,15 +131,17 @@ static int disp_all_team_user(server_t *server,
 
     if (is_in_team(server, client_fd) == ERR_CMD)
         return ERR_CMD;
+    dprintf(client_fd, "%s", CODE_203);
     TAILQ_FOREACH(all_user, &teams->user_head, user_entries) {
         TAILQ_FOREACH(their_teams, &all_user->team_belong_head,
             belong_entries) {
             if (strcmp(their_teams->uuid, server->cmd_arg.tab[1]) == 0) {
-                dprintf(client_fd, "%s\n", all_user->name);
-                dprintf(client_fd, "%s\n", all_user->uuid);
+                dprintf(client_fd, "%s\n%s\n%d\n", all_user->uuid,
+                all_user->name, all_user->is_logged);
             }
         }
     }
+    dprintf(client_fd, "%s", CODE_101);
     return WIN_CMD;
 }
 
