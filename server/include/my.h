@@ -70,7 +70,7 @@ int list_comment(const int client_fd, my_teams_t *teams);
 
 //info
 int info(server_t *server, const int client_fd, my_teams_t *teams);
-int info_user(const int client_fd, my_teams_t *teams);
+int info_user(server_t *server, const int client_fd);
 int info_team(const int client_fd, my_teams_t *teams);
 int info_channel(const int client_fd, my_teams_t *teams);
 int info_thread(const int client_fd, my_teams_t *teams);

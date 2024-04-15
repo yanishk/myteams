@@ -13,6 +13,7 @@
     #include <stdio.h>
     #include <unistd.h>
     #include <arpa/inet.h>
+    #include "teams.h"
 
 
 #ifndef SERVER_H_
@@ -114,6 +115,7 @@ typedef struct clients_s {
     bool has_been_closed;
     char *username;
     char *my_uuid;
+    user_t *new_user;
 } clients_t;
 
 typedef struct cmd_s {

@@ -42,29 +42,38 @@ static void create_new_user(server_t *server, const int client_fd,
 {
     uuid_t tmp_uuid;
 
-    teams->new_user = malloc(sizeof(user_t));
-    TAILQ_INSERT_TAIL(&teams->user_head, teams->new_user, user_entries);
-    strcpy(teams->new_user->name, server->cmd_arg.tab[1]);
+    server->clients[server->user_index]->new_user = malloc(sizeof(user_t));
+    TAILQ_INSERT_TAIL(&teams->user_head,
+        server->clients[server->user_index]->new_user, user_entries);
+    strcpy(server->clients[server->user_index]->new_user->name,
+        server->cmd_arg.tab[1]);
     uuid_generate_random(tmp_uuid);
-    teams->new_user->uuid = malloc(37);
-    teams->new_user->is_logged = true;
-    teams->new_user->is_team_belong_init = false;
-    uuid_unparse(tmp_uuid, teams->new_user->uuid);
-    add_user(server, server->cmd_arg.tab[1], teams->new_user, client_fd);
-    server_event_user_created(teams->new_user->uuid, teams->new_user->name);
+    server->clients[server->user_index]->new_user->uuid = malloc(37);
+    server->clients[server->user_index]->new_user->is_logged = true;
+    server->clients[server->user_index]->new_user->is_team_belong_init = false;
+    uuid_unparse(tmp_uuid,
+        server->clients[server->user_index]->new_user->uuid);
+    add_user(server, server->cmd_arg.tab[1],
+        server->clients[server->user_index]->new_user, client_fd);
+    server_event_user_created(server->clients[server->user_index]->
+        new_user->uuid, server->clients[server->user_index]->new_user->name);
 }
 
 int user_login(server_t *server, const int client_fd, my_teams_t *teams)
 {
     if (error_login(server, client_fd) == ERR_CMD)
         return ERR_CMD;
-    for ((teams->new_user) = ((&teams->user_head)->tqh_first);
-        (teams->new_user); (teams->new_user) =
-        ((teams->new_user)->user_entries.tqe_next)) {
-        if (strcmp(teams->new_user->name, server->cmd_arg.tab[1]) == 0) {
+    for ((server->clients[server->user_index]->new_user) =
+        ((&teams->user_head)->tqh_first);
+        (server->clients[server->user_index]->new_user);
+        (server->clients[server->user_index]->new_user) =
+        ((server->clients[server->user_index]->new_user)->
+        user_entries.tqe_next)) {
+        if (strcmp(server->clients[server->user_index]->new_user->name,
+        server->cmd_arg.tab[1]) == 0) {
             add_user(server, server->cmd_arg.tab[1],
-                teams->new_user, client_fd);
-            teams->new_user->is_logged = true;
+                server->clients[server->user_index]->new_user, client_fd);
+            server->clients[server->user_index]->new_user->is_logged = true;
             return WIN_CMD;
         }
     }

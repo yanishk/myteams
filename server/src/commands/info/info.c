@@ -12,7 +12,7 @@ int info(server_t *server, const int client_fd, my_teams_t *teams)
     if (error_not_login(server, client_fd) != 0)
         return ERR_CMD;
     if (teams->command_context->team_context == NOTHING)
-        return info_user(client_fd, teams);
+        return info_user(server, client_fd);
     if (teams->command_context->team_context == TEAM)
         return info_team(client_fd, teams);
     if (teams->command_context->team_context == CHANNEL)

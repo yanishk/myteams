@@ -11,7 +11,9 @@ static bool is_in_user_team_belong(server_t *server, my_teams_t *teams)
 {
     team_belong_t *team_belong;
 
-    for ((team_belong) = ((&teams->new_user->team_belong_head)->tqh_first);
+    for ((team_belong) =
+        ((&server->clients[server->user_index]->
+        new_user->team_belong_head)->tqh_first);
         (team_belong); (team_belong) =
         ((team_belong)->belong_entries.tqe_next)) {
         if (strcmp(server->cmd_arg.tab[1], team_belong->uuid) == 0) {

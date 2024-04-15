@@ -7,9 +7,11 @@
 
 #include "my.h"
 
-int info_user(const int client_fd, my_teams_t *teams)
+int info_user(server_t *server, const int client_fd)
 {
-    dprintf(client_fd, "%s%s\n%s\n%d\n%s", CODE_203, teams->new_user->uuid,
-    teams->new_user->name, teams->new_user->is_logged, CODE_101);
+    dprintf(client_fd, "%s%s\n%s\n%d\n%s",
+        CODE_203, server->clients[server->user_index]->new_user->uuid,
+        server->clients[server->user_index]->new_user->name,
+        server->clients[server->user_index]->new_user->is_logged, CODE_101);
     return WIN_CMD;
 }

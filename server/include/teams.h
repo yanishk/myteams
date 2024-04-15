@@ -92,7 +92,6 @@ typedef struct my_teams {
     TAILQ_HEAD(, user) user_head;
     TAILQ_HEAD(, team) team_head;
     TAILQ_HEAD(, private_msg) priv_msg_head;
-    user_t *new_user;
     command_context_t *command_context;
 } my_teams_t;
 

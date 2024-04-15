@@ -86,7 +86,8 @@ static void init_thread(server_t *server,
             thread->timestamp = time(NULL);
             uuid_generate_random(tmp_uuid);
             thread->uuid = malloc(37);
-            thread->uuid_creator = strdup(teams->new_user->uuid);
+            thread->uuid_creator =
+                strdup(server->clients[server->user_index]->new_user->uuid);
             uuid_unparse(tmp_uuid, thread->uuid);
             display_send(client_fd, teams, thread);
         }

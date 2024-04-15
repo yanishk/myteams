@@ -8,12 +8,13 @@
 #include "my.h"
 
 static int already_subbed(server_t *server,
-    const int client_fd, my_teams_t *teams)
+    const int client_fd)
 {
     team_belong_t *own_team;
 
     TAILQ_FOREACH(own_team,
-        &teams->new_user->team_belong_head, belong_entries) {
+        &server->clients[server->user_index]->new_user->team_belong_head,
+            belong_entries) {
         if (strcmp(server->cmd_arg.tab[1], own_team->uuid) == 0) {
             dprintf(client_fd, "%s\n",
                 "sub_unsub.c/error_sub_team : already subbed");
@@ -24,7 +25,7 @@ static int already_subbed(server_t *server,
 }
 
 static int global_error(server_t *server,
-    const int client_fd, my_teams_t *teams)
+    const int client_fd)
 {
     if (error_not_login(server, client_fd) != 0)
         return ERR_CMD;
@@ -33,7 +34,7 @@ static int global_error(server_t *server,
             "sub_unsub.c/error_sub_team : not enough argument");
         return ERR_CMD;
     }
-    if (already_subbed(server, client_fd, teams) == ERR_CMD)
+    if (already_subbed(server, client_fd) == ERR_CMD)
         return ERR_CMD;
     return WIN_CMD;
 }
@@ -43,7 +44,7 @@ static int error_sub_team(server_t *server,
 {
     team_t *team_exist;
 
-    if (global_error(server, client_fd, teams) == ERR_CMD)
+    if (global_error(server, client_fd) == ERR_CMD)
         return ERR_CMD;
     TAILQ_FOREACH(team_exist, &teams->team_head, team_entries) {
         if (strcmp(team_exist->uuid, server->cmd_arg.tab[1]) == 0)
@@ -87,13 +88,15 @@ int sub_team(server_t *server, const int client_fd, my_teams_t *teams)
     return WIN_CMD;
 }
 
-static int disp_my_teams(const int client_fd, my_teams_t *teams)
+static int disp_my_teams(server_t *server,
+    const int client_fd, my_teams_t *teams)
 {
     team_belong_t *my_teams;
     team_t *all_teams;
 
     dprintf(client_fd, "%s", CODE_208);
-    TAILQ_FOREACH(my_teams, &teams->new_user->team_belong_head,
+    TAILQ_FOREACH(my_teams,
+        &server->clients[server->user_index]->new_user->team_belong_head,
         belong_entries) {
         TAILQ_FOREACH(all_teams, &teams->team_head, team_entries) {
             if (strcmp(my_teams->uuid, all_teams->uuid) == 0) {
@@ -106,11 +109,12 @@ static int disp_my_teams(const int client_fd, my_teams_t *teams)
     return WIN_CMD;
 }
 
-static int is_in_team(server_t *server, const int client_fd, my_teams_t *teams)
+static int is_in_team(server_t *server, const int client_fd)
 {
     team_belong_t *my_teams;
 
-    TAILQ_FOREACH(my_teams, &teams->new_user->team_belong_head,
+    TAILQ_FOREACH(my_teams, &server->clients[server->user_index]
+        ->new_user->team_belong_head,
         belong_entries) {
         if (strcmp(my_teams->uuid, server->cmd_arg.tab[1]) == 0)
             return WIN_CMD;
@@ -125,7 +129,7 @@ static int disp_all_team_user(server_t *server,
     user_t *all_user;
     team_belong_t *their_teams;
 
-    if (is_in_team(server, client_fd, teams) == ERR_CMD)
+    if (is_in_team(server, client_fd) == ERR_CMD)
         return ERR_CMD;
     TAILQ_FOREACH(all_user, &teams->user_head, user_entries) {
         TAILQ_FOREACH(their_teams, &all_user->team_belong_head,
@@ -144,6 +148,6 @@ int disp_subscribed(server_t *server, const int client_fd, my_teams_t *teams)
     if (error_not_login(server, client_fd) != 0)
         return ERR_CMD;
     if (server->cmd_arg.tab[1] == NULL)
-        return disp_my_teams(client_fd, teams);
+        return disp_my_teams(server, client_fd, teams);
     return disp_all_team_user(server, client_fd, teams);
 }

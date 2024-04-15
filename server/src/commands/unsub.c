@@ -8,7 +8,7 @@
 #include "my.h"
 
 static int error_unsub(server_t *server,
-    const int client_fd, my_teams_t *teams)
+    const int client_fd)
 {
     team_belong_t *my_teams;
 
@@ -19,7 +19,8 @@ static int error_unsub(server_t *server,
             "unsub.c/error_unsub : not enough argument", CODE_101);
         return ERR_CMD;
     }
-    TAILQ_FOREACH(my_teams, &teams->new_user->team_belong_head,
+    TAILQ_FOREACH(my_teams,
+        &server->clients[server->user_index]->new_user->team_belong_head,
         belong_entries) {
         if (strcmp(server->cmd_arg.tab[1], my_teams->uuid) == 0)
             return WIN_CMD;
@@ -28,13 +29,14 @@ static int error_unsub(server_t *server,
     return ERR_CMD;
 }
 
-int unsub_team(server_t *server, const int client_fd, my_teams_t *teams)
+int unsub_team(server_t *server, const int client_fd, my_teams_t *)
 {
     team_belong_t *my_teams;
 
-    if (error_unsub(server, client_fd, teams) == ERR_CMD)
+    if (error_unsub(server, client_fd) == ERR_CMD)
         return ERR_CMD;
-    TAILQ_FOREACH(my_teams, &teams->new_user->team_belong_head,
+    TAILQ_FOREACH(my_teams,
+        &server->clients[server->user_index]->new_user->team_belong_head,
         belong_entries) {
         if (strcmp(my_teams->uuid, server->cmd_arg.tab[1]) == 0) {
             dprintf(client_fd, "%s%s\n%s\n%s", CODE_209,
@@ -42,7 +44,8 @@ int unsub_team(server_t *server, const int client_fd, my_teams_t *teams)
             CODE_101);
             server_event_user_unsubscribed(my_teams->uuid,
             server->clients[server->user_index]->username);
-            TAILQ_REMOVE(&teams->new_user->team_belong_head,
+            TAILQ_REMOVE(&server->clients[server->user_index]->
+                new_user->team_belong_head,
                 my_teams, belong_entries);
         }
     }

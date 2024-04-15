@@ -13,14 +13,13 @@ SERVER_SRC =                						\
     ./server/src/close_client_socket.c              \
     ./server/src/run_server.c                       \
     ./server/src/server.c                           \
-    ./server/src/commands/not_implemented_command.c \
-    ./server/src/commands/cd_command.c              \
     ./server/src/commands/login_command.c           \
     ./server/src/commands/call_cmd_function.c       \
     ./server/src/commands/help/help_cmd.c           \
-    ./server/src/commands/client_command.c	        \
+    ./server/src/commands/logout.c      	        \
     ./server/src/commands/user_list_command.c       \
     ./server/src/commands/private_msg.c             \
+    ./server/src/commands/disp_priv_msg.c           \
     ./server/src/commands/sub_teams.c               \
     ./server/src/commands/unsub.c                   \
     ./server/src/commands/use.c                     \
