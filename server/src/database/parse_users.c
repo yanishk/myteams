@@ -14,16 +14,19 @@ static void fill_team_belong(user_t *user, char **array)
     team_belong_t *team_belong;
 
     for (size_t i = 1; array[i] != NULL; i += 1) {
-        team_belong = malloc(sizeof(team_belong_t));
-        TAILQ_INSERT_TAIL(&user->team_belong_head, team_belong,
-            belong_entries);
-        strcpy(team_belong->uuid, array[i]);
+        if (strlen(array[i]) < MAX_UUID_LENGTH) {
+            team_belong = malloc(sizeof(team_belong_t));
+            TAILQ_INSERT_TAIL(&user->team_belong_head, team_belong,
+                belong_entries);
+            strcpy(team_belong->uuid, array[i]);
+        }
     }
 }
 
 static void fill_user(char *line, user_t *user, char **array)
 {
-    if (strncmp(line, "\tuuid=", strlen("\tuuid=")) == 0)
+    if (strncmp(line, "\tuuid=", strlen("\tuuid=")) == 0 &&
+        strlen(array[1]) < MAX_UUID_LENGTH)
         strcpy(user->uuid, array[1]);
     if (strncmp(line, "\tname=", strlen("\tname=")) == 0 &&
         strlen(array[1]) < MAX_NAME_LENGTH)

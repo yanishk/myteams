@@ -10,9 +10,11 @@
 
 static void fill_mp(char *line, private_msg_t *dm, char **array)
 {
-    if (strncmp(line, "\tuuid_sender=", strlen("\tuuid_sender=")) == 0)
+    if (strncmp(line, "\tuuid_sender=", strlen("\tuuid_sender=")) == 0 &&
+        strlen(array[1]) < MAX_UUID_LENGTH)
         strcpy(dm->uuid_sender, array[1]);
-    if (strncmp(line, "\tuuid_other=", strlen("\tuuid_other=")) == 0)
+    if (strncmp(line, "\tuuid_other=", strlen("\tuuid_other=")) == 0 &&
+        strlen(array[1]) < MAX_UUID_LENGTH)
         strcpy(dm->uuid_other, array[1]);
     if (strncmp(line, "\tbody=", strlen("\tbody=")) == 0 &&
         strlen(array[1]) < MAX_BODY_LENGTH)

@@ -14,7 +14,8 @@ static void fill_team(enum TEAM_CONTEXT data, char *line,
 {
     if (data != TEAM)
         return;
-    if (strncmp(line, "\tuuid=", strlen("\tuuid=")) == 0)
+    if (strncmp(line, "\tuuid=", strlen("\tuuid=")) == 0 &&
+        strlen(array[1]) < MAX_UUID_LENGTH)
         strcpy(team->uuid, array[1]);
     if (strncmp(line, "\tname=", strlen("\tname=")) == 0 &&
         strlen(array[1]) < MAX_NAME_LENGTH)
@@ -29,7 +30,8 @@ static void fill_channel(enum TEAM_CONTEXT data, char *line,
 {
     if (data != CHANNEL)
         return;
-    if (strncmp(line, "\t\tuuid=", strlen("\t\tuuid=")) == 0)
+    if (strncmp(line, "\t\tuuid=", strlen("\t\tuuid=")) == 0 &&
+        strlen(array[1]) < MAX_UUID_LENGTH)
         strcpy(channel->uuid, array[1]);
     if (strncmp(line, "\t\tname=", strlen("\t\tname=")) == 0 &&
         strlen(array[1]) < MAX_NAME_LENGTH)
@@ -63,10 +65,12 @@ static void fill_thread(enum TEAM_CONTEXT data, char *line,
 {
     if (data != THREAD)
         return;
-    if (strncmp(line, "\t\t\tuuid=", strlen("\t\t\tuuid=")) == 0)
+    if (strncmp(line, "\t\t\tuuid=", strlen("\t\t\tuuid=")) == 0 &&
+        strlen(array[1]) < MAX_UUID_LENGTH)
         strcpy(thread->uuid, array[1]);
     if (strncmp(line, "\t\t\tuuid_creator=",
-    strlen("\t\t\tuuid_creator=")) == 0)
+    strlen("\t\t\tuuid_creator=")) == 0 &&
+        strlen(array[1]) < MAX_UUID_LENGTH)
         strcpy(thread->uuid_creator, array[1]);
     if (strncmp(line, "\t\t\tname=", strlen("\t\t\tname=")) == 0 &&
         strlen(array[1]) < MAX_NAME_LENGTH)
