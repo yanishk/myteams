@@ -33,7 +33,7 @@ int main(int ac, const char **av)
         return 0;
     }
     if (ac != 3) {
-        fprintf(stderr, "Bad number of arguments\n");
+        fprintf(stdout, "Bad number of arguments\n");
         return 84;
     }
     signal(SIGINT, exit_program);
