@@ -11,11 +11,11 @@
 static int check_socket_creation(const int port, const int sock_fd)
 {
     if (port == 0) {
-        fprintf(stderr, "argument isn't a port");
+        fprintf(stdout, "argument isn't a port");
         return 84;
     }
     if (sock_fd == -1) {
-        fprintf(stderr, "socket creation failed");
+        fprintf(stdout, "socket creation failed");
         return 84;
     }
     return 0;
@@ -25,7 +25,7 @@ static int connect_to_server(const char **av, struct sockaddr_in *sock_addr,
     struct in_addr *in_addr, int port)
 {
     if (inet_aton(av[1], in_addr) == 0) {
-        fprintf(stderr, "invalid ip adress");
+        fprintf(stdout, "invalid ip adress");
         return 84;
     }
     sock_addr->sin_family = AF_INET;
@@ -104,7 +104,7 @@ int client(const char **av)
         return 84;
     if (connect(sock_fd, (struct sockaddr*)&sock_addr,
         sizeof(sock_addr)) == -1) {
-        fprintf(stderr, "connection to server failed");
+        fprintf(stdout, "connection to server failed");
         return 84;
     }
     send_initial_command(sock_fd);
@@ -138,7 +138,7 @@ int main(int ac, const char **av)
         return 0;
     }
     if (ac != 3) {
-        fprintf(stderr, "Bad number of arguments\n");
+        fprintf(stdout, "Bad number of arguments\n");
         return 84;
     }
     signal(SIGINT, exit_program);

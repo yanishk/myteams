@@ -57,7 +57,7 @@ static int accept_connections(server_t *server, int new_client_fd)
     new_client_fd = accept(server->server_fd,
         (struct sockaddr *) &server->sock_addr, &addrlen);
     if (new_client_fd == -1) {
-        fprintf(stderr, "accept failed\n");
+        fprintf(stdout, "accept failed\n");
         return 84;
     }
     return new_client_fd;
@@ -91,7 +91,7 @@ static int set_sockets(server_t *server)
     }
     if (select(server->max_fd_set + 1, &server->readfds,
         NULL, NULL, NULL) == -1) {
-        fprintf(stderr, "select failed\n");
+        fprintf(stdout, "select failed\n");
         return 84;
     }
     return 0;

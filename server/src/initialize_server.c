@@ -13,16 +13,16 @@
 static int check_socket_creation(server_t *server)
 {
     if (server->port == 0) {
-        fprintf(stderr, "argument isn't a port\n");
+        fprintf(stdout, "argument isn't a port\n");
         return 84;
     }
     if (server->server_fd == -1) {
-        fprintf(stderr, "socket creation failed\n");
+        fprintf(stdout, "socket creation failed\n");
         return 84;
     }
     if (setsockopt(server->server_fd, SOL_SOCKET, SO_REUSEADDR,
         &(int){1}, sizeof(int)) < 0) {
-        fprintf(stderr, "setsockopt failed\n");
+        fprintf(stdout, "setsockopt failed\n");
         return 84;
     }
     return 0;
@@ -35,11 +35,11 @@ static int check_socket_config(server_t *server)
     server->sock_addr.sin_port = htons(server->port);
     if (bind(server->server_fd, (struct sockaddr *) &server->sock_addr,
         sizeof(server->sock_addr)) < 0) {
-        fprintf(stderr, "socket configuration failed\n");
+        fprintf(stdout, "socket configuration failed\n");
         return 84;
     }
     if (listen(server->server_fd, 128) == -1) {
-        fprintf(stderr, "listen failed\n");
+        fprintf(stdout, "listen failed\n");
         return 84;
     }
     return 0;
