@@ -53,10 +53,10 @@ static void create_new_user(server_t *server, const int client_fd,
         new_user->team_belong_head);
     uuid_unparse(tmp_uuid,
         server->clients[server->user_index]->new_user->uuid);
-    add_user(server, server->cmd_arg.tab[1],
-        server->clients[server->user_index]->new_user, client_fd);
     server_event_user_created(server->clients[server->user_index]->
         new_user->uuid, server->clients[server->user_index]->new_user->name);
+    add_user(server, server->cmd_arg.tab[1],
+        server->clients[server->user_index]->new_user, client_fd);
 }
 
 int user_login(server_t *server, const int client_fd, my_teams_t *teams)
