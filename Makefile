@@ -48,7 +48,9 @@ SERVER_SRC =                						\
 
 CLIENT_SRC =                				\
 	./client/src/client.c					\
-	./client/src/redirect_print.c
+	./client/src/redirect_print.c           \
+    ./client/src/display_multiple_print.c   \
+    ./client/main.c
 
 LIB =                                       \
     lib/is_number.c                         \

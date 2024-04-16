@@ -25,6 +25,11 @@ char *concat_strings(char *str1, char *str2, char *delim);
 bool array_is_number(char **array);
 char **word_array(char const *str, char *delim);
 
-int select_display_methode(char *msg);
+int client(const char **av);
+
+int select_display_methode(char *msg, client_buf_t buf_struct);
+int display_thread_loop(char **tab, char *first_word);
+int display_users_team(char **tab, char *first_word);
+int display_thread_reply(char **tab, char *first_word);
 
 #endif /* !CLIENT_H_ */

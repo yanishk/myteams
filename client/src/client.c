@@ -34,17 +34,42 @@ static int connect_to_server(const char **av, struct sockaddr_in *sock_addr,
     return 0;
 }
 
+static char *rm_first_ligne(char *str)
+{
+    char *dest;
+    int size = 0;
+
+    while (str[size] != '\n') {
+        size++;
+    }
+    dest = malloc(sizeof(char) * (strlen(str) - size) + 1);
+    dest[strlen(str) - size] = '\0';
+    for (int i = 0; str[i + size] != '\0'; i++) {
+        dest[i] = str[i + size];
+    }
+    return dest;
+}
+
 static int read_response(const int sock_fd)
 {
     int pass = 0;
     char reponse[1024] = {0};
+    char **tab;
+    char *msg;
+    client_buf_t buf_struct;
 
+    buf_struct.code = NULL;
     while (pass == 0) {
         if (read(sock_fd, reponse, 1023) <= 0)
-            return 18;
-        pass = select_display_methode(reponse);
+            return 1;
+        msg = strdup(reponse);
+        if (buf_struct.code == NULL) {
+            tab = word_array(reponse, "\n");
+            buf_struct.code = strdup(word_array(tab[0], " ")[0]);
+            msg = strdup(rm_first_ligne(reponse));
+        }
+        pass = select_display_methode(msg, buf_struct);
     }
-    pass = 0;
     return 0;
 }
 
@@ -64,7 +89,8 @@ static int read_server(const int sock_fd, fd_set readfds)
     }
     if (FD_ISSET(sock_fd, &readfds)) {
         if (read_response(sock_fd) != 0)
-            return 18;
+            return 2;
+        write(1, "Enter the command : ", strlen("Enter the command : "));
     }
     return 0;
 }
@@ -86,8 +112,8 @@ static void client_loop(int sock_fd)
         FD_ZERO(&readfds);
         FD_SET(sock_fd, &readfds);
         FD_SET(0, &readfds);
-        if (read_server(sock_fd, readfds) == 18)
-            break;
+        if (read_server(sock_fd, readfds) == 2)
+            return;
     }
 }
 
@@ -98,6 +124,7 @@ int client(const char **av)
     struct sockaddr_in sock_addr;
     struct in_addr in_addr;
 
+    write(1, "Enter the command : ", strlen("Enter the command : "));
     if (check_socket_creation(port, sock_fd) == 84)
         return 84;
     if (connect_to_server(av, &sock_addr, &in_addr, port) == 84)
@@ -111,36 +138,4 @@ int client(const char **av)
     client_loop(sock_fd);
     close(sock_fd);
     return 0;
-}
-
-static void exit_program(int signal)
-{
-    if (signal == SIGINT)
-        exit(0);
-}
-
-static int check_args(int ac, const char **av)
-{
-    if (ac == 2 && strcmp(av[1], "-help") == 0) {
-        printf("USAGE: ./myteams_cli ip port\n");
-        printf("\tip\tis the server ip address ");
-        printf("on which the server socket listens\n");
-        printf("\tport\tis the port number on which ");
-        printf("the server socket listens\n");
-        return 1;
-    }
-    return 0;
-}
-
-int main(int ac, const char **av)
-{
-    if (check_args(ac, av) != 0) {
-        return 0;
-    }
-    if (ac != 3) {
-        fprintf(stdout, "Bad number of arguments\n");
-        return 84;
-    }
-    signal(SIGINT, exit_program);
-    return client(av);
 }

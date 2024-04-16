@@ -17,4 +17,9 @@ static char *const other_code[NB_CODE] = {
     "210"
 };
 
+typedef struct client_buf_s {
+    char **tab;
+    char *code;
+} client_buf_t;
+
 #endif /* !STRUCT_CLIENT_H_ */
