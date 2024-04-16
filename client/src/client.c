@@ -45,7 +45,6 @@ static int read_response(const int sock_fd)
         pass = select_display_methode(reponse);
     }
     pass = 0;
-    write(1, "Enter the command : ", strlen("Enter the command : "));
     return 0;
 }
 
@@ -99,7 +98,6 @@ int client(const char **av)
     struct sockaddr_in sock_addr;
     struct in_addr in_addr;
 
-    write(1, "Enter the command : ", strlen("Enter the command : "));
     if (check_socket_creation(port, sock_fd) == 84)
         return 84;
     if (connect_to_server(av, &sock_addr, &in_addr, port) == 84)
