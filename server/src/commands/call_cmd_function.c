@@ -75,7 +75,7 @@ static void realloc_arg(server_t *server)
 void get_user_input(server_t *server, const int client_fd, my_teams_t *teams)
 {
     char buffer[BUFFER_MAX_SIZE] = {0};
-    int status;
+    int status = 0;
 
     if (read(client_fd, buffer, BUFFER_MAX_SIZE) == 0)
         return;
