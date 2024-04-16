@@ -103,7 +103,7 @@ int client(const char **av)
         return 84;
     if (connect_to_server(av, &sock_addr, &in_addr, port) == 84)
         return 84;
-    if ((connect(sock_fd, (struct sockaddr*)&sock_addr, sizeof(sock_addr)))) {
+    if (connect(sock_fd, (struct sockaddr*)&sock_addr, sizeof(sock_addr)) == -1) {
         fprintf(stderr, "connection to server failed");
         return 84;
     }
