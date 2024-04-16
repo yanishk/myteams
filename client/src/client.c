@@ -5,6 +5,7 @@
 ** client
 */
 
+#include <signal.h>
 #include "client.h"
 
 static int check_socket_creation(const int port, const int sock_fd)
@@ -103,7 +104,8 @@ int client(const char **av)
         return 84;
     if (connect_to_server(av, &sock_addr, &in_addr, port) == 84)
         return 84;
-    if (connect(sock_fd, (struct sockaddr*)&sock_addr, sizeof(sock_addr)) == -1) {
+    if (connect(sock_fd, (struct sockaddr*)&sock_addr,
+        sizeof(sock_addr)) == -1) {
         fprintf(stderr, "connection to server failed");
         return 84;
     }
@@ -113,7 +115,13 @@ int client(const char **av)
     return 0;
 }
 
-int check_args(int ac, const char **av)
+static void exit_program(int signal)
+{
+    if (signal == SIGINT)
+        exit(0);
+}
+
+static int check_args(int ac, const char **av)
 {
     if (ac == 2 && strcmp(av[1], "-help") == 0) {
         printf("USAGE: ./myteams_cli ip port\n");
@@ -135,5 +143,6 @@ int main(int ac, const char **av)
         fprintf(stderr, "Bad number of arguments\n");
         return 84;
     }
+    signal(SIGINT, exit_program);
     return client(av);
 }

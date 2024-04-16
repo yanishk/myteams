@@ -7,10 +7,17 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <signal.h>
 #include "teams.h"
 #include "my.h"
 
-void print_usage(void)
+static void exit_program(int signal)
+{
+    if (signal == SIGINT)
+        exit(0);
+}
+
+static void print_usage(void)
 {
     puts("USAGE: ./myteams_server port");
     puts("port is the port number on which the server socket listens");
@@ -24,5 +31,6 @@ int main(int ac, char *const *av)
     }
     if (strcmp(av[1], "-help") == 0)
         print_usage();
+    signal(SIGINT, exit_program);
     return server(av[1]);
 }
