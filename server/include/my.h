@@ -53,6 +53,7 @@ int stor_cmd(server_t *server, const int client_fd, my_teams_t *team);
 int disp_subscribed(server_t *server, const int client_fd, my_teams_t *teams);
 int use_cmd(server_t *server, const int client_fd, my_teams_t *teams);
 int unsub_team(server_t *server, const int client_fd, my_teams_t *teams);
+int handle_ctrl_c(server_t *server, const int client_fd, my_teams_t *teams);
 void reset_command_context(my_teams_t *teams);
 
 //create

@@ -22,7 +22,8 @@ int (*cmd_func[NB_CMD])(server_t *server,
     &use_cmd,
     &unsub_team,
     &list,
-    &info
+    &info,
+    &handle_ctrl_c
 };
 
 int error_not_login(server_t *server, const int client_fd)

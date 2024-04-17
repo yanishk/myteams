@@ -21,7 +21,7 @@
 
     #define MAX_USER 1024
     #define BUFFER_MAX_SIZE 1024
-    #define NB_CMD 14 //14 commande dmd dans le pdf (enfin je croie)
+    #define NB_CMD 15
 
     #define FAIL_MSG_LOGIN "530 Not logged in.\n"
     #define ALRD_LOGIN "531 Already logged in.\n"
@@ -32,10 +32,10 @@
 
     #define CODE_101 "101 End of transmmission"
 
-    #define CODE_201 "201 Client logged in.\n" // Done
-    #define CODE_202 "202 Client logged out.\n" // Done
-    #define CODE_203 "203 Print users.\n" // 1/2
-    #define CODE_204 "204 Print user.\n" // 1/2
+    #define CODE_201 "201 Client logged in.\n"
+    #define CODE_202 "202 Client logged out.\n"
+    #define CODE_203 "203 Print users.\n"
+    #define CODE_204 "204 Print user.\n"
     #define CODE_205 "205 Private message received.\n"
     #define CODE_206 "206 Print private message.\n"
     #define CODE_207 "207 Print subscribed.\n"
@@ -79,7 +79,8 @@ static char *const cmd_lst[NB_CMD] = {
     "/use",
     "/unsubscribe",
     "/list",
-    "/info"
+    "/info",
+    "/quit"
 };
 
 enum cmd_status {

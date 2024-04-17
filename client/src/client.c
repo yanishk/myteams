@@ -126,7 +126,7 @@ static void client_loop(int sock_fd)
         if (read_server(sock_fd, readfds) == 2)
             return;
     }
-    send_initial_command(sock_fd, "/logout");
+    send_initial_command(sock_fd, "/quit");
 }
 
 int client(const char **av)
