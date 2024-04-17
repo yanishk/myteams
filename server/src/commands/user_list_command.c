@@ -17,6 +17,7 @@ static int error_handling_user(server_t *server,
     user_t *np_user;
 
     if (server->cmd_arg.tab[1] == NULL) {
+        dprintf(client_fd, "%s\n%s", CODE_101, "CODE_101");
         return ERR_CMD;
     }
     if (error_not_login(server, client_fd) != 0)

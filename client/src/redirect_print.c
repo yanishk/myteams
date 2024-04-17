@@ -131,6 +131,9 @@ int select_display_methode(char *msg, client_buf_t buf_struct)
     char **tab = word_array(msg, "\n");
     int return_status = is_end(strdup(msg), tab);
 
+    if (strlen(msg) <= 0) {
+        return 1;
+    }
     if (display_help(strdup(msg), buf_struct.code) == 1) {
         return 1;
     }
