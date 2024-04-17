@@ -21,12 +21,10 @@ int server(const char *port_number)
 {
     server_t *server = init_server_struct(port_number);
 
-    printf("start of server\n");
     if (initialize_server(server) == 84)
         return 84;
     if (run_server(server) == 84)
         return 84;
     free_server_struct(server);
-    printf("after server\n");
     return 0;
 }

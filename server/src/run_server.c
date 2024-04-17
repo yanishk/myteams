@@ -121,13 +121,10 @@ int run_server(server_t *server)
         server->max_fd_set = server->server_fd;
         if (set_sockets(server) == 84)
             return 84;
-        printf("run server loop after set_sockets\n");
         if (check_server_socket(server) == 84)
             return 84;
-        printf("run server loop after check_server_socket\n");
         if (check_clients_sockets(server, &teams) == 84)
             return 84;
-        printf("run server loop after check_clients_sockets\n");
         save_database(teams);
     }
     return 0;
