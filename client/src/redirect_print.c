@@ -8,9 +8,28 @@
 #include "client.h"
 #include "struct_redirect_print.h"
 
-static int pass_or_continue(char **tab, int i)
+static int check_str(char *str)
 {
-    if (strcmp(tab[i], CODE_101) == 0 && array_size(tab) - i > 3) {
+    char *tmp;
+
+    tmp = malloc(sizeof(char) * 4);
+    strncpy(tmp, str, 3);
+    tmp[3] = '\0';
+    if (strcmp(tmp, "101") == 0) {
+        return 1;
+    }
+    return 0;
+}
+
+static int pass_or_continue(char **tab, int i, int size)
+{
+    if (check_str(tab[i]) == 1) {
+        return -1;
+    }
+    if (array_size(tab) - i < size) {
+        return -1;
+    }
+    if (strcmp(tab[i], CODE_101) == 0 && array_size(tab) - i > size) {
         return (i + 1);
     } else if (strcmp(tab[i], CODE_101) == 0) {
         return - 1;
@@ -30,7 +49,7 @@ static int display_msg(char *msg, int nb)
         return 1;
     }
     for (int i = 0; tab[i] != NULL; i += 3) {
-        i = pass_or_continue(tab, i);
+        i = pass_or_continue(tab, i, 3);
         if (i < 0) {
             return 1;
         }

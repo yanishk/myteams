@@ -91,35 +91,31 @@ static int read_server(const int sock_fd, fd_set readfds)
     if (FD_ISSET(sock_fd, &readfds)) {
         if (read_response(sock_fd) != 0)
             return 2;
+        write(1, "Enter the command : ", strlen("Enter the command : "));
     }
     return 0;
 }
 
-static void send_initial_command(const int sock_fd)
+static void send_initial_command(const int sock_fd, const char *cmd)
 {
-    const char *initial_cmd = "";
     char buffer[1024];
 
-    write(sock_fd, initial_cmd, strlen(initial_cmd));
+    write(sock_fd, cmd, strlen(cmd));
     read(sock_fd, buffer, 1024 - 1);
 }
 
 static void client_loop(int sock_fd)
 {
     fd_set readfds;
-    const char *initial_cmd = "/logout";
-    char buffer[1024];
 
+    write(1, "Enter the command : ", strlen("Enter the command : "));
     while (1) {
-        write(1, "Enter the command : ", strlen("Enter the command : "));
         FD_ZERO(&readfds);
         FD_SET(sock_fd, &readfds);
         FD_SET(0, &readfds);
         if (read_server(sock_fd, readfds) == 2)
             return;
     }
-    write(sock_fd, initial_cmd, strlen(initial_cmd));
-    read(sock_fd, buffer, 1024 - 1);
 }
 
 int client(const char **av)
@@ -138,7 +134,7 @@ int client(const char **av)
         perror("connect");
         return 84;
     }
-    send_initial_command(sock_fd);
+    send_initial_command(sock_fd, "");
     client_loop(sock_fd);
     close(sock_fd);
     return 0;
