@@ -33,7 +33,7 @@ static int check_socket_config(server_t *server)
         fprintf(stdout, "socket configuration failed\n");
         return 84;
     }
-    if (listen(server->server_fd, 128) == -1) {
+    if (listen(server->server_fd, 10) == -1) {
         fprintf(stdout, "listen failed\n");
         return 84;
     }
