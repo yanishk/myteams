@@ -12,6 +12,7 @@
 static void open_help_msg(const int client_fd)
 {
     char *buf;
+    char **tab;
     struct stat sb;
     int fd = open("server/src/commands/help/help_msg.txt", O_RDONLY);
 
@@ -20,7 +21,13 @@ static void open_help_msg(const int client_fd)
     read(fd, buf, sb.st_size - 1);
     buf[sb.st_size - 1] = '\0';
     close(fd);
-    dprintf(client_fd, "%s%s\n%s", CODE_224, buf, CODE_101);
+    tab = word_array(buf, "\n");
+    dprintf(client_fd, "%s", CODE_224);
+    for (int i = 0; tab[i] != NULL; i++) {
+        dprintf(client_fd, "%s\n", tab[i]);
+    }
+    dprintf(client_fd, "%s", CODE_101);
+    free(tab);
     free(buf);
 }
 
