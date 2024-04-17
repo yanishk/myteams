@@ -10,6 +10,10 @@
 static void add_user(server_t *server, const char *username,
     user_t *new_user, const int client_fd)
 {
+    if (new_user->is_logged == true) {
+        dprintf(client_fd, "%s%s", CODE_301, CODE_101);
+        return;
+    }
     server->clients[server->user_index]->username =
     malloc(sizeof(char) * strlen(username));
     server->clients[server->user_index]->username = strdup(username);
