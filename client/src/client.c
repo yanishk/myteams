@@ -9,14 +9,6 @@
 #include "client.h"
 #include <errno.h>
 
-int ctrl_c;
-
-static void exit_program(int signal)
-{
-    if (signal == SIGINT)
-        ctrl_c = 0;
-}
-
 static int check_socket_creation(const int port, const int sock_fd)
 {
     if (port == 0) {
@@ -38,7 +30,7 @@ static int connect_to_server(const char **av, struct sockaddr_in *sock_addr,
         return 84;
     }
     sock_addr->sin_family = AF_INET;
-    sock_addr->sin_addr.s_addr = atoi(av[1]);
+    sock_addr->sin_addr.s_addr = inet_addr(av[1]);
     sock_addr->sin_port = htons(port);
     return 0;
 }
@@ -99,7 +91,6 @@ static int read_server(const int sock_fd, fd_set readfds)
     if (FD_ISSET(sock_fd, &readfds)) {
         if (read_response(sock_fd) != 0)
             return 2;
-        write(1, "Enter the command : ", strlen("Enter the command : "));
     }
     return 0;
 }
@@ -119,9 +110,8 @@ static void client_loop(int sock_fd)
     const char *initial_cmd = "/logout";
     char buffer[1024];
 
-    ctrl_c = 1;
-    while (ctrl_c) {
-        signal(SIGINT, exit_program);
+    while (1) {
+        write(1, "Enter the command : ", strlen("Enter the command : "));
         FD_ZERO(&readfds);
         FD_SET(sock_fd, &readfds);
         FD_SET(0, &readfds);
