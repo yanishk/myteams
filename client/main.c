@@ -8,12 +8,6 @@
 #include <signal.h>
 #include "client.h"
 
-static void exit_program(int signal)
-{
-    if (signal == SIGINT)
-        exit(0);
-}
-
 static int check_args(int ac, const char **av)
 {
     if (ac == 2 && strcmp(av[1], "-help") == 0) {
@@ -36,6 +30,5 @@ int main(int ac, const char **av)
         fprintf(stdout, "Bad number of arguments\n");
         return 84;
     }
-    signal(SIGINT, exit_program);
     return client(av);
 }

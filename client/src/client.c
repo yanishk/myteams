@@ -8,6 +8,14 @@
 #include <signal.h>
 #include "client.h"
 
+int ctrl_c;
+
+static void exit_program(int signal)
+{
+    if (signal == SIGINT)
+        ctrl_c = 0;
+}
+
 static int check_socket_creation(const int port, const int sock_fd)
 {
     if (port == 0) {
@@ -107,14 +115,20 @@ static void send_initial_command(const int sock_fd)
 static void client_loop(int sock_fd)
 {
     fd_set readfds;
+    const char *initial_cmd = "/logout";
+    char buffer[1024];
 
-    while (1) {
+    ctrl_c = 1;
+    while (ctrl_c) {
+        signal(SIGINT, exit_program);
         FD_ZERO(&readfds);
         FD_SET(sock_fd, &readfds);
         FD_SET(0, &readfds);
         if (read_server(sock_fd, readfds) == 2)
             return;
     }
+    write(sock_fd, initial_cmd, strlen(initial_cmd));
+    read(sock_fd, buffer, 1024 - 1);
 }
 
 int client(const char **av)
