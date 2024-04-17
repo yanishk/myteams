@@ -20,11 +20,6 @@ static int check_socket_creation(server_t *server)
         fprintf(stdout, "socket creation failed\n");
         return 84;
     }
-    if (setsockopt(server->server_fd, SOL_SOCKET, SO_REUSEADDR,
-        &(int){1}, sizeof(int)) < 0) {
-        fprintf(stdout, "setsockopt failed\n");
-        return 84;
-    }
     return 0;
 }
 
