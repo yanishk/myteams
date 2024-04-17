@@ -23,6 +23,5 @@ int quit_cmd(server_t *server, const int client_fd, my_teams_t *)
     server->clients[server->user_index]->username = malloc(sizeof(char) * 1);
     server->clients[server->user_index]->is_connected = false;
     server->fd_array[server->user_index] = 0;
-    close(client_fd);
     return WIN_CMD;
 }
