@@ -7,6 +7,7 @@
 
 #include <signal.h>
 #include "client.h"
+#include <errno.h>
 
 int ctrl_c;
 
@@ -138,14 +139,13 @@ int client(const char **av)
     struct sockaddr_in sock_addr;
     struct in_addr in_addr;
 
-    write(1, "Enter the command : ", strlen("Enter the command : "));
     if (check_socket_creation(port, sock_fd) == 84)
         return 84;
     if (connect_to_server(av, &sock_addr, &in_addr, port) == 84)
         return 84;
     if (connect(sock_fd, (struct sockaddr*)&sock_addr,
         sizeof(sock_addr)) == -1) {
-        fprintf(stdout, "connection to server failed");
+        perror("connect");
         return 84;
     }
     send_initial_command(sock_fd);
