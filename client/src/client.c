@@ -59,25 +59,34 @@ static char *rm_first_ligne(char *str)
     return dest;
 }
 
-static int read_response(const int sock_fd)
+static client_buf_t init_buffer_struct(void)
 {
-    int pass = 0;
-    char reponse[1024] = {0};
-    char **tab;
-    char *msg;
     client_buf_t buf_struct;
 
+    buf_struct.loop_read = 0;
+    buf_struct.pass = 0;
     buf_struct.code = NULL;
-    while (pass == 0) {
+    return buf_struct;
+}
+
+static int read_response(const int sock_fd)
+{
+    char reponse[1024] = {0};
+    char **tab;
+    client_buf_t buf_struct = init_buffer_struct();
+
+    while (buf_struct.loop_read == 0) {
         if (read(sock_fd, reponse, 1023) <= 0)
             return 1;
-        msg = strdup(reponse);
+        buf_struct.all_reponse = strdup(reponse);
         if (buf_struct.code == NULL) {
             tab = word_array(reponse, "\n");
             buf_struct.code = strdup(word_array(tab[0], " ")[0]);
-            msg = strdup(rm_first_ligne(reponse));
+            buf_struct.all_reponse = strdup(rm_first_ligne(reponse));
         }
-        pass = select_display_methode(msg, buf_struct);
+        if (strcmp(buf_struct.code, "301") == 0)
+            buf_struct.pass++;
+        buf_struct.loop_read = select_display_methode(buf_struct);
     }
     return 0;
 }

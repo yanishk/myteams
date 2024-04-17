@@ -37,10 +37,8 @@ static int pass_or_continue(char **tab, int i, int size)
     return i;
 }
 
-static int display_msg(char *msg, int nb)
+static int display_msg(char **tab, int nb)
 {
-    char **tab = word_array(msg, "\n");
-
     if (nb == 1) {
         client_event_thread_reply_received(tab[0], tab[1], tab[2], tab[3]);
         return 1;
@@ -59,7 +57,7 @@ static int display_msg(char *msg, int nb)
     return 1;
 }
 
-static int display_error(char **tab, char *first_word)
+static int display_no_loop_print(char **tab, char *first_word)
 {
     for (size_t y = 0; display_err_exist[y].str != NULL; y++) {
         if (strcmp(display_err_exist[y].str, first_word) == 0) {
@@ -73,39 +71,32 @@ static int display_error(char **tab, char *first_word)
             return 1;
         }
     }
+    for (size_t y = 0; client_user_event[y].str != NULL; y++) {
+        if (strcmp(client_user_event[y].str, first_word) == 0) {
+            client_user_event[y].ptr(tab[0], tab[1]);
+            return 1;
+        }
+    }
     return 0;
 }
 
-static int redirect_print(char *msg, char **tab, char *first_word)
+static int redirect_print(char **tab, client_buf_t buf_struct)
 {
     int pass = 0;
+    char *first_word = strdup(buf_struct.code);
 
-    pass += display_error(tab, first_word);
+    pass += display_no_loop_print(tab, first_word);
     pass += display_thread_reply(tab, first_word);
     pass += display_thread_loop(tab, first_word);
     pass += display_users_team(tab, first_word);
-    for (size_t y = 0; display_two_char_func[y].str != NULL; y++) {
-        if (strcmp(display_two_char_func[y].str, first_word) == 0) {
-            display_two_char_func[y].ptr(tab[0], tab[1]);
-            pass += 1;
-        }
-    }
+    pass += display_help(tab, first_word);
     for (size_t i = 0; i < NB_CODE; i++) {
         if (strcmp(other_code[i], first_word) == 0) {
-            display_msg(strdup(msg), i);
+            display_msg(tab, i);
             pass += 1;
         }
     }
     return pass;
-}
-
-static int display_help(char *msg, char *first_word)
-{
-    if (strcmp(first_word, "224") == 0) {
-        printf("%s\n", msg);
-        return 1;
-    }
-    return 0;
 }
 
 static bool is_end(char *msg, char **tab)
@@ -126,18 +117,18 @@ static bool is_end(char *msg, char **tab)
     return false;
 }
 
-int select_display_methode(char *msg, client_buf_t buf_struct)
+int select_display_methode(client_buf_t buf_struct)
 {
-    char **tab = word_array(msg, "\n");
-    int return_status = is_end(strdup(msg), tab);
+    char **tab = word_array(buf_struct.all_reponse, "\n");
+    int return_status = is_end(strdup(buf_struct.all_reponse), tab);
 
-    if (strlen(msg) <= 0) {
+    if (buf_struct.pass > 1) {
+        free(buf_struct.code);
+    }
+    if (strlen(buf_struct.all_reponse) <= 0) {
         return 1;
     }
-    if (display_help(strdup(msg), buf_struct.code) == 1) {
-        return 1;
-    }
-    if (redirect_print(strdup(msg), tab, buf_struct.code) == 0) {
+    if (redirect_print(tab, buf_struct) == 0) {
         return 1;
     }
     return return_status;

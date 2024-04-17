@@ -26,7 +26,7 @@ typedef struct {
 typedef struct {
     char *str;
     int (*ptr)(const char *str, const char *str2);
-} display_two_char_func_t;
+} client_user_event_t;
 
 display_err_exist_t display_err_exist[] = {
     {"401", &client_error_unknown_user},
@@ -42,7 +42,7 @@ display_err_access_t display_err_access[] = {
     {'\0', NULL}
 };
 
-display_two_char_func_t display_two_char_func[] = {
+client_user_event_t client_user_event[] = {
     {"201", &client_event_logged_in},
     {"202", &client_event_logged_out},
     {"205", &client_event_private_message_received},

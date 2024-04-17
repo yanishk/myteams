@@ -27,9 +27,10 @@ char **word_array(char const *str, char *delim);
 
 int client(const char **av);
 
-int select_display_methode(char *msg, client_buf_t buf_struct);
+int select_display_methode(client_buf_t buf_struct);
 int display_thread_loop(char **tab, char *first_word);
 int display_users_team(char **tab, char *first_word);
 int display_thread_reply(char **tab, char *first_word);
+int display_help(char **tab, char *first_word);
 
 #endif /* !CLIENT_H_ */

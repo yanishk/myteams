@@ -121,3 +121,18 @@ int display_thread_reply(char **tab, char *first_word)
     }
     return 0;
 }
+
+int display_help(char **tab, char *first_word)
+{
+    if (strcmp(first_word, "224") != 0) {
+        return 0;
+    }
+    for (int i = 0; tab[i] != NULL; i += 1) {
+        i = pass_or_continue(tab, i, 1);
+        if (i < 0) {
+            return 1;
+        }
+        printf("%s\n", tab[i]);
+    }
+    return 1;
+}
