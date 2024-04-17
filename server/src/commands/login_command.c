@@ -13,6 +13,7 @@ static void add_user(server_t *server, const char *username,
     server->clients[server->user_index]->username =
     malloc(sizeof(char) * strlen(username));
     server->clients[server->user_index]->username = strdup(username);
+    server->clients[server->user_index]->has_been_closed = false;
     server->clients[server->user_index]->is_connected = true;
     server->clients[server->user_index]->my_uuid = new_user->uuid;
     dprintf(client_fd, "%s%s\n%s\n%s", CODE_201, new_user->uuid,
