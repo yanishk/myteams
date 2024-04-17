@@ -60,7 +60,8 @@ LIB =                                       \
     lib/my_swap_str.c                       \
     lib/fd_putstr.c                         \
     lib/my_getnbr.c                         \
-    lib/my_get_timestamp.c
+    lib/my_get_timestamp.c                  \
+    lib/count_occurences.c
 
 SERVER_OBJ = $(SERVER_SRC:.c=.o)			\
 	$(LIB:.c=.o)

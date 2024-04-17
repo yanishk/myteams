@@ -25,6 +25,7 @@ void my_swap_str(char **a, char **b);
 void my_fd_putstr(char *str, const int client_fd);
 int my_getnbr(char const *str);
 long int my_get_timestamp(char const *str);
+int count_occurences(const char *str, const char c);
 
 // server
 int server(const char *port_number);
