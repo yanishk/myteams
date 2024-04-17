@@ -13,8 +13,10 @@
 
 static void exit_program(int signal)
 {
-    if (signal == SIGINT)
+    if (signal == SIGINT) {
+        printf("ctrl c received\n");
         exit(0);
+    }
 }
 
 static void print_usage(void)

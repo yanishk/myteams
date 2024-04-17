@@ -54,8 +54,10 @@ int initialize_server(server_t *server)
 {
     if (check_socket_creation(server) == 84)
         return 84;
+    printf("check_socket_creation\n");
     if (check_socket_config(server) == 84)
         return 84;
+    printf("check_socket_config\n");
     return 0;
 }
 
