@@ -9,14 +9,6 @@
 #include "client.h"
 #include <errno.h>
 
-int ctrl_c;
-
-static void exit_program(int signal)
-{
-    if (signal == SIGINT)
-        ctrl_c = 0;
-}
-
 static int check_socket_creation(const int port, const int sock_fd)
 {
     if (port == 0) {
@@ -126,16 +118,13 @@ static void client_loop(int sock_fd)
     fd_set readfds;
 
     write(1, "Enter the command : ", strlen("Enter the command : "));
-    ctrl_c = 1;
-    signal(SIGINT, exit_program);
-    while (ctrl_c) {
+    while (1) {
         FD_ZERO(&readfds);
         FD_SET(sock_fd, &readfds);
         FD_SET(0, &readfds);
         if (read_server(sock_fd, readfds) == 2)
             return;
     }
-    send_initial_command(sock_fd, "/quit");
 }
 
 int client(const char **av)
