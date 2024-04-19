@@ -13,7 +13,6 @@ static void add_user(server_t *server, const char *username,
     server->clients[server->user_index]->username =
     malloc(sizeof(char) * strlen(username));
     server->clients[server->user_index]->username = strdup(username);
-    server->clients[server->user_index]->has_been_closed = false;
     server->clients[server->user_index]->is_connected = true;
     server->clients[server->user_index]->my_uuid = new_user->uuid;
     dprintf(client_fd, "%s%s\n%s\n%s", CODE_201, new_user->uuid,
@@ -64,14 +63,14 @@ int user_login(server_t *server, const int client_fd, my_teams_t *teams)
 {
     if (error_login(server, client_fd) == ERR_CMD)
         return ERR_CMD;
-    TAILQ_FOREACH(server->clients[server->user_index]->new_user,
-        &teams->user_head, user_entries) {
+    for ((server->clients[server->user_index]->new_user) =
+        ((&teams->user_head)->tqh_first);
+        (server->clients[server->user_index]->new_user);
+        (server->clients[server->user_index]->new_user) =
+        ((server->clients[server->user_index]->new_user)->
+        user_entries.tqe_next)) {
         if (strcmp(server->clients[server->user_index]->new_user->name,
         server->cmd_arg.tab[1]) == 0) {
-            if (server->clients[server->user_index]->new_user->is_logged) {
-                dprintf(client_fd, "%s%s", CODE_301, CODE_101);
-                return ERR_CMD;
-            }
             add_user(server, server->cmd_arg.tab[1],
                 server->clients[server->user_index]->new_user, client_fd);
             server->clients[server->user_index]->new_user->is_logged = true;

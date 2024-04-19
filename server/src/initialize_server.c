@@ -20,11 +20,6 @@ static int check_socket_creation(server_t *server)
         fprintf(stdout, "socket creation failed\n");
         return 84;
     }
-    if (setsockopt(server->server_fd, SOL_SOCKET, SO_REUSEADDR,
-        &(int){1}, sizeof(int)) < 0) {
-        fprintf(stdout, "setsockopt failed\n");
-        return 84;
-    }
     return 0;
 }
 
@@ -38,7 +33,7 @@ static int check_socket_config(server_t *server)
         fprintf(stdout, "socket configuration failed\n");
         return 84;
     }
-    if (listen(server->server_fd, 128) == -1) {
+    if (listen(server->server_fd, 10) == -1) {
         fprintf(stdout, "listen failed\n");
         return 84;
     }
@@ -59,8 +54,10 @@ int initialize_server(server_t *server)
 {
     if (check_socket_creation(server) == 84)
         return 84;
+    printf("check_socket_creation\n");
     if (check_socket_config(server) == 84)
         return 84;
+    printf("check_socket_config\n");
     return 0;
 }
 

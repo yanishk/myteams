@@ -22,8 +22,7 @@ int (*cmd_func[NB_CMD])(server_t *server,
     &use_cmd,
     &unsub_team,
     &list,
-    &info,
-    &handle_ctrl_c
+    &info
 };
 
 int error_not_login(server_t *server, const int client_fd)
@@ -73,16 +72,6 @@ static void realloc_arg(server_t *server)
     }
 }
 
-static bool valid_number_of_quotes(const char *str, const int client_fd)
-{
-    if (count_occurences(str, '\"') % 2 != 0) {
-        my_fd_putstr(CODE_301, client_fd);
-        my_fd_putstr(CODE_101, client_fd);
-        return false;
-    }
-    return true;
-}
-
 void get_user_input(server_t *server, const int client_fd, my_teams_t *teams)
 {
     char buffer[BUFFER_MAX_SIZE] = {0};
@@ -90,15 +79,14 @@ void get_user_input(server_t *server, const int client_fd, my_teams_t *teams)
 
     if (read(client_fd, buffer, BUFFER_MAX_SIZE) == 0)
         return;
-    if (!valid_number_of_quotes(buffer, client_fd))
-        return;
     server->cmd_arg.tab = word_array(buffer, "\"\n\r");
     server->cmd_arg.len = array_size(server->cmd_arg.tab);
     realloc_arg(server);
     for (size_t i = 0; i < NB_CMD; i++) {
         if (server->cmd_arg.len >= 1 &&
-        strcmp(server->cmd_arg.tab[0], cmd_lst[i]) == 0)
+        strcmp(server->cmd_arg.tab[0], cmd_lst[i]) == 0) {
             status = cmd_func[i](server, client_fd, teams);
+        }
     }
     if (status == 0) {
         my_fd_putstr(CODE_301, client_fd);

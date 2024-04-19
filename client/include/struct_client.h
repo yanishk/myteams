@@ -18,10 +18,8 @@ static char *const other_code[NB_CODE] = {
 };
 
 typedef struct client_buf_s {
+    char **tab;
     char *code;
-    int pass;
-    int loop_read;
-    char *all_reponse;
 } client_buf_t;
 
 #endif /* !STRUCT_CLIENT_H_ */

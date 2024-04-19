@@ -51,34 +51,25 @@ static char *rm_first_ligne(char *str)
     return dest;
 }
 
-static client_buf_t init_buffer_struct(void)
-{
-    client_buf_t buf_struct;
-
-    buf_struct.loop_read = 0;
-    buf_struct.pass = 0;
-    buf_struct.code = NULL;
-    return buf_struct;
-}
-
 static int read_response(const int sock_fd)
 {
+    int pass = 0;
     char reponse[1024] = {0};
     char **tab;
-    client_buf_t buf_struct = init_buffer_struct();
+    char *msg;
+    client_buf_t buf_struct;
 
-    while (buf_struct.loop_read == 0) {
+    buf_struct.code = NULL;
+    while (pass == 0) {
         if (read(sock_fd, reponse, 1023) <= 0)
             return 1;
-        buf_struct.all_reponse = strdup(reponse);
+        msg = strdup(reponse);
         if (buf_struct.code == NULL) {
             tab = word_array(reponse, "\n");
             buf_struct.code = strdup(word_array(tab[0], " ")[0]);
-            buf_struct.all_reponse = strdup(rm_first_ligne(reponse));
+            msg = strdup(rm_first_ligne(reponse));
         }
-        if (strcmp(buf_struct.code, "301") == 0)
-            buf_struct.pass++;
-        buf_struct.loop_read = select_display_methode(buf_struct);
+        pass = select_display_methode(msg, buf_struct);
     }
     return 0;
 }
@@ -100,31 +91,35 @@ static int read_server(const int sock_fd, fd_set readfds)
     if (FD_ISSET(sock_fd, &readfds)) {
         if (read_response(sock_fd) != 0)
             return 2;
-        write(1, "Enter the command : ", strlen("Enter the command : "));
     }
     return 0;
 }
 
-static void send_initial_command(const int sock_fd, const char *cmd)
+static void send_initial_command(const int sock_fd)
 {
+    const char *initial_cmd = "";
     char buffer[1024];
 
-    write(sock_fd, cmd, strlen(cmd));
+    write(sock_fd, initial_cmd, strlen(initial_cmd));
     read(sock_fd, buffer, 1024 - 1);
 }
 
 static void client_loop(int sock_fd)
 {
     fd_set readfds;
+    const char *initial_cmd = "/logout";
+    char buffer[1024];
 
-    write(1, "Enter the command : ", strlen("Enter the command : "));
     while (1) {
+        write(1, "Enter the command : ", strlen("Enter the command : "));
         FD_ZERO(&readfds);
         FD_SET(sock_fd, &readfds);
         FD_SET(0, &readfds);
         if (read_server(sock_fd, readfds) == 2)
             return;
     }
+    write(sock_fd, initial_cmd, strlen(initial_cmd));
+    read(sock_fd, buffer, 1024 - 1);
 }
 
 int client(const char **av)
@@ -143,7 +138,7 @@ int client(const char **av)
         perror("connect");
         return 84;
     }
-    send_initial_command(sock_fd, "");
+    send_initial_command(sock_fd);
     client_loop(sock_fd);
     close(sock_fd);
     return 0;
