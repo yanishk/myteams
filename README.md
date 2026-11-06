@@ -11,7 +11,7 @@
 ![Make](https://img.shields.io/badge/build-Make-A42E2B?logo=gnu&logoColor=white)
 ![Linux](https://img.shields.io/badge/platform-Linux%20x86--64-lightgrey)
 
-<img src="docs/demo.gif" alt="Server on top, alice and bob below: alice creates a team, a channel and a thread, bob replies, alice gets the reply live and sends bob a private message" width="660">
+<img src="docs/demo.gif" alt="Server on top, alice and bob below: alice creates a team, a channel and a thread, bob replies, alice gets the reply live and sends bob a private message" width="760">
 
 [Quick start](#quick-start) · [Commands](#commands) · [How it works](#how-it-works) · [Team](#team)
 
